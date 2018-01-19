@@ -19,7 +19,7 @@ export default {
         }
     },
     auth: {
-        loading: false,
+        loading: true,
         isAuthenticated: false,
         error: {
             isError: false,

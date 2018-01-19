@@ -1,26 +1,21 @@
+// npm packages
 import React, {Component} from 'react';
 import { bindActionCreators } from 'redux';
 import {connect} from 'react-redux';
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 import { Scrollbars } from 'react-custom-scrollbars';
-import { Layout,  Menu, Spin } from 'antd';
-
+import { Layout, Menu } from 'antd';
 // import pathToRegexp from 'path-to-regexp';
+// project files
 import { siderItems, siderItemsIcons } from '../../../utils/constants';
 import { slugify } from '../../../utils/functions';
 import { logout, fetchTopics, siderSelected } from '../../../actions/actionTypes';
 import { clearToken } from '../../../config/axios.config';
 import Logo from '../Logo';
 import './index.scss';
-
+import SiderLoading from './SiderLoading';
 const { Sider } = Layout;
-
-const SiderSpinner = () => (
-    <div className="text-center">
-        <Spin/>
-    </div>
-);
 
 class SiderMenu extends Component {
     constructor() {
@@ -108,7 +103,7 @@ class SiderMenu extends Component {
                         </div>
                     </Menu.Item>
                     }
-                </Menu>: <SiderSpinner/>}
+                </Menu>: <SiderLoading />}
             </Scrollbars>
         </Sider>
         )

@@ -1,7 +1,9 @@
+// npm packages
 import React, {Component} from "react";
 import { NavLink } from 'react-router-dom';
 import { Menu, Input } from 'antd';
-
+import DocumentTitle from 'react-document-title';
+// project files
 import UsersTab from './UsersTab'
 import StoriesTab from './StoriesTab'
 import { getUrlQuery } from '../../utils/functions';
@@ -39,29 +41,31 @@ class Search extends Component {
         const selectedKey = location.search.indexOf('users') === -1? 'stories': 'users';
         const SelectedTab = location.search.indexOf('users')  === -1 ? StoriesTab: UsersTab;
         return (
-            <div className="base-sec">
-                <div className="search-field">
-                    <SearchInput value={this.state.value} onChange={this.onInputChange}
-                                 size="large" placeholder="Search here..."
-                                 onSearch={this.handleSearch}/>
+            <DocumentTitle title={`Publisher - Search`}>
+                <div className="base-sec">
+                    <div className="search-field">
+                        <SearchInput value={this.state.value} onChange={this.onInputChange}
+                                     size="large" placeholder="Search here..."
+                                     onSearch={this.handleSearch}/>
+                    </div>
+                    <Menu
+                        selectedKeys={[selectedKey]}
+                        mode="horizontal"
+                        className="browsable-taps">
+                        <Menu.Item key="stories">
+                            <NavLink to={`/search/?q=${searchQ}`}>
+                                Stories
+                            </NavLink>
+                        </Menu.Item>
+                        <Menu.Item key="users" >
+                            <NavLink to={`/search/?q=${searchQ}&users`}>
+                                Users
+                            </NavLink>
+                        </Menu.Item>
+                    </Menu>
+                    <SelectedTab searchURL={location.search} value={this.state.value}/>
                 </div>
-                <Menu
-                    selectedKeys={[selectedKey]}
-                    mode="horizontal"
-                    className="browsable-taps">
-                    <Menu.Item key="stories">
-                        <NavLink to={`/search/?q=${searchQ}`}>
-                            Stories
-                        </NavLink>
-                    </Menu.Item>
-                    <Menu.Item key="users" >
-                        <NavLink to={`/search/?q=${searchQ}&users`}>
-                            Users
-                        </NavLink>
-                    </Menu.Item>
-                </Menu>
-                <SelectedTab searchURL={location.search} value={this.state.value}/>
-            </div>
+            </DocumentTitle>
         )
     }
 }

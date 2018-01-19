@@ -77,7 +77,7 @@ export const markNotificationAsReadSuccess = createAction('mark Notification As 
 export const getUnReadInitialNotificationsCount =  createAction(' get unRead initialNotifications count');
 
 // user
-export const fetchUser = createAction('fetch user');
+export const fetchUserFromSocial = createAction('fetch user');
 export const fetchUserSuccess = createAction('fetch user success');
 export const fetchUserFailed = createAction('fetch user failed');
 export const updateUser = createAction('update user');

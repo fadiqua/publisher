@@ -1,15 +1,18 @@
+// npm packages
 import hello from 'hellojs';
 import { bindActionCreators } from 'redux';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Modal, Form, Button, Icon, Input  } from 'antd';
+// project files
 import SocialButton from './SocialButton';
 import Or from '../shared/Or';
 import {
     toggleSignin, toggleSignup,
     signinRequest, fetchUser, autoLogin
 } from '../../actions/actionTypes';
-import { localLogin } from '../../routes'
+import { localLogin } from '../../routes';
+
 const FormItem = Form.Item;
 
 class SigninModal extends Component {
@@ -18,6 +21,7 @@ class SigninModal extends Component {
         super();
         this.state = {
             loading: false,
+            error: ''
         };
         this.handleOk = this.handleOk.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
@@ -37,9 +41,7 @@ class SigninModal extends Component {
                 } catch (error) {
                     const { data: { message } } = error.response;
                     this.setState({ loading: false, error: message });
-                    console.log('error ', message)
                 }
-                // this.props.login({ data: values })
             }
         });
     };
@@ -63,11 +65,13 @@ class SigninModal extends Component {
             toggleSignupModal,
             form: { getFieldDecorator }
         } = this.props;
+        let validate  = {};
+        if(!!error) validate['validateStatus'] = 'error';
         return (
             <Modal
                 width={400}
                 visible={sign.siginVisible}
-                title="Sign In"
+                title="Sign In to Publisher"
                 onOk={this.handleOk}
                 onCancel={toggleSigninModal}
                 footer={[
@@ -87,7 +91,7 @@ class SigninModal extends Component {
                 />
                 <Or/>
                 <Form onSubmit={this.handleSubmit} className="sign-form">
-                    <FormItem>
+                    <FormItem { ...validate }>
                         {getFieldDecorator('email', {
                             rules: [{ required: true, message: 'Please input your email!' }],
                         })(
@@ -109,6 +113,11 @@ class SigninModal extends Component {
                                 type="password" placeholder="Password" />
                         )}
                     </FormItem>
+                    {!!error && <FormItem validateStatus="error">
+                         <div className="ant-form-explain">
+                            <Icon type="exclamation-circle" /> { error }
+                        </div>
+                    </FormItem>}
                     <FormItem>
                         <div className="text-center">
                             <Button

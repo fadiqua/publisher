@@ -1,8 +1,10 @@
 import { bindActionCreators } from 'redux';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+
 import { Modal, Button, Form, Icon, Input } from 'antd';
-import { toggleSignin, toggleSignup } from '../../actions/actionTypes';
+import { toggleSignin, toggleSignup, autoLogin } from '../../actions/actionTypes';
+import {localSignup} from "../../routes";
 
 const FormItem = Form.Item;
 
@@ -11,7 +13,8 @@ class SignupModal extends Component {
     constructor(){
         super();
         this.state = {
-
+            loading: false,
+            error: ''
         };
         this.handleOk = this.handleOk.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
@@ -19,10 +22,19 @@ class SignupModal extends Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
-        this.props.form.validateFields((err, values) => {
+        this.props.form.validateFields( async (err, values) => {
             if (!err) {
-                console.log('Received values of form: ', values);
-                // this.props.login({ data: values })
+                try {
+                    this.setState({ loading: true, error: null });
+                    const { data } = await localSignup(values);
+                    this.setState({ loading: false, error: null });
+                    this.props.autoLogin({ ...data.me, token: data.token });
+                    console.log('result ', data)
+
+                } catch (error) {
+                    const { data: { message } } = error.response;
+                    this.setState({ loading: false, error: message });
+                }
             }
         });
     };
@@ -39,6 +51,7 @@ class SignupModal extends Component {
             sign, toggleSignupModal, toggleSigninModal,
             form: { getFieldDecorator }
         } = this.props;
+        const { loading, error } = this.state;
         return (
             <div>
                 <Modal
@@ -57,41 +70,46 @@ class SignupModal extends Component {
                             {getFieldDecorator('firstName', {
                                 rules: [{ required: true, message: 'Please input your first name!' }],
                             })(
-                                <Input placeholder="First Name" />
+                                <Input disabled={loading} placeholder="First Name" />
                             )}
                         </FormItem>
                         <FormItem>
                             {getFieldDecorator('lastName', {
                                 rules: [{ required: true, message: 'Please input your last name!' }],
                             })(
-                                <Input placeholder="Last Name" />
+                                <Input disabled={loading} placeholder="Last Name" />
                             )}
                         </FormItem>
                         <FormItem>
                             {getFieldDecorator('email', {
                                 rules: [{ required: true, message: 'Please input your email!' }],
                             })(
-                                <Input prefix={<Icon type="user" style={{ fontSize: 13 }} />} placeholder="Email Address" />
+                                <Input disabled={loading} prefix={<Icon type="user" style={{ fontSize: 13 }} />} placeholder="Email Address" />
                             )}
                         </FormItem>
                         <FormItem>
                             {getFieldDecorator('password', {
                                 rules: [{ required: true, message: 'Please input your Password!' }],
                             })(
-                                <Input prefix={<Icon type="lock" style={{ fontSize: 13 }} />} type="password" placeholder="Password" />
+                                <Input disabled={loading} prefix={<Icon type="lock" style={{ fontSize: 13 }} />} type="password" placeholder="Password" />
                             )}
                         </FormItem>
                         <FormItem>
                             {getFieldDecorator('confirmPassword', {
                                 rules: [{ required: true, message: 'Please input your Password!' }],
                             })(
-                                <Input prefix={<Icon type="lock" style={{ fontSize: 13 }} />} type="password" placeholder="Confirm Password" />
+                                <Input disabled={loading} prefix={<Icon type="lock" style={{ fontSize: 13 }} />} type="password" placeholder="Confirm Password" />
                             )}
                         </FormItem>
+                        {!!error && <FormItem validateStatus="error">
+                            <div className="ant-form-explain">
+                                <Icon type="exclamation-circle" /> { error }
+                            </div>
+                        </FormItem>}
                         <FormItem>
                             <div className="text-center">
                                 <Button
-                                    loading={this.props.loading }
+                                    loading={loading }
                                     size="large" type="primary"
                                     htmlType="submit"
                                     className="login-form-button btn-block"
@@ -116,7 +134,8 @@ const mapStateToProps = ({ sign }) => ({ sign });
 
 const mapDispatch = dispatch => bindActionCreators({
     toggleSigninModal: toggleSignin,
-    toggleSignupModal: toggleSignup
+    toggleSignupModal: toggleSignup,
+    autoLogin
 }, dispatch);
 
 export default connect(mapStateToProps, mapDispatch)(SignupModalWithForm);

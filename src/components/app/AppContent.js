@@ -19,12 +19,13 @@ class AppContent extends Component {
             this.mql = matchMedia(`(max-width: 700px)`);
         }
     }
-
-    async componentDidMount() {
+    componentWillMount() {
         if (this.mql) {
             this.mql.addListener(this.responsiveHandler);
             this.responsiveHandler(this.mql);
         }
+    }
+    async componentDidMount() {
         try {
             const result = await getMe();
             this.props.autoLogin({ ...result.data.me, fromToken: true });

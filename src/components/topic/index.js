@@ -1,7 +1,9 @@
+// npm packages
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Row, Col, Pagination } from 'antd';
-
+import DocumentTitle from 'react-document-title';
+// project files
 import TopicLoading from './TopicLoading';
 import TopicTitle from '../shared/topic-title';
 import ErrorWidget from '../shared/error';
@@ -96,7 +98,7 @@ class Topic extends Component {
     }
 
     render() {
-        const { currentTopic } = this.props;
+        const { currentTopic, match: { params } } = this.props;
         if(currentTopic.loading){
             return <TopicLoading/>
         }
@@ -106,19 +108,21 @@ class Topic extends Component {
             return <Empty message="No Stories to preview!"/>
         }
         return (
-            <div className="topic base-sec">
-                {/*<ScrollToTopOnMount />*/}
-                <div className="clearfix">
-                    {this.renderTitle()}
-                    {this.renderSortBy()}
+            <DocumentTitle title={`publisher - ${params.topic || 'home'}`}>
+                <div className="topic base-sec">
+                    {/*<ScrollToTopOnMount />*/}
+                    <div className="clearfix">
+                        {this.renderTitle()}
+                        {this.renderSortBy()}
+                    </div>
+                    <div className="topic-second-row">
+                        <Row type='flex' gutter={20}>
+                            {this.renderStoriesForTopic()}
+                        </Row>
+                    </div>
+                    {this.renderPagination()}
                 </div>
-                <div className="topic-second-row">
-                    <Row type='flex' gutter={20}>
-                        {this.renderStoriesForTopic()}
-                    </Row>
-                </div>
-                {this.renderPagination()}
-            </div>
+            </DocumentTitle>
         )
     }
 }

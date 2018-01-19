@@ -3,10 +3,9 @@ import { createReducer } from 'redux-act';
 import * as actions from '../actions/actionTypes';
 import initialState from './initialState';
 
-
 const authReducer = createReducer({
-    [actions.fetchUser]: (state) => ({ ...state, loading: true }),
-    // [actions.autoLogin]: (state) => ({ ...state, loading: true }),
+    [actions.fetchUserFromSocial]: (state) => ({ ...state, loading: true }),
+    [actions.autoLogin]: (state) => ({ ...state, loading: true }),
     [actions.fetchUserSuccess]: (state, payload) => {
         return {
             isAuthenticated:true,

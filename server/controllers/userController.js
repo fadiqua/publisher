@@ -27,7 +27,7 @@ userController.localSignup = async (req, res) => {
         let token = tokenForUser(user);
         res.status(200).json({
             success: true,
-            user,
+            me: user,
             token
         })
     } catch (error) {

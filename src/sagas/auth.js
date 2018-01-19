@@ -107,7 +107,7 @@ export function* autoLoginFlow() {
 export function* loginFlowFromSocial() {
     while (true) {
         try {
-            const loginAction = yield take(`${actions.fetchUser}`);
+            const loginAction = yield take(`${actions.fetchUserFromSocial}`);
             const user = yield call(authorize,loginAction);
             if(user.token) {
                 yield call(saveToken, user.token);

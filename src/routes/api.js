@@ -4,6 +4,9 @@ import axios from 'axios';
 export function localLogin(payload) {
     return axios.post('/api/login', payload)
 }
+export function localSignup(payload) {
+    return axios.post('/api/signup', payload)
+}
 
 export function socialLogin(payload) {
     return axios.post('/api/socialLogin', payload)

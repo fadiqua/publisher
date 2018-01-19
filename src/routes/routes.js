@@ -95,7 +95,7 @@ export const routes = [
  * how the user will navigate.
  */
 export const CustomRoute = ({ component: Component,key, requireAuth, routes, ...rest }) => {
-    let isAuth = true;
+    let isAuth = true; // to implement private routes
     // store.subscribe(()=>{
     //     isAuth = store.getState().auth.authenticated;
     // })
