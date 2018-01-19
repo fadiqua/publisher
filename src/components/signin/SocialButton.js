@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import '../../assets/style/scss/SocialButton.scss';
+import '../../assets/scss/SocialButton.scss';
 
 class SocialButton extends Component{
     state = {

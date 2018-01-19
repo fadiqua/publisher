@@ -5,7 +5,7 @@ import { Row, Col } from 'antd';
 import Story from '../shared/story-widget';
 import PaginateLoading from '../shared/paginate-loading';
 import TopicLoading from '../topic/TopicLoading';
-import { getStoriesByTag } from '../../routes/api';
+import { getStoriesByTag } from '../../routes';
 
 class Tag extends Component {
 

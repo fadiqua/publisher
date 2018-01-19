@@ -5,7 +5,7 @@ import Story from "../shared/story-widget";
 import PaginateLoading from '../shared/paginate-loading';
 import TopicLoading from '../topic/TopicLoading';
 
-import { getPopularStories } from '../../routes/api';
+import { getPopularStories } from '../../routes';
 
 class Popular extends Component {
 

@@ -1,8 +1,8 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 
 import TopicLoading from '../topic/TopicLoading';
 import TopicSection from './TopicSection';
-import { fetchHomePageData } from '../../routes/api';
+import { fetchHomePageData } from '../../routes';
 import './index.scss';
 
 export class Home extends Component {

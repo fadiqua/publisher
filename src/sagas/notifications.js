@@ -1,6 +1,10 @@
+// npm packages
 import { takeEvery, call, put } from 'redux-saga/effects';
-import axios from 'axios';
-
+// project files
+import {
+    markNotificationRead,
+    getNotifications
+} from '../routes';
 import {
     markNotificationAsRead,
     markNotificationAsReadSuccess, fetchNotifications,
@@ -10,7 +14,7 @@ import {
 export function* markNotificationAsReadAsync(action) {
     try {
         const id = action.payload;
-        yield call(axios.post,`/api/notifications`, {id});
+        yield call(markNotificationRead, id);
         yield put(markNotificationAsReadSuccess(id))
     } catch (error) { }
 }
@@ -23,7 +27,7 @@ export function* watchMarkNotificationAsRead () {
 function* fetchNotificationsAsync (action ) {
     try {
         const page = action.payload.page;
-        const response = yield call(axios.get, '/api/notifications', { params: { page } });
+        const response = yield call(getNotifications, page);
         yield put(fetchNotificationsSuccess(response.data))
     } catch (e) {
 

@@ -2,11 +2,11 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Scrollbars } from 'react-custom-scrollbars';
-import { Popover, Badge, Spin  } from 'antd';
+import { Popover, Badge  } from 'antd';
 import NotificationItem from './NotificationItem';
 import PaginateLoading from '../paginate-loading';
 import './Notifications.scss';
-import { clearUnreadBadgeCountAPI } from '../../../routes/api';
+import { clearUnreadBadgeCountAPI } from '../../../routes';
 
 import { clearUnreadBadgeNotifications, markNotificationAsRead, fetchNotifications } from '../../../actions/actionTypes';
 

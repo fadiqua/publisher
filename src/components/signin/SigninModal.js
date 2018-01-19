@@ -7,9 +7,9 @@ import SocialButton from './SocialButton';
 import Or from '../shared/Or';
 import {
     toggleSignin, toggleSignup,
-    signinRequest, fetchUser
+    signinRequest, fetchUser, autoLogin
 } from '../../actions/actionTypes';
-import { localLogin } from '../../routes/api'
+import { localLogin } from '../../routes'
 const FormItem = Form.Item;
 
 class SigninModal extends Component {
@@ -17,7 +17,7 @@ class SigninModal extends Component {
     constructor(){
         super();
         this.state = {
-            loading: false
+            loading: false,
         };
         this.handleOk = this.handleOk.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
@@ -25,9 +25,20 @@ class SigninModal extends Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
-        this.props.form.validateFields((err, values) => {
+        this.props.form.validateFields( async (err, values) => {
             if (!err) {
-                console.log('Received values of form: ', values);
+                try {
+                    this.setState({ loading: true, error: null });
+                    const { data } = await localLogin(values);
+                    this.setState({ loading: false, error: null });
+                    this.props.autoLogin({ ...data.me, token: data.token });
+                    console.log('result ', data)
+
+                } catch (error) {
+                    const { data: { message } } = error.response;
+                    this.setState({ loading: false, error: message });
+                    console.log('error ', message)
+                }
                 // this.props.login({ data: values })
             }
         });
@@ -45,6 +56,7 @@ class SigninModal extends Component {
         hello.login(network);
     }
     render(){
+        const { loading, error } = this.state;
         const {
             sign, auth,
             toggleSigninModal,
@@ -63,30 +75,50 @@ class SigninModal extends Component {
                         Don't have an account? <a onClick={toggleSignupModal}>Sign up</a>
                     </div>
                 ]}>
-                <SocialButton type="facebook" disabled={auth.loading} onClick={() => this.socialLogin('facebook')}/>
-                <SocialButton type="google"  disabled={auth.loading}  onClick={() => this.socialLogin('google')}/>
+                <SocialButton
+                    type="facebook"
+                    disabled={loading}
+                    onClick={() => this.socialLogin('facebook')}
+                />
+                <SocialButton
+                    type="google"
+                    disabled={loading}
+                    onClick={() => this.socialLogin('google')}
+                />
                 <Or/>
-                <Form onSubmit={this.handleSubmit} className="login-form">
+                <Form onSubmit={this.handleSubmit} className="sign-form">
                     <FormItem>
                         {getFieldDecorator('email', {
                             rules: [{ required: true, message: 'Please input your email!' }],
                         })(
-                            <Input prefix={<Icon type="user" style={{ fontSize: 13 }} />} placeholder="Email Address" />
+                            <Input
+                                disabled={loading}
+                                size="large"
+                                prefix={<Icon type="user" style={{ fontSize: 13 }} />}
+                                placeholder="Email Address" />
                         )}
                     </FormItem>
                     <FormItem>
                         {getFieldDecorator('password', {
                             rules: [{ required: true, message: 'Please input your Password!' }],
                         })(
-                            <Input prefix={<Icon type="lock" style={{ fontSize: 13 }} />} type="password" placeholder="Password" />
+                            <Input
+                                disabled={loading}
+                                size="large"
+                                prefix={<Icon type="lock" style={{ fontSize: 13 }} />}
+                                type="password" placeholder="Password" />
                         )}
                     </FormItem>
                     <FormItem>
                         <div className="text-center">
-                            <Button loading={this.props.loading } size="large" type="primary" htmlType="submit" className="login-form-button btn-block">
+                            <Button
+                                loading={loading }
+                                size="large" type="primary"
+                                htmlType="submit"
+                                className="login-form-button btn-block">
                                 Log in
                             </Button>
-                            Or <a className="login-form-forgot" href="">Forgot password</a>
+                            Or <a className="login-form-forgot" >Forgot password</a>
                         </div>
                     </FormItem>
                 </Form>
@@ -103,7 +135,8 @@ const mapDispatch = dispatch => bindActionCreators({
     toggleSignupModal: toggleSignup,
     toggleSigninModal: toggleSignin,
     handleSignin: signinRequest,
-    login: fetchUser
+    login: fetchUser,
+    autoLogin
 }, dispatch);
 
 export default connect(mapStateToProps, mapDispatch)(SiginModalWithForm);

@@ -1,7 +1,11 @@
+// npm packages
+import { bindActionCreators } from 'redux';
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
-import { siderCollapsed, isDesktop, isMobile } from '../../actions/actionTypes';
+// project files
+import { getMe } from '../../routes';
+import { siderCollapsed, isDesktop, isMobile, autoLogin } from '../../actions/actionTypes';
 
 
 class AppContent extends Component {
@@ -16,11 +20,15 @@ class AppContent extends Component {
         }
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         if (this.mql) {
             this.mql.addListener(this.responsiveHandler);
             this.responsiveHandler(this.mql);
         }
+        try {
+            const result = await getMe();
+            this.props.autoLogin({ ...result.data.me, fromToken: true });
+        } catch (err) {}
     }
 
     componentWillUnmount() {
@@ -58,9 +66,13 @@ class AppContent extends Component {
     }
 }
 
-const mapStateToProps = ({ auth:{ currentUser},screenSize }) => ({ currentUser,screenSize });
-export default connect(mapStateToProps, {
+const mapState = ({ auth:{ currentUser},screenSize }) => ({ currentUser,screenSize });
+
+const mapDispatch = dispatch => bindActionCreators({
     siderCollapsed ,
     isDesktop,
     isMobile,
-})(AppContent)
+    autoLogin
+}, dispatch);
+
+export default connect(mapState, mapDispatch)(AppContent)

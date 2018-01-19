@@ -16,7 +16,7 @@ import {
 } from '../../actions/actionTypes';
 import { stripTags, importHTMLToDraft } from '../../utils/functions';
 
-import { getResponseById, deleteResponse } from '../../routes/api';
+import { getResponseById, deleteResponse } from '../../routes';
 
 const confirm = Modal.confirm;
 

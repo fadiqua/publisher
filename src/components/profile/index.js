@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import BrowsableTaps from './BrowsableTaps';
 import UserHeader from './UserHeader';
-import { renderRoutes } from '../../routes/routes'
+import { renderRoutes } from '../../routes'
 import { fetchProfile } from '../../actions/actionTypes'
 import './index.scss';
 

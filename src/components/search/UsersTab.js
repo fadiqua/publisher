@@ -4,7 +4,7 @@ import { Row, Col } from 'antd';
 import UserWidget from './UserWidget';
 import PaginateLoading from '../shared/paginate-loading';
 import NoResult from './NoResult';
-import { advancedSearch } from '../../routes/api';
+import { advancedSearch } from '../../routes';
 
 class UsersTab extends Component{
     state = {

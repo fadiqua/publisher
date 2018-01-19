@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Modal, Input, Slider, Col, Row, Upload, message, Form, Button } from 'antd';
 // import AvatarEditor from 'react-avatar-editor'
 import { getBase64 } from '../../utils/functions';
-import { uploadBase64, updateProfile } from '../../routes/api';
+import { uploadBase64, updateProfile } from '../../routes';
 import blurred from './blurred.jpg';
 
 const FormItem = Form.Item;

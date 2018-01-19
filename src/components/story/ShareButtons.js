@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 
-import '../../assets/style/scss/ShareButtons.scss';
-import fb from '../../assets/style/svg/fb.svg';
-import tw from '../../assets/style/svg/tw.svg';
+import '../../assets/scss/ShareButtons.scss';
+import fb from '../../assets/svg/fb.svg';
+import tw from '../../assets/svg/tw.svg';
 
 
 class ShareButtons extends Component{

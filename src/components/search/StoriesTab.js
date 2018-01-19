@@ -1,10 +1,10 @@
 import React, {Component} from "react";
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { Row, Col, Spin } from 'antd';
+import { Row, Col } from 'antd';
 import Story from '../shared/story-widget';
 import PaginateLoading from '../shared/paginate-loading';
 import NoResult from './NoResult';
-import { advancedSearch } from '../../routes/api';
+import { advancedSearch } from '../../routes';
 
 class StoriesTab extends Component{
     state = {

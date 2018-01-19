@@ -1,17 +1,20 @@
+// npm packages
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
-import { Layout, Tooltip, Icon, Button, Menu, Input } from 'antd';
-
+import { Layout, Tooltip, Icon, Button, Menu } from 'antd';
+import { Link } from 'react-router-dom';
+// project files
 import SigninModal from '../../signin/SigninModal';
 import SignupModal from '../../signin/SignupModal';
 import UserAvatar from '../UserAvatar';
 import Notifications from './Notifications';
 import SearchInput from './SearchInput';
-import { toggleSignin, siderCollapsed } from '../../../actions/actionTypes';
+import {toggleSignin, siderCollapsed, isMobile} from '../../../actions/actionTypes';
 import { login } from '../../../actions/actionTypes';
-import logo from '../../../assets/publisher-logo.png';
+import bigLogo from '../../../assets/publisher-logo.png';
+import smallLogo from '../../../assets/small-logo.png';
 import './index.scss';
 
 const { Header } = Layout;
@@ -28,14 +31,6 @@ class Navbar extends Component {
     openSiginModal(){
        this.props.toggleSiginModal()
     }
-
-
-    onSearch = (e) => {
-        if(e.which === 13){
-            console.log(e.target.value)
-            e.target.value = ''
-        }
-    };
 
     renderSignIn(){
         const { auth } = this.props;
@@ -57,15 +52,20 @@ class Navbar extends Component {
             )
         }
     }
+
     renderSearchInput = () => {
-        const { expanedSearch } = this.state;
+        const { screenSize:{mobile} } = this.props;
         return (
         <Menu.Item key="3"  className="pull-right" >
-            <SearchInput  size="large"
-                          refix={<Icon type="search" />}
-                          placeholder="Search here..."/>
+            <SearchInput
+                size="large"
+                refix={<Icon type="search" />}
+                placeholder="Search here..."
+                mobile={mobile}
+            />
         </Menu.Item>)
     };
+
     renderNotifications = () => {
         const { auth, notifications } = this.props;
         if(auth.isAuthenticated){
@@ -76,6 +76,7 @@ class Navbar extends Component {
             )
         }
     };
+
     renderUserThumbnail(){
         const { auth } = this.props;
         if(auth.isAuthenticated){
@@ -92,7 +93,7 @@ class Navbar extends Component {
     render() {
         const {
             auth,
-            screenSize:{collapsed, desktop, mobile},
+            screenSize:{collapsed, mobile},
             toggleSiderMenu
         }  = this.props;
         return (
@@ -112,7 +113,9 @@ class Navbar extends Component {
                                 </span>
                             </Menu.Item>
                             <Menu.Item key="-1">
-                                <img src={logo} alt="logo"/>
+                                <Link to="/">
+                                    <img src={mobile ? smallLogo : bigLogo } alt="logo" />
+                                </Link>
                             </Menu.Item>
                             {this.renderSignIn()}
                             {this.renderUserThumbnail()}

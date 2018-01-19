@@ -1,9 +1,36 @@
 import axios from 'axios';
 
+// auth -------------------------------
 export function localLogin(payload) {
     return axios.post('/api/login', payload)
 }
 
+export function socialLogin(payload) {
+    return axios.post('/api/socialLogin', payload)
+}
+
+export function getMe() {
+    return axios.get('/api/user/me');
+}
+
+// Notifications ----------------------------------
+export function getUnreadNotifCount() {
+    return axios.get('/api/notifications/unread')
+}
+
+export function markNotificationRead(id) {
+    return axios.post(`/api/notifications`, { id })
+}
+
+export function getNotifications(page) {
+    return axios.get('/api/notifications', { params: { page } })
+}
+
+export function clearUnreadBadgeCountAPI() {
+    return axios.post(`/api/notifications/all`)
+}
+
+//  --------------------------------------------
 export function deleteResponse(id, storyId, owner, parentId=null) {
     return axios.delete(`/api/comment`,
         { params: { id, storyId, owner, parentId } })
@@ -17,25 +44,20 @@ export function fetchHomePageData() {
     return axios.get(`/api/home`)
 }
 
+// users -------------------------------------
 export function getUserById(id) {
     return axios.get(`/api/user/${id}`)
 }
-export function followUser(id) {
-    return axios.post(`/api/follow`, { id })
-}
 
-export function clearUnreadBadgeCountAPI() {
-    return axios.post(`/api/notifications/all`)
-}
-export function like(payload) {
-    return axios.post(`/api/like`, {
-        ...payload
+export function getProfileStories(username, page) {
+    return axios.get(`/api/user/${username}/stories`, {
+        params: { page }
     })
 }
 
-export function uploadBase64(payload) {
-    return axios.post(`/api/files/profile`, {
-        ...payload
+export function getProfileResponses(username, page) {
+    return axios.get(`/api/comment/${username}/stories`, {
+        params: { page }
     })
 }
 
@@ -45,15 +67,22 @@ export function updateProfile(payload) {
     })
 }
 
+// Search ----------------------------------------
 export function search(value) {
     return axios.get(`/api/search`, { params: { value } })
 }
+
 export function advancedSearch(query, page=1) {
     return axios.get(`/api/advancedSearch/${query}`, {
         params: {
             page
         }
     })
+}
+
+// Follow & Like --------------------------------------
+export function followUser(id) {
+    return axios.post(`/api/follow`, { id })
 }
 
 export function getFollowers(id, page=1) {
@@ -63,6 +92,7 @@ export function getFollowers(id, page=1) {
         }
     })
 }
+
 export function getFollowings(id, page=1) {
     return axios.get(`/api/followings/${id}`, {
         params: {
@@ -71,8 +101,43 @@ export function getFollowings(id, page=1) {
     })
 }
 
+export function like(payload) {
+    return axios.post(`/api/like`, {
+        ...payload
+    })
+}
+
+// Topics & Stories & Responses -----------------------
+export function createStory(data) {
+    return axios.post('/api/story', data)
+}
+
+export function getStory(slug) {
+    return axios.get(`/api/story/${slug}`)
+}
+
+export function createResponse(data) {
+    return axios.post(`/api/comment`, data)
+}
+
+export function getResponses(id, page = 1) {
+    return axios.get(`/api/comment/${id}`, {
+        params: { page }
+    })
+}
+
 export function getResponseById(id) {
     return axios.get(`/api/comment/${id}/response`);
+}
+
+export function getReplies(id, page = 1) {
+    return axios.get(`/api/comment/${id}/replies`, {
+        params: { page }
+    })
+}
+
+export function createReply(data) {
+    return axios.post(`/api/comment`, data)
 }
 
 export function getPopularStories(page=1) {
@@ -88,5 +153,22 @@ export function getStoriesByTag(tag, page=1) {
         params: {
             page
         }
+    })
+}
+
+export function getCurrentTopicStories(query, topic) {
+    return axios.get(`/api/topic/stories/${query}`, {
+        params: { topic }
+    })
+}
+
+export function getTopics() {
+    return axios.get('/api/topics')
+}
+
+// -------------------------------------
+export function uploadBase64(payload) {
+    return axios.post(`/api/files/profile`, {
+        ...payload
     })
 }

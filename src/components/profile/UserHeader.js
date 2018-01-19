@@ -10,7 +10,7 @@ import UsersModal from '../shared/users-modal';
 import EditProfileModal from './EditProfileModal';
 import PluralWord from '../shared/PluralWord';
 import { updateProfile, followProfile } from '../../actions/actionTypes';
-import { getFollowers, getFollowings } from '../../routes/api';
+import { getFollowers, getFollowings } from '../../routes';
 import blurred from './blurred.jpg';
 import { formatNumber } from '../../utils/functions';
 

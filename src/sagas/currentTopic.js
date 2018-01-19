@@ -1,19 +1,17 @@
+// npm packages
 import { put, call, takeEvery } from 'redux-saga/effects'
-import axios from 'axios';
-
+// project files
+import { getCurrentTopicStories } from '../routes'
 import * as actions from '../actions/actionTypes';
 
 export function* fetchCurrentTopicStoriesAsync(action) {
     try {
-        const response = yield call(axios.get, `/api/topic/stories/${action.payload.query}`, {
-            params:{
-                topic: action.payload.topic
-            }
-        });
-        yield put({type: actions.fetchCurrentTopicSuccess, payload: response.data.stories });
+        const { query, topic } =  action.payload;
+        const response = yield call(getCurrentTopicStories, query, topic);
+        yield put({ type: actions.fetchCurrentTopicSuccess, payload: response.data.stories });
         // yield put({type: actions.clearCreatedStory});
     } catch (e) {
-        yield put({type: actions.fetchCurrentTopicFailed, payload: e})
+        yield put({ type: actions.fetchCurrentTopicFailed, payload: e.response.data })
     }
 }
 

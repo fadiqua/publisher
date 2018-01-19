@@ -41,26 +41,34 @@ userController.localSignup = async (req, res) => {
 
 userController.login = async  (req, res) => {
     const { email, password } = req.body;
+    const errorResponse = msg =>  {
+        res.status(500).json({
+            success: false,
+            message: msg || 'Invalid credentials'
+        });
+    };
     try {
         const user = await db.LocalAuth.findOne({ email });
         if(user === null) {
-            throw new Error('This Email is not registered in the system')
+            errorResponse('This Email is not registered in the system')
+            return;
         }
-        user.comparePassword(password, (err, isMatch) => {
-            if(err || !isMatch) throw new Error('Invalid credentials');
-        });
-        const currentUser = await db.User.findById(user.user);
-        let token = tokenForUser(currentUser);
-        res.status(200).json({
-            success: true,
-            currentUser,
-            token
+        user.comparePassword(password, async (err, isMatch) => {
+            if(err || !isMatch){
+                errorResponse();
+                return;
+            }
+            const me = await db.User.findById(user.user);
+            let token = tokenForUser(me);
+            res.status(200).json({
+                success: true,
+                me,
+                token
+            });
+
         });
     } catch (err) {
-        res.status(500).json({
-            success: false,
-            message: err.message
-        });
+        return errorResponse(err.message)
         // errResponse(err.message);
     }
 };

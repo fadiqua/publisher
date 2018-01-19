@@ -141,6 +141,10 @@
   &.img-circle {
     border-radius: 50%;
   }
+  img {
+    text-align: center;
+    vertical-align: unset;
+  }
 }
 .ant-tag {
   margin-bottom: 5px;

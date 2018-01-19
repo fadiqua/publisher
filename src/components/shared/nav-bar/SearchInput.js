@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import debounce from 'lodash.debounce';
 import classNames from 'classnames';
 import {NavLink} from 'react-router-dom';
-import {Form, Dropdown, Popover, Input, Select, Icon, Spin} from 'antd';
-import {search} from '../../../routes/api';
+import { Popover, Input, Icon, Spin } from 'antd';
+
+import { search } from '../../../routes';
 
 const Search = Input.Search;
 
@@ -135,27 +136,33 @@ class SearchInput extends Component {
     }
     render() {
         const {expanedSearch, visible, value} = this.state;
+        const { mobile } = this.props;
         return (
-            <span style={{position: 'relative'}}>
-              <div id="search-input">
-
-                  <Popover overlayClassName={`search-result ${value.length < 1? 'empty':''} `}
-                            content={<ul>{this.renderFetching()}</ul>}
-                            trigger={['click']} visible={visible}
-                            onVisibleChange={this.onVisibleChange}
-                            getPopupContainer={node => document.getElementById('search-input')}>
-                      <Search ref={node => this.searchRef = node}
-                              placeholder="Search here..."
-                              onChange={this.handleChange}
-                              onClick={this.expandSearchInput}
-                              // size="large"
-                              className={classNames(' search-input',
-                                  {'expanded': expanedSearch}
-                                  )}
-                              onSearch={this.onSubmitSearch} />
-                  </Popover>
-              </div>
-            </span>
+            <div id="search-input"
+                 className={classNames({
+                     'mobile-search': !expanedSearch && mobile,
+                     'mobile-search-expanded': expanedSearch && mobile,
+                 })}>
+                <Popover overlayClassName={
+                    classNames('search-result',{
+                        'search-result-mobile': mobile,
+                        'empty': value.length < 1,
+                    })}
+                         content={<ul>{this.renderFetching()}</ul>}
+                         trigger={['click']} visible={visible}
+                         onVisibleChange={this.onVisibleChange}
+                         getPopupContainer={node => document.getElementById('search-input')}>
+                    <Search ref={node => this.searchRef = node}
+                            placeholder="Search here..."
+                            onChange={this.handleChange}
+                            onClick={this.expandSearchInput}
+                        // size="large"
+                            className={classNames(' search-input',
+                                {'expanded': expanedSearch}
+                            )}
+                            onSearch={this.onSubmitSearch} />
+                </Popover>
+            </div>
         )
     }
 }

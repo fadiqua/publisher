@@ -1,14 +1,21 @@
+// npm packages
 import { put, call, takeEvery, all } from 'redux-saga/effects'
-import axios from 'axios';
-
+// project files
+import {
+    createStory,
+    getStory,
+    createResponse,
+    getResponses,
+    getResponseById,
+    getReplies,
+    createReply
+} from '../routes';
 import * as actions from '../actions/actionTypes';
 
 export function* createStoryAsync(action) {
     try {
-        const response = yield call(axios.post, '/api/story', {
-            ...action.payload
-        });
-        yield put({type: actions.createStorySuccess, payload: response.data.story});
+        const response = yield call(createStory, action.payload);
+        yield put({ type: actions.createStorySuccess, payload: response.data.story });
         yield put({type: actions.clearCreatedStory});
     } catch (e) {
         console.log('error', e)
@@ -20,13 +27,11 @@ export function* watchCreateStory() {
 }
 
 // ---------------------------------------------------------------------------
-
 export function* fetchStoryAsync(action) {
     try {
-        const response = yield call(axios.get, `/api/story/${action.payload.slug}`);
+        const response = yield call(getStory, action.payload.slug);
         yield put({type: actions.fetchStorySuccess, payload: response.data.story});
     } catch (e) {
-
     } finally {
 
     }
@@ -40,9 +45,7 @@ export function* watchFetchStory() {
 
 export function* createResponseAsync(action) {
     try {
-        const response = yield call(axios.post, `/api/comment`, {
-            ...action.payload
-        });
+        const response = yield call(createResponse, action.payload);
         yield put({type: actions.createResponseSuccess, payload: response.data.comment});
         yield put({type: actions.clearResponseStatus})
     } catch (e) {
@@ -58,11 +61,7 @@ export function* watchCreateResponse() {
 export function* fetchResponsesAsync(action) {
     const {page, id} = action.payload;
     try {
-        const response = yield call(axios.get, `/api/comment/${id}`, {
-            params: {
-                page: page || 1
-            }
-        });
+        const response = yield call(getResponses, id, page);
         yield put({type: actions.fetchResponsesSuccess, payload: response.data});
         // yield put({type: actions.clearResponseStatus})
     } catch (e) {
@@ -82,12 +81,10 @@ export function* fetchRepliesAsync(action) {
         let api = [];
         let dispatchedActions = [];
         if(type === 'initial') {
-            api.push( call(axios.get, `/api/comment/${id}/response`));
-            api.push(call(axios.get, `/api/comment/${id}/replies`));
+            api.push(call(getResponseById, id));
+            api.push(call(getReplies, id));
         } else {
-            api.push(call(axios.get, `/api/comment/${id}/replies`,{
-                params: { page: page || 1}
-            }));
+            api.push(call(getReplies, id, page));
         }
         const response = yield all(api);
         if(type === 'initial') {
@@ -107,13 +104,11 @@ export function* fetchRepliesAsync(action) {
 export function* watchFetchReplies() {
     yield takeEvery(actions.fetchReplies, fetchRepliesAsync)
 }
-// -------------------------------------------------------------------
 
+// -------------------------------------------------------------------
 export function* createReplyAsync(action) {
     try {
-        const response = yield call(axios.post, `/api/comment`, {
-            ...action.payload
-        });
+        const response = yield call(createReply, action.payload);
         yield put({type: actions.createReplySuccess, payload: response.data.comment});
         yield put({type: actions.clearResponseStatus})
     } catch (e) {

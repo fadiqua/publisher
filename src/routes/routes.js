@@ -2,7 +2,6 @@ import React from 'react';
 import { Route, Redirect, Switch } from 'react-router-dom';
 
 import Home from '../components/home';
-import Signin from '../components/signin';
 import Story from '../components/story';
 import StoryResponses from '../components/story/StoryResponses';
 import WriteStory from '../components/write-story';
@@ -24,9 +23,6 @@ export const routes = [
     { path: '/',
         exact: true,
         component: Home
-    },
-    { path: '/signin',
-        component: Signin
     },
     { path: '/write-Story',
         component: WriteStory

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { likeStory, likeComment } from '../../../actions/actionTypes';
-import { like } from '../../../routes/api';
+import { like } from '../../../routes';
 import './index.scss';
 
 class LikeButton extends Component {

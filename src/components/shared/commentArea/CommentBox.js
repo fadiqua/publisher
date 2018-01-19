@@ -9,7 +9,7 @@ import ReadMoreButton from './ReadMoreButton';
 import CtrlDropdown from '../../shared/CtrlDropdown';
 import EditButtons from '../../shared/EditButtons';
 import { importHTMLToDraft } from '../../../utils/functions';
-import { updateResponse } from '../../../routes/api';
+import { updateResponse } from '../../../routes';
 import LikeButton from '../LikeButton';
 
 class CommentBox extends Component{

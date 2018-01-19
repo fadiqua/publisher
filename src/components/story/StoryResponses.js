@@ -1,14 +1,15 @@
+// npm packages
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Modal } from 'antd';
 import InfiniteScroll from 'react-infinite-scroll-component';
-
+// project files
 import CommentBox from '../shared/commentArea/CommentBox';
 import  PaginateLoading from '../shared/paginate-loading'
 import StoryResponse from './StoryResponse';
 import PluralWord from '../shared/PluralWord';
-import { deleteResponse } from '../../routes/api';
+import { deleteResponse } from '../../routes';
 import {
     fetchResponses,
     deleteResponse as deleteResponseAction
@@ -17,10 +18,12 @@ import { getUrlQuery } from '../../utils/functions';
 
 const confirm = Modal.confirm;
 
-class StoryResponses extends Component{
+class StoryResponses extends Component {
+
     state = {
         id: null
     };
+
     loadResponses = () => {
         const { story, responses } = this.props;
         if(responses.page != responses.pages && responses.responseStatus !== 'fetch') {
@@ -28,6 +31,7 @@ class StoryResponses extends Component{
         }
 
     };
+
     componentDidMount(){
         const { story } = this.props;
         // this.loadResponses(1);
@@ -62,7 +66,7 @@ class StoryResponses extends Component{
         })
     };
 
-    renderComments = () => {
+    _renderComments () {
         const { id } = this.state;
         const { responses, currentUser, story } = this.props;
         let commentsJSX = [];
@@ -85,7 +89,8 @@ class StoryResponses extends Component{
         return commentsJSX;
 
     };
-    renderResponseById = () => {
+
+    _renderResponseById () {
         const { location, story } = this.props;
         const query = getUrlQuery(location.search);
         if(query.responseid) {
@@ -94,7 +99,8 @@ class StoryResponses extends Component{
                 story={story.currentStory}/>
         }
         return <span></span>
-    }
+    };
+
     render(){
         // responses.page != responses.pages
         const { responses } = this.props;
@@ -106,8 +112,8 @@ class StoryResponses extends Component{
                 className="story-responses"
                 hasMore={responses.page != responses.pages}
                 loader={<PaginateLoading loading={true} canPaginate={true} />}>
-                { this.renderComments() }
-                { this.renderResponseById() }
+                { this._renderComments() }
+                { this._renderResponseById() }
             </InfiniteScroll>
         )
     }

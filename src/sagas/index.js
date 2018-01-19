@@ -1,6 +1,6 @@
 import { all, fork } from 'redux-saga/effects';
 
-import {  watchFollowUser, autoLoginFlow, loginFlow } from './auth';
+import {  watchFollowUser, autoLoginFlow, loginFlowFromSocial } from './auth';
 import { watchFetchTopics } from './topics';
 import {
     watchCreateStory,
@@ -33,7 +33,7 @@ export default function* rootSaga() {
         watchFetchProfile(),
         watchFetchProfileStories(),
         watchFetchProfileResponses(),
-        fork(loginFlow),
+        fork(loginFlowFromSocial),
         fork(autoLoginFlow),
     ])
 }

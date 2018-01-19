@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Popover } from 'antd';
 import UserAvatar from '../../shared/UserAvatar';
 import FollowButton from '../FollowButton';
-import { getUserById } from '../../../routes/api';
+import { getUserById } from '../../../routes';
 import timeSince from '../../../utils/timeSince';
 import { formatNumber } from '../../../utils/functions';
 

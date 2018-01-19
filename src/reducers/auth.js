@@ -8,9 +8,11 @@ const authReducer = createReducer({
     [actions.fetchUser]: (state) => ({ ...state, loading: true }),
     // [actions.autoLogin]: (state) => ({ ...state, loading: true }),
     [actions.fetchUserSuccess]: (state, payload) => {
-        return { isAuthenticated:true,
+        return {
+            isAuthenticated:true,
             loading: false,
-            currentUser: payload }
+            currentUser: payload
+        }
     },
     [actions.updateProfile]: (state, payload) => ({ ...state,
         currentUser: { ...state.currentUser, ...payload }}),

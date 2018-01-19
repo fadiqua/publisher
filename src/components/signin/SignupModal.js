@@ -10,6 +10,9 @@ class SignupModal extends Component {
 
     constructor(){
         super();
+        this.state = {
+
+        };
         this.handleOk = this.handleOk.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
     }

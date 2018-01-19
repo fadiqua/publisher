@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Modal } from 'antd';
 
 import CommentBox from './CommentBox';
-import { deleteResponse } from '../../../routes/api';
+import { deleteResponse } from '../../../routes';
 import './index.scss';
 
 const confirm = Modal.confirm;

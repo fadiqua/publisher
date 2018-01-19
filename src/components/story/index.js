@@ -19,7 +19,7 @@ import {
     initResponses
 } from '../../actions/actionTypes'
 import './index.scss';
-import { renderRoutes } from '../../routes/routes';
+import { renderRoutes } from '../../routes';
 
 import { stripTags, importHTMLToDraft } from '../../utils/functions';
 // title.match(/[\u0600-\u06FF]+/g)?`rtl`:''
@@ -39,6 +39,7 @@ class Article extends Component {
         this.onSubmitComment = this.onSubmitComment.bind(this);
 
     }
+
     componentWillReceiveProps(nextProps){
         const slug = nextProps.match.params.story;
         if(nextProps.location.pathname !== this.props.location.pathname){
@@ -46,6 +47,7 @@ class Article extends Component {
             nextProps.fetchStory({slug});
         }
     }
+
     onSubmitComment(text){
         if(text && stripTags(text).length > 9){
             this.props.createResponse({
@@ -58,14 +60,17 @@ class Article extends Component {
         }
 
     }
+
     onShowResponses = () =>{
         const { location } = this.props;
         // this.props.fetchResponses(story.currentStory._id)
         this.props.history.push(`${location.pathname}/responses`)
     };
+
     onCommentClick = (e) =>{
         console.log('comment')
     };
+
     scrollToSubmittedResponse = () => {
         // let element = document.getElementById("59abd14f4fa0101bbc3d900d");
         // if(element){
@@ -73,7 +78,8 @@ class Article extends Component {
             // element.scrollIntoView({behavior: "smooth", block: "start", inline: "start"});
         // }
 
-    }
+    };
+
     render(){
         const { currentUser, story, responses } = this.props;
         const isOwner = currentUser._id === story.currentStory._creator._id;
