@@ -1,0 +1,39 @@
+import { all, fork } from 'redux-saga/effects';
+
+import {  watchFollowUser, autoLoginFlow, loginFlow } from './auth';
+import { watchFetchTopics } from './topics';
+import {
+    watchCreateStory,
+    watchFetchStory,
+    watchCreateResponse,
+    watchFetchResponses,
+    watchFetchReplies,
+    watchCreateReply
+} from './story';
+import { watchFetchCurrentTopicStories } from './currentTopic';
+import { watchFetchNotifications, watchMarkNotificationAsRead }  from './notifications';
+import {
+    watchFetchProfile, watchFetchProfileStories,
+    watchFetchProfileResponses
+}  from './profile';
+
+export default function* rootSaga() {
+    yield all([
+        watchFollowUser(),
+        watchFetchTopics(),
+        watchCreateStory(),
+        watchFetchStory(),
+        watchCreateResponse(),
+        watchFetchResponses(),
+        watchFetchReplies(),
+        watchCreateReply(),
+        watchFetchCurrentTopicStories(),
+        watchFetchNotifications(),
+        watchMarkNotificationAsRead(),
+        watchFetchProfile(),
+        watchFetchProfileStories(),
+        watchFetchProfileResponses(),
+        fork(loginFlow),
+        fork(autoLoginFlow),
+    ])
+}

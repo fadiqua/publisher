@@ -1,0 +1,54 @@
+.article .article-title {
+  font-size: 16px; }
+
+.article .article-content .public-DraftEditor-content {
+  font-size: 1.3em;
+  line-height: 1.6; }
+
+.article .follow-btn {
+  border-radius: 20px;
+  padding: 2px 16px;
+  height: auto; }
+
+.article .reply {
+  position: absolute;
+  right: 16px;
+  bottom: 25px; }
+
+.article > .response-btn button {
+  cursor: default; }
+
+.comments {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px 0; }
+
+.story-response .comment-box {
+  border: none;
+  border-bottom: 2px solid #d9d9d9;
+  box-shadow: none;
+  border-radius: 0; }
+
+.story-response .post-writer {
+  margin: 0; }
+
+.story-response .story-ctrl-drop {
+  top: 25px;
+  right: 0; }
+
+.story-responses {
+  margin: 16px 0; }
+
+.replies .reply {
+  border: none;
+  border-left: 2px solid #0288d1;
+  border-radius: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  box-shadow: none; }
+
+.replies .reply-editor {
+  border: none;
+  padding-top: 0;
+  padding-bottom: 0;
+  border-left: 2px solid #d9d9d9; }

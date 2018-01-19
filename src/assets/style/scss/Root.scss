@@ -1,0 +1,45 @@
+@import "variables";
+body {
+  margin: 0;
+  padding: 0;
+  background-color: $body-color;
+  letter-spacing: 0.05em;
+}
+.header {
+  position: relative;
+}
+.headerbar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  margin-left: 260px;
+}
+
+.page-content {
+  margin: 0px 0px 0px 250px;
+  transition: all 0.275s;
+  >div{
+    //padding: 20px;
+    //background-color: white;
+    margin: 20px;
+    min-height: 100vh;
+    border-radius: 3px;
+  }
+}
+
+.trigger {
+  font-size: 18px;
+  line-height: 64px;
+  padding: 0 16px;
+  cursor: pointer;
+  transition: color .3s;
+}
+
+.write-article-footer {
+  >div{
+    margin-bottom: 10px;
+  }
+}
+.ant-modal-header {
+  background-color: $body-color;
+}

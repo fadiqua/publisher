@@ -1,0 +1,37 @@
+@import "../../../assets/style/scss/variables";
+.notification-item {
+  border-bottom: 1px solid $border-color;
+  transition: 0.2s all linear;
+  padding: 8px 16px;
+  &:hover {
+    background-color: rgba(7,7,7,0.05);
+  }
+  &.unread {
+    background-color: $light-primary-color;
+  }
+  > a{
+    color: inherit;
+    font-size: 1em;
+    display: block;
+  }
+  .user-avatar {
+    margin-right: 8px;
+  }
+  .-content {
+    max-width: calc(100% - 70px);
+    >p {
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+    .with-no {
+      >span {
+        vertical-align: text-bottom;
+        margin-left: 4px
+      }
+    }
+  }
+  &:last-of-type {
+    border-bottom-color: transparent;
+  }
+}

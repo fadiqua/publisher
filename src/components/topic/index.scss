@@ -1,0 +1,18 @@
+@import "../../assets/style/scss/variables";
+
+.topic {
+  >div {
+    .topic-title {
+      padding: 0;
+      float: left;
+    }
+  }
+  .topic-second-row {
+    margin: 15px 0;
+  }
+  .topic-pagination {
+    border-top: 1px solid $border-color;
+    padding: 15px 0;
+  }
+}
+

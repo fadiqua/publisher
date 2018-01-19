@@ -1,0 +1,78 @@
+.user-profile .profile-content .browsable-taps .ant-menu-item {
+  font-size: 14px; }
+
+.user-profile .post-short-details a {
+  color: #595959;
+  font-size: 17px; }
+  .user-profile .post-short-details a .title {
+    letter-spacing: 0.1em; }
+
+.user-profile .user-story {
+  position: relative; }
+
+.user-header {
+  margin: -20px -20px 0 -20px;
+  padding: 20px;
+  background-size: cover;
+  position: relative; }
+  .user-header .follow-info {
+    margin: 8px 0; }
+    .user-header .follow-info strong {
+      margin-right: 8px; }
+
+.user-info > p {
+  font-size: 16px; }
+
+.user-follow-no {
+  font-size: 14px;
+  margin: 15px 0; }
+  .user-follow-no > a {
+    margin: 0 10px; }
+
+.edit-profile {
+  position: absolute;
+  right: 30px;
+  top: 15px; }
+
+.story-ctrl .md-icon {
+  margin-right: 5px; }
+
+.story-ctrl-drop {
+  position: absolute;
+  right: 5px;
+  top: 10px;
+  color: #595959; }
+
+.image-cropped {
+  margin: 0 auto; }
+  .image-cropped .upload-input {
+    display: block;
+    margin: 8px 0; }
+
+.user-info-inputs textarea {
+  resize: none; }
+
+.user-header-loading {
+  background-color: white;
+  margin: -20px;
+  text-align: center;
+  min-height: 280px;
+  padding-top: 20px; }
+
+.browsable-taps {
+  margin-bottom: 16px; }
+
+.comment-box {
+  border-radius: 4px;
+  padding: 16px; }
+  .comment-box .-story {
+    color: inherit;
+    margin: 16px;
+    padding: 16px;
+    border: 1px solid #d9d9d9;
+    display: block; }
+    .comment-box .-story .with-no i {
+      font-size: 12px; }
+
+.user-stories {
+  padding: 0 10px; }

@@ -1,0 +1,16 @@
+.search-field {
+  max-width: 500px;
+  width: 100%;
+  margin: 0 auto; }
+  .search-field .ant-input-lg {
+    height: 40px;
+    font-size: 1.2em; }
+
+.search-form .topics-list {
+  width: auto; }
+
+.stories-tab {
+  padding: 0 10px; }
+
+.no-result {
+  font-size: 1.2em; }

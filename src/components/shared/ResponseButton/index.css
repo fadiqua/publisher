@@ -1,0 +1,7 @@
+.response-btn {
+  display: inline-block; }
+  .response-btn .icon-btn {
+    vertical-align: middle;
+    margin-right: 4px; }
+    .response-btn .icon-btn svg {
+      fill: #595959; }

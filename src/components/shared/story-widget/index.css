@@ -1,0 +1,86 @@
+.post-cover {
+  overflow: hidden;
+  min-height: 300px;
+  background-size: cover;
+  position: relative; }
+  .post-cover:before {
+    content: ' ';
+    position: absolute;
+    z-index: 2;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 40%;
+    background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.7) 200%); }
+  .post-cover a {
+    display: block; }
+    .post-cover a img {
+      width: 100%;
+      height: 100%; }
+
+.post {
+  margin-bottom: 16px;
+  border-radius: 6px;
+  border: 2px solid transparent;
+  position: relative; }
+  .post:hover {
+    transition: 0.3s all linear; }
+    .post:hover:before {
+      content: ' ';
+      position: absolute;
+      border-radius: 6px;
+      left: -10px;
+      bottom: -10px;
+      height: calc(100% + 20px);
+      width: calc(100% + 20px);
+      background-color: rgba(0, 0, 0, 0.05);
+      animation: 0.2s bg-scale-up; }
+    .post:hover .post-short-details > div:before {
+      background: linear-gradient(to bottom, transparent 0%, #f2f2f2 100%); }
+    .post:hover .story-counts {
+      opacity: 0.9; }
+  .post .post-short-details {
+    color: inherit;
+    display: block;
+    padding: 8px 16px; }
+    .post .post-short-details > div {
+      height: 195px;
+      overflow: hidden;
+      position: relative; }
+      .post .post-short-details > div:before {
+        content: ' ';
+        position: absolute;
+        bottom: 0px;
+        left: 0;
+        width: 100%;
+        height: 80px;
+        background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, white 100%);
+        z-index: 2; }
+    .post .post-short-details .title {
+      letter-spacing: 0.05em; }
+    .post .post-short-details .desc {
+      font-size: 1.3em; }
+      .post .post-short-details .desc a {
+        word-break: break-all; }
+  .post .post-writer {
+    padding: 0 16px; }
+  .post.post-first .post-cover {
+    height: 300px; }
+  .post .post-cover {
+    border-radius: 6px; }
+
+.story-counts {
+  color: white;
+  position: absolute;
+  left: 32px;
+  bottom: 16px;
+  z-index: 3;
+  opacity: 0.5; }
+  .story-counts > div {
+    display: inline-block; }
+  .story-counts .with-no {
+    width: auto;
+    max-width: 70px;
+    min-width: auto; }
+    .story-counts .with-no i {
+      font-size: 1.1em; }

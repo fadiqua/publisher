@@ -1,0 +1,38 @@
+.post-writer {
+  margin: 15px 0;
+  position: relative; }
+  .post-writer .writer-name {
+    padding: 0 7px;
+    margin-left: 55px; }
+    .post-writer .writer-name a {
+      font-size: 14px; }
+    .post-writer .writer-name .post-date {
+      color: rgba(0, 0, 0, 0.43); }
+    .post-writer .writer-name .follow-btn {
+      margin-left: 15px; }
+  .post-writer .user-avatar {
+    float: left;
+    position: relative; }
+    .post-writer .user-avatar:before {
+      content: ' ';
+      position: absolute;
+      left: 0px;
+      top: 0px;
+      width: 100%;
+      height: 102%;
+      border-left: 2px solid #2997e2;
+      border-radius: 50%; }
+
+.user-content-popover {
+  width: 300px; }
+  .user-content-popover .-content > div:first-of-type, .user-content-popover .-content .user-top-stories {
+    padding-bottom: 8px;
+    margin-bottom: 8px;
+    border-bottom: 1px solid #d9d9d9; }
+  .user-content-popover .-content .user-data {
+    width: calc(100% - 100px);
+    margin-right: 8px; }
+
+.topic-stories {
+  list-style: decimal;
+  padding-left: 16px; }

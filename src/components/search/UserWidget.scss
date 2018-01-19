@@ -1,0 +1,28 @@
+@import "../../assets/style/scss/variables";
+
+.user-widget {
+  position: relative;
+  border: 1px solid $border-color;
+  padding: 8px 8px 8px 48px;
+  border-radius: 2px;
+  margin-bottom: 16px;
+  //min-height: 64px;
+  >span:first-of-type {
+    position: absolute;
+    left: 6px;
+    top: 8px;
+  }
+  .user-info {
+    .-bio {
+      font-size: 0.9em;
+      color: $text-color;
+      opacity: 0.8;
+    }
+    .follow-btn {
+      margin-left: 4px;
+      border-radius: 20px;
+      height: 21px;
+      width: 80px;
+    }
+  }
+}

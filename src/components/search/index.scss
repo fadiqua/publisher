@@ -1,0 +1,24 @@
+@import "../../assets/style/scss/variables";
+
+.search-field{
+  max-width: 500px;
+  width: 100%;
+  margin: 0 auto;
+  .ant-input-lg {
+    height: 40px;
+    font-size: 1.2em;
+  }
+}
+.search-form {
+  //border-bottom: 1px solid $border-color;
+
+  .topics-list {
+    width: auto;
+  }
+}
+.stories-tab {
+  padding: 0 10px;
+}
+.no-result {
+  font-size: 1.2em;
+}

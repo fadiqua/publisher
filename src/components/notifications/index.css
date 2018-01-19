@@ -1,0 +1,10 @@
+#notifications .-title {
+  border-bottom: 1px solid #d9d9d9;
+  margin-bottom: 16px;
+  padding-bottom: 8px; }
+  #notifications .-title button {
+    color: #0288d1;
+    font-size: 0.9em; }
+
+#notifications ul {
+  list-style: none; }

@@ -1,0 +1,49 @@
+@import "../../../assets/style/scss/variables";
+
+.users-modal-box {
+  display: inline-block;
+  margin: 0 16px;
+  .icon-btn {
+    color: $primary-color;
+    font-size: 1.2em;
+  }
+}
+.users-modal {
+  .ant-modal-body {
+    //padding-top: 0;
+    padding: 8px;
+    padding-right: 4px;
+
+  }
+}
+.users-list {
+  padding-right: 4px;
+  .user-widget {
+    border: none;
+    margin-bottom: 0;
+  }
+  li {
+    border-bottom: 1px solid $border-color;
+    &:last-of-type {
+      border-bottom-color: transparent;
+    }
+  }
+}
+.load-more {
+  background-color: $body-color;
+  display: block;
+  width: 100%;
+  text-align: center;
+  cursor: pointer;
+  border: 1px solid $border-color;
+  outline: none;
+  transition: 0.2s all linear;
+  text-transform: capitalize;
+  color: $primary-color;
+  padding: 4px 8px;
+  height: 35px;
+  margin-top: 8px;
+  &:hover {
+    background-color: $light-primary-color;
+  }
+}

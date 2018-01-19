@@ -1,0 +1,55 @@
+.sider-menu {
+  position: fixed;
+  overflow-x: hidden;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);
+  z-index: 9; }
+  .sider-menu .ant-menu-inline {
+    background-color: transparent;
+    border-right-color: transparent; }
+  .sider-menu .side-icon {
+    font-size: 18px;
+    vertical-align: middle; }
+  .sider-menu .logo {
+    height: auto;
+    padding: 20px 16px;
+    margin: 0;
+    margin-bottom: 10px;
+    background-color: #0288d1; }
+    .sider-menu .logo i {
+      font-size: 40px;
+      vertical-align: middle;
+      color: #FF5722; }
+    .sider-menu .logo span {
+      padding: 10px;
+      font-weight: bold;
+      font-size: 15px;
+      text-transform: uppercase;
+      opacity: 1;
+      color: white; }
+  .sider-menu.desktop-collapsed .ant-menu-item .side-icon {
+    font-size: 20px; }
+  .sider-menu.desktop-collapsed .ant-menu-item .nav-text {
+    display: none; }
+  .sider-menu.desktop-collapsed .logo {
+    padding: 20px 16px; }
+    .sider-menu.desktop-collapsed .logo span {
+      opacity: 0;
+      transform: scale(0);
+      display: inline-block; }
+  .sider-menu.mobile-collapsed {
+    background-color: white; }
+  .sider-menu .ant-menu-item > a {
+    font-size: 14px; }
+  .sider-menu .react-scrollbar-default .-reactjs-scrollbar-track {
+    opacity: 0;
+    z-index: 9; }
+
+.ant-layout-sider-collapsed .anticon {
+  font-size: 16px; }
+
+.ant-layout-sider-collapsed .nav-text {
+  display: none; }

@@ -1,0 +1,13 @@
+.home-page .cat-header {
+  border-bottom: 1px solid #d9d9d9;
+  padding: 15px; }
+
+.home-page .ant-carousel .slick-slide {
+  text-align: center;
+  height: 160px;
+  line-height: 160px;
+  background: #364d79;
+  overflow: hidden; }
+
+.home-page .ant-carousel .slick-slide h3 {
+  color: #fff; }

@@ -1,0 +1,10 @@
+.like-btn {
+  display: inline-block; }
+  .like-btn .icon-btn {
+    padding: 10px 0;
+    vertical-align: middle;
+    margin-right: 4px; }
+    .like-btn .icon-btn svg:not(.active) {
+      fill: #595959; }
+    .like-btn .icon-btn svg.active, .like-btn .icon-btn svg:hover {
+      fill: #FF5722; }

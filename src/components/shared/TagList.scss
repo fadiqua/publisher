@@ -1,0 +1,17 @@
+@import "../../assets/style/scss/variables";
+
+.tag-list{
+  >li{
+    padding: 10px 10px 0 0;
+  }
+}
+.tag-link{
+  display: inline-block;
+  padding: 5px 10px;
+  background-color: rgba(0,0,0,.05);
+  border-radius: 3px;
+  color: rgba(0,0,0,.6);
+  &:hover{
+    background-color: $border-color;
+  }
+}

@@ -1,0 +1,10 @@
+.topic > div .topic-title {
+  padding: 0;
+  float: left; }
+
+.topic .topic-second-row {
+  margin: 15px 0; }
+
+.topic .topic-pagination {
+  border-top: 1px solid #d9d9d9;
+  padding: 15px 0; }

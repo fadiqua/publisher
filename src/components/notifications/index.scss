@@ -1,0 +1,16 @@
+@import "../../assets/style/scss/variables";
+
+#notifications {
+  .-title {
+    border-bottom: 1px solid $border-color;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    button {
+      color: $primary-color;
+      font-size: 0.9em;
+    }
+  }
+  ul {
+    list-style: none;
+  }
+}

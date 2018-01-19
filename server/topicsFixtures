@@ -1,0 +1,21 @@
+[
+  {
+    "name":"politics","icon":"politics"
+  },
+  {
+    "name":"politics",
+    "icon":"politics"
+  },
+  {
+    "name":"technology",
+    "icon":"technology"
+  },
+  {
+    "name":"creativity",
+    "icon":"spa"
+  },
+  {
+    "name":"self",
+    "icon":"self"
+  }
+]

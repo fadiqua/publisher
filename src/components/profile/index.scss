@@ -1,0 +1,120 @@
+@import "../../assets/style/scss/variables";
+
+.user-profile {
+  .profile-content {
+    .browsable-taps {
+      .ant-menu-item {
+        font-size: 14px;
+      }
+    }
+  }
+  .post-short-details {
+    a{
+      color: $text-color;
+      font-size: 17px;
+      .title{
+        letter-spacing: 0.1em;
+      }
+    }
+  }
+  .user-story {
+    position: relative;
+  }
+}
+.user-header {
+  margin: -20px -20px 0 -20px;
+  padding: 20px;
+  background-size: cover;
+  position: relative;
+  .follow-info {
+    margin: 8px 0;
+    strong {
+      margin-right: 8px;
+    }
+  }
+}
+.user-info {
+  >p{
+    font-size: 16px;
+  }
+}
+.user-follow-no {
+  font-size: 14px;
+  margin: 15px 0;
+  >a{
+    margin: 0 10px;
+  }
+}
+.edit-profile{
+  position: absolute;
+  right: 30px;
+  top: 15px;
+}
+
+.story-ctrl{
+  .md-icon{
+    margin-right: 5px;
+  }
+}
+.story-ctrl-drop {
+  position: absolute;
+  right: 5px;
+  top: 10px;
+  color: $text-color;
+}
+.image-cropped {
+  margin: 0 auto;
+  .upload-input {
+    display: block;
+    margin: 8px 0;
+  }
+}
+.user-info-inputs {
+  //.ant-form-item-control-wrapper {
+  //  margin-bottom: 20px;
+  //}
+  textarea{
+    resize: none;
+  }
+}
+.user-header-loading {
+  background-color: white;
+  margin: -20px;
+  text-align: center;
+  min-height: 280px;
+  padding-top: 20px;
+}
+.browsable-taps {
+  margin-bottom: 16px;
+}
+.progress-line {
+  //position: absolute;
+  //width: 100%;
+  //height: 100%;
+  //background: rgba(255,255,255,0.95);
+  //display: flex;
+  //align-items: center;
+  //justify-content: center;
+}
+.comment-box {
+  border-radius: 4px;
+  padding: 16px ;
+  //box-shadow: $social-box-shadow;
+  //background-color: $;
+  .-story {
+    color: inherit;
+    margin: 16px;
+    padding: 16px;
+    border: 1px solid $border-color;
+
+    display: block;
+    .with-no {
+      i {
+        font-size: 12px;
+      }
+    }
+  }
+}
+.user-stories {
+  padding: 0 10px;
+}

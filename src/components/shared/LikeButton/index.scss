@@ -1,0 +1,17 @@
+@import "../../../assets/style/scss/variables";
+
+.like-btn {
+  display: inline-block;
+  .icon-btn {
+    padding: 10px 0;
+    vertical-align: middle;
+    margin-right: 4px;
+    svg:not(.active){
+      fill: $text-color;
+    }
+    svg.active, svg:hover{
+      fill: $accent-color;
+    }
+  }
+
+}

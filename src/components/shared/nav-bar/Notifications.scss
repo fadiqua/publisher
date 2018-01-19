@@ -1,0 +1,73 @@
+@import "../../../assets/style/scss/variables";
+.notifications-icon {
+  display: block;
+  width: 44px;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 50%;
+  height: 44px;
+  line-height: 60px;
+  transition: all 0.1s linear;
+  svg{
+    fill: $text-color;
+  }
+  &:hover, &:focus {
+    background-color: #eee;
+  }
+  &:active {
+    background-color: #ddd;
+  }
+}
+.notifications-popover {
+  width: 350px;
+  .ant-popover-inner-content {
+    padding: 0;
+  }
+}
+.notifications {
+  .react-scrollbar-default .-reactjs-scrollbar-track {
+    opacity: 0;
+    z-index: 9;
+  }
+  .-title, .-footer {
+    padding: 8px 16px;
+  }
+  .-title {
+    font-size: 0.8em;
+    border-bottom: 1px solid $border-color;
+    p {
+      color: $primary-color;
+    }
+  }
+  .-footer {
+    border-top: 1px solid $border-color;
+    a {
+      display: block;
+    }
+  }
+}
+
+.loading-notifications {
+  animation: 2s ring ease-in-out infinite;
+  padding: 16px 0;
+  i {
+    font-size: 4em;
+  }
+}
+
+@keyframes ring {
+  0% {
+    transform: rotate(0deg);
+    //opacity: 0;
+  }
+  20% {
+    transform: rotate(-45deg);
+  }
+  70% {
+    transform: rotate(0deg);
+  }
+  90% {
+    transform: rotate(45deg);
+  }
+
+}

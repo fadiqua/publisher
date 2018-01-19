@@ -1,0 +1,42 @@
+.social-btn {
+  display: block;
+  outline: none;
+  touch-action: manipulation;
+  cursor: pointer;
+  background-image: none;
+  white-space: nowrap;
+  user-select: none;
+  transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+  position: relative;
+  color: rgba(0, 0, 0, 0.65);
+  border: none;
+  font-weight: bold;
+  font-size: 15px;
+  padding: 10px;
+  margin-bottom: 15px;
+  text-align: left;
+  width: 100%;
+  border-radius: 5px; }
+  .social-btn .social-icon {
+    display: inline-block;
+    width: 20px;
+    margin-right: 20px; }
+    .social-btn .social-icon img {
+      vertical-align: middle; }
+
+.social-btn[disabled] {
+  opacity: 0.6;
+  pointer-events: none; }
+
+.facebook-btn {
+  background: #2553b4;
+  border: 1px solid #2553b4;
+  color: white; }
+  .facebook-btn:hover {
+    background-color: #21499f; }
+
+.google-btn {
+  background: white;
+  border: 1px solid #d9d9d9; }
+  .google-btn:hover {
+    background-color: #f2f2f2; }

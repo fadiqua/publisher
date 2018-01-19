@@ -1,0 +1,92 @@
+.comment-header {
+  padding: 10px 0;
+  border-bottom: 2px solid #d9d9d9; }
+  .comment-header > li {
+    width: 100px;
+    margin-right: 10px; }
+    .comment-header > li i {
+      vertical-align: middle;
+      margin-right: 10px; }
+
+.comment-editor-container {
+  border: 1px solid #d9d9d9;
+  border-radius: 2px;
+  padding: 10px 20px;
+  transition: 0.3s all ease-in-out; }
+  .comment-editor-container .-user {
+    overflow: hidden; }
+    .comment-editor-container .-user .user-avatar {
+      margin-right: 12px; }
+    .comment-editor-container .-user > strong {
+      position: relative;
+      transition: 0.2s all linear; }
+  .comment-editor-container .comment-editor .ant-input {
+    resize: none;
+    font-size: 14px;
+    border: none;
+    box-shadow: none; }
+    .comment-editor-container .comment-editor .ant-input::placeholder {
+      font-size: 16px; }
+
+.show-comments {
+  text-align: center;
+  font-size: 16px;
+  cursor: pointer;
+  margin: 20px 0;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+  border: 1px solid #d9d9d9;
+  border-radius: 5px;
+  height: 100px;
+  color: #0288d1; }
+  .show-comments:hover {
+    background-color: #f2f2f2; }
+  .show-comments .icon-btn {
+    display: block;
+    width: 100%;
+    height: 100%; }
+
+.comment-box {
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+  border: 1px solid #d9d9d9;
+  padding: 10px 15px;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  position: relative; }
+  .comment-box .post-writer .writer-name {
+    padding: 0; }
+  .comment-box .comment-content {
+    height: 65px;
+    overflow-y: hidden;
+    font-size: 1em;
+    word-wrap: break-word; }
+    .comment-box .comment-content.expanded {
+      height: auto; }
+    .comment-box .comment-content > a {
+      color: inherit; }
+  .comment-box .icon-btn {
+    padding: 10px 0; }
+    .comment-box .icon-btn:hover i {
+      color: #FF5722; }
+    .comment-box .icon-btn i {
+      vertical-align: middle; }
+
+.read-more-btn .icon-btn {
+  font-weight: normal;
+  color: #0288d1; }
+  .read-more-btn .icon-btn:hover {
+    text-decoration: underline; }
+
+.comment-box .DraftEditor-root .public-DraftEditor-content,
+.comment-editor .DraftEditor-root .public-DraftEditor-content {
+  font-size: 1.1em; }
+
+.edit-ctrl-btns {
+  text-align: right;
+  margin: 15px 0; }
+  .edit-ctrl-btns .ant-btn-primary {
+    margin-left: 15px; }
+
+.not-signin {
+  padding: 16px;
+  text-align: center;
+  font-size: 1.4em; }

@@ -1,0 +1,55 @@
+@import "../../../assets/style/scss/variables";
+
+.post-writer {
+  margin: 15px 0;
+  position: relative;
+
+  .writer-name {
+    padding: 0 7px;
+    margin-left: 55px;
+    a {
+      font-size: 14px;
+    }
+    .post-date {
+      color: $light-text-color;
+    }
+    .follow-btn {
+      margin-left: 15px;
+    }
+  }
+  .user-avatar {
+    float: left;
+    position: relative;
+    &:before{
+      content: ' ';
+      position: absolute;
+      left: 0px;
+      top: 0px;
+      width: 100%;
+      height: 102%;
+      border-left: 2px solid #2997e2;
+      border-radius: 50%;
+    }
+  }
+
+}
+
+.user-content-popover {
+  width: 300px;
+  .-content {
+    >div:first-of-type, .user-top-stories {
+      padding-bottom: 8px;
+      margin-bottom: 8px;
+      border-bottom: 1px solid $border-color;
+    }
+    .user-data {
+      width: calc(100% - 100px);
+      margin-right: 8px;
+    }
+  }
+}
+
+.topic-stories {
+  list-style: decimal;
+  padding-left: 16px;
+}
