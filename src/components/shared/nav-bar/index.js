@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
-import classNames from 'classnames';
 import { Layout, Tooltip, Icon, Button, Menu, Input } from 'antd';
 
 import SigninModal from '../../signin/SigninModal';
@@ -12,6 +11,7 @@ import Notifications from './Notifications';
 import SearchInput from './SearchInput';
 import { toggleSignin, siderCollapsed } from '../../../actions/actionTypes';
 import { login } from '../../../actions/actionTypes';
+import logo from '../../../assets/publisher-logo.png';
 import './index.scss';
 
 const { Header } = Layout;
@@ -42,7 +42,7 @@ class Navbar extends Component {
         if(!auth.isAuthenticated && !auth.loading){
             return (
                 <Menu.Item key="1">
-                    <Button size="large" type="primary"
+                    <Button type="primary"
                             onClick={this.props.toggleSiginModal}>Sign in/Sign up</Button>
                 </Menu.Item>
 
@@ -61,7 +61,8 @@ class Navbar extends Component {
         const { expanedSearch } = this.state;
         return (
         <Menu.Item key="3"  className="pull-right" >
-            <SearchInput  size="large" refix={<Icon type="search" />}
+            <SearchInput  size="large"
+                          refix={<Icon type="search" />}
                           placeholder="Search here..."/>
         </Menu.Item>)
     };
@@ -97,24 +98,21 @@ class Navbar extends Component {
         return (
             <div className="header-box">
                 <Header>
-                    <div className={classNames(
-                        "clearfix header-items",
-                        {'m-l-70': collapsed && desktop},
-                        {'m-l-250': !collapsed && desktop},
-                        {'open-sider-mobile': collapsed && mobile},
-                        {'close-sider-mobile': !collapsed && mobile}
-                        )} >
+                    <div className="clearfix header-items" >
                         <Menu
                             mode="horizontal"
                             defaultSelectedKeys={['2']}
                             style={{ lineHeight: '64px' }}
                         >
                             <Menu.Item key="0">
-                                <span className="toggle-btn" onClick={ () => toggleSiderMenu() }>
+                                <span className="toggle-btn" onClick={toggleSiderMenu}>
                                     <svg width="24" viewBox="0 0 24 24">
                                         <path fill="#000000" d="M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z" />
                                     </svg>
                                 </span>
+                            </Menu.Item>
+                            <Menu.Item key="-1">
+                                <img src={logo} alt="logo"/>
                             </Menu.Item>
                             {this.renderSignIn()}
                             {this.renderUserThumbnail()}
@@ -124,6 +122,7 @@ class Navbar extends Component {
                     </div>
                 </Header>
                 { !auth.isAuthenticated && <div> <SigninModal /> <SignupModal /> </div>}
+                {collapsed && mobile && <div className="overlay" onClick={toggleSiderMenu}></div>}
             </div>
         )
     }

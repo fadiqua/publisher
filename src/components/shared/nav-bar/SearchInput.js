@@ -3,12 +3,9 @@ import PropTypes from 'prop-types';
 import debounce from 'lodash.debounce';
 import classNames from 'classnames';
 import {NavLink} from 'react-router-dom';
-import {Form, ul, Dropdown, Popover, Input, Select, Icon, Spin} from 'antd';
+import {Form, Dropdown, Popover, Input, Select, Icon, Spin} from 'antd';
 import {search} from '../../../routes/api';
-import throttle from '../../../utils/throttle';
 
-const FormItem = Form.Item;
-const Option = Select.Option;
 const Search = Input.Search;
 
 class SearchInput extends Component {
@@ -151,8 +148,10 @@ class SearchInput extends Component {
                               placeholder="Search here..."
                               onChange={this.handleChange}
                               onClick={this.expandSearchInput}
-                              size="large"
-                              className={classNames(' search-input', {'expanded': expanedSearch})}
+                              // size="large"
+                              className={classNames(' search-input',
+                                  {'expanded': expanedSearch}
+                                  )}
                               onSearch={this.onSubmitSearch} />
                   </Popover>
               </div>

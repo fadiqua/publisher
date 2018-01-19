@@ -33,8 +33,12 @@ class SiderMenu extends Component {
      * @param items: array
      */
     handelSiderClicked(e){
-        console.log('Clicked: ', e.key);
         this.props.selectedItem(e.key);
+        const {  screenSize:{collapsed, mobile } } = this.props;
+        if(collapsed && mobile) {
+
+        }
+
     }
 
     /**
@@ -105,9 +109,7 @@ class SiderMenu extends Component {
                     </Menu.Item>
                     }
                 </Menu>: <SiderSpinner/>}
-
             </Scrollbars>
-
         </Sider>
         )
     }
