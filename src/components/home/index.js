@@ -22,13 +22,18 @@ export class Home extends Component {
                 })
         })
     }
+
     renderContent = () => {
         const { loading , stories} = this.state;
         if(loading){
-            return <TopicLoading/>
+            return <TopicLoading />
         }
-        return stories.map((topic,i) => <TopicSection title={topic[0]._topic.name} items={topic} key={`topic_${i}`}/>);
-    }
+        return stories.map((topic,i) =>
+            <TopicSection
+                title={topic[0]._topic.name}
+                items={topic} key={`topic_${i}`}
+            />);
+    };
 
     render(){
         return (

@@ -33,6 +33,7 @@ class WysiwygEditor extends Component{
     getEditorHTML(cont){
         return draftToHtml(convertToRaw(cont.getCurrentContent()))
     }
+
     onEditorStateChange = ( editorContent) => {
         this.setState({
             editorContent,
@@ -74,7 +75,6 @@ class WysiwygEditor extends Component{
                                 className: 'bordered-option-classname',
                             },
                         }}
-                        toolbarOnFocus
                     />
                 </div>
             </div>

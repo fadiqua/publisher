@@ -1,7 +1,9 @@
+// npm packages
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Input, Button, message } from 'antd';
+// project files
 import WysiwygEditor from './WysiwygEditor';
 import TagBox from './TagBox';
 import SelectCategory from './SelectCategory';
@@ -27,12 +29,14 @@ class WriteStory extends Component{
         this.onUploadCoverChange = this.onUploadCoverChange.bind(this);
         this.onRemoveUploadCover = this.onRemoveUploadCover.bind(this);
     }
+
     componentWillReceiveProps(nexProps){
         const { story } = nexProps;
         if(story.createdStory !== undefined){
             this.props.history.push(`/topics/${slugify(story.createdStory._topic.name)}/story/${story.createdStory.slug}`)
         }
     }
+
     onSelectChange = (selectedTopic) => {
         this.setState({ selectedTopic })
     };
@@ -46,18 +50,21 @@ class WriteStory extends Component{
         this.setState({ title })
 
     };
+
     onEditorChange = (editorState) => {
         // this.setState({editorState})
         this.setState({editorContent: editorState})
         // console.log('onEditorChange')
     };
+
     onUploadCoverChange(uploadedCover){
         this.setState({uploadedCover})
     }
+
     onRemoveUploadCover(file){
-        if(file.response.file.filename  === this.state.uploadedCover){
+        // if(file.response.file.filename  === this.state.uploadedCover){
             this.setState({uploadedCover: null})
-        }
+        // }
     }
 
     submitStory(){
@@ -75,39 +82,52 @@ class WriteStory extends Component{
         }
 
     }
-    render(){
-        let isRtl='';
-        if(this.state.title){
-            isRtl = this.state.title.match(/[\u0600-\u06FF]+/g) ? 'rtl':'';
-        }
 
+    render(){
         return (
             <div>
-                <div>
-                    <Input style={{fontSize: '1.3em'}}
-                           dir="auto"
-                           placeholder="Story title"
-                           type="text" size={`large`} onChange={ this.onTitleChange } />
+                <div className="write-title">
+                    <Input
+                        dir="auto"
+                        placeholder="Story title"
+                        type="text" size={`large`}
+                        onChange={ this.onTitleChange }
+                    />
                 </div>
                 <br/>
-                <div>
-                    <WysiwygEditor onChange={ this.onEditorChange } editorValue={this.state.editorContent}/>
-                </div>
+                <WysiwygEditor
+                    onChange={ this.onEditorChange }
+                    editorValue={this.state.editorContent}
+                />
                 <br/>
                 <br/>
-                <TagBox tags={this.state.tags} onChange={ this.onTagsChange } limit={3}/>
+                <TagBox
+                    tags={this.state.tags}
+                    onChange={ this.onTagsChange }
+                    limit={3}
+                />
                 <br/>
-                <UploadCover uploadChange={this.onUploadCoverChange}
-                             uploadedCover={this.state.uploadedCover} removeUpload={this.onRemoveUploadCover}/>
+                <UploadCover
+                    uploadChange={this.onUploadCoverChange}
+                    uploadedCover={this.state.uploadedCover}
+                    removeUpload={this.onRemoveUploadCover}
+                />
                 <br/>
                 <div className="clearfix write-article-footer">
-                    <SelectCategory className="pull-left"
-                                    onChange={this.onSelectChange } />
+                    <SelectCategory
+                        className="pull-left"
+                        onChange={this.onSelectChange }
+                    />
                     <div className="pull-right ctrl-btns">
-                        <Button size={`large`} type={`default`}>
+                        <Button
+                            size={`large`}
+                            type={`default`} >
                             Draft
                         </Button>
-                        <Button loading={this.props.story.loading} size={`large`} type={`primary`} onClick={() => this.submitStory() }>
+                        <Button
+                            loading={this.props.story.loading}
+                            size={`large`} type={`primary`}
+                            onClick={() => this.submitStory()} >
                             Publish
                         </Button>
                     </div>
@@ -117,10 +137,14 @@ class WriteStory extends Component{
     }
 }
 
-const mapStateToProps = ({auth:{currentUser}, topics:{items}, story}) => ({
+const mapState = ({auth:{currentUser}, topics:{items}, story}) => ({
     currentUser,
     items,
     story
 });
 
-export default connect(mapStateToProps, { createStory })(WriteStory);
+const mapDispatch = diapatch => bindActionCreators({
+    createStory
+}, diapatch);
+
+export default connect(mapState, mapDispatch )(WriteStory);

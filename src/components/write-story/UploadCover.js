@@ -29,13 +29,18 @@ class UploadCover extends Component {
             message.error(`${info.file.name} file upload failed.`);
         }
     }
-
+    onRemove = file => {
+        this.props.removeUpload(file);
+        return true;
+    }
     render() {
         const { uploadedCover } = this.props;
         return (
             <div >
-                <Dragger {...props} onChange={this.onChange}
-                         onRemove={(file) => {this.props.removeUpload(file);return true} }>
+                <Dragger
+                    {...props}
+                    onChange={this.onChange}
+                    onRemove={this.onRemove}>
                     <p className="ant-upload-drag-icon">
                         <Icon type="inbox" />
                     </p>

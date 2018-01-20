@@ -13,8 +13,9 @@ import { slugify } from '../../../utils/functions';
 import { logout, fetchTopics, siderSelected } from '../../../actions/actionTypes';
 import { clearToken } from '../../../config/axios.config';
 import Logo from '../Logo';
-import './index.scss';
 import SiderLoading from './SiderLoading';
+import './index.scss';
+
 const { Sider } = Layout;
 
 class SiderMenu extends Component {
@@ -94,14 +95,19 @@ class SiderMenu extends Component {
                width={ collapsed&&desktop ? 70:250 }>
             <Scrollbars style={{ height: "100vh"}} autoHide autoHideDuration={200} >
                 <Logo />
-                {!topics.loading ? <Menu theme="dark"  mode="inline" onClick={this.handelSiderClicked} selectedKeys={[siderSelected]}>
-                    {this.renderMenuItems()}
-                    { auth.isAuthenticated && <Menu.Item key="logout">
-                        <div onClick={ this.onLogout }>
-                            <i className="material-icons anticon side-icon">power_settings_new</i>
+                {!topics.loading ?
+                    <Menu
+                        theme="dark"  mode="inline"
+                        onClick={this.handelSiderClicked}
+                        selectedKeys={[siderSelected]} >
+                        {this.renderMenuItems()}
+                        { auth.isAuthenticated &&
+                        <Menu.Item key="logout">
+                            <div onClick={ this.onLogout }>
+                                <i className="material-icons anticon side-icon">power_settings_new</i>
                             <span className="nav-text">Logout</span>
-                        </div>
-                    </Menu.Item>
+                            </div>
+                        </Menu.Item>
                     }
                 </Menu>: <SiderLoading />}
             </Scrollbars>
