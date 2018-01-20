@@ -1,21 +1,27 @@
 [
   {
-    "name":"politics","icon":"politics"
+    "name":"politics",
+    "icon":"politics",
+    "slug": "politics"
   },
   {
     "name":"politics",
-    "icon":"politics"
+    "icon":"politics",
+    "slug": "politics"
   },
   {
     "name":"technology",
-    "icon":"technology"
+    "icon":"technology",
+    "slug": "technology"
   },
   {
     "name":"creativity",
-    "icon":"spa"
+    "icon":"spa",
+    "slug": "creativity"
   },
   {
     "name":"self",
-    "icon":"self"
+    "icon":"self",
+    "slug": "self"
   }
 ]

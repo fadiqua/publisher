@@ -9,7 +9,12 @@ const topicSchema = new Schema({
     icon: {
         type: String,
         required: true
-    }
+    },
+    slug: {
+        type: String,
+        // required: true
+    },
+
 });
 
 const Topic = mongoose.model('Topic', topicSchema);

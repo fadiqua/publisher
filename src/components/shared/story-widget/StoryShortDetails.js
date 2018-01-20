@@ -9,7 +9,7 @@ class StoryShortDetails extends PureComponent {
                 <div className={'title'}>
                     <h1 dir="auto">{title}</h1>
                 </div>
-                <div dir="auto">{description}</div>
+                <div dir="auto" className="s-description">{description}</div>
             </div>
         )
     }
