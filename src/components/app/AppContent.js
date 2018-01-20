@@ -5,7 +5,13 @@ import { connect } from 'react-redux';
 import classNames from 'classnames';
 // project files
 import { getMe } from '../../routes';
-import { siderCollapsed, isDesktop, isMobile, autoLogin } from '../../actions/actionTypes';
+import {
+    siderCollapsed,
+    isDesktop,
+    isMobile,
+    autoLogin,
+    loginFailed
+} from '../../actions/actionTypes';
 
 
 class AppContent extends Component {
@@ -29,7 +35,9 @@ class AppContent extends Component {
         try {
             const result = await getMe();
             this.props.autoLogin({ ...result.data.me, fromToken: true });
-        } catch (err) {}
+        } catch (err) {
+            this.props.loginFailed()
+        }
     }
 
     componentWillUnmount() {
@@ -73,7 +81,8 @@ const mapDispatch = dispatch => bindActionCreators({
     siderCollapsed ,
     isDesktop,
     isMobile,
-    autoLogin
+    autoLogin,
+    loginFailed
 }, dispatch);
 
 export default connect(mapState, mapDispatch)(AppContent)

@@ -6,6 +6,7 @@ import initialState from './initialState';
 const authReducer = createReducer({
     [actions.fetchUserFromSocial]: (state) => ({ ...state, loading: true }),
     [actions.autoLogin]: (state) => ({ ...state, loading: true }),
+    [actions.loginFailed]: (state) => ({ ...state, loading: false }),
     [actions.fetchUserSuccess]: (state, payload) => {
         return {
             isAuthenticated:true,

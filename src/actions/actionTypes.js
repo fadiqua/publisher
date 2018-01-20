@@ -84,26 +84,9 @@ export const updateUser = createAction('update user');
 export const followUser = createAction('follow user');
 export const followUserSuccess = createAction('follow user success');
 export const autoLogin = createAction('auto login');
+export const loginFailed = createAction('loginFailed');
 export const login = createAction('login');
 export const logout = createAction('logout');
 
 export const addUser = createAction('add user');
 export const removeUser = createAction('remove user');
-
-
-// for actions with callback
-// export const fetchNotificationsResource = data => ({
-//     type: fetchNotificationsWithCallback, // you can name it as you want
-//     payload: data,
-//     meta: {
-//         thunk: true
-//     }
-// });
-//
-// export const fetchNotificationsResourceSuccess = (detail, thunk) => ({
-//     type: fetchNotificationsSuccess, // name really doesn't matter
-//     payload: detail, // promise will return payload
-//     meta: {
-//         thunk
-//     }
-// })

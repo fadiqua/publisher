@@ -16,6 +16,10 @@ userController.localSignup = async (req, res) => {
     // validation - username / password
 
     try {
+        if(!firstName) throw new Error('Frist Name is Required');
+        else if(!lastName) throw new Error('Last Name is Required');
+        else if(!email) throw new Error('Email is Required');
+        else if(!password || password.length < 8) throw new Error('Invalid Password, must be at least 8 characters');
         const emailExists = await db.LocalAuth.findOne({ email });
         if(emailExists !== null) throw Error("Email already exists");
         const user = await db.LocalAuth.createLocalUser({
@@ -33,8 +37,7 @@ userController.localSignup = async (req, res) => {
     } catch (error) {
         res.status(500).json({
             success: false,
-            // error: error.message
-            error: error.message
+            message: error.message
         })
     }
 };
@@ -171,7 +174,9 @@ userController.getMe = async (req, res) => {
             me
         })
     } catch(error) {
-        res.status(403);
+        res.status(403).json({
+            success: false
+        });
     }
 };
 

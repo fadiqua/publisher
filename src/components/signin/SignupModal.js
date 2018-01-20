@@ -46,6 +46,14 @@ class SignupModal extends Component {
 
     }
 
+    checkPassword = (rule, value, callback) => {
+        const form = this.props.form;
+        if (value && value !== form.getFieldValue('password')) {
+            callback('Two passwords that you enter is inconsistent!');
+        } else {
+            callback();
+        }
+    }
     render(){
         const {
             sign, toggleSignupModal, toggleSigninModal,
@@ -89,14 +97,22 @@ class SignupModal extends Component {
                         </FormItem>
                         <FormItem>
                             {getFieldDecorator('password', {
-                                rules: [{ required: true, message: 'Please input your Password!' }],
+                                rules: [
+                                    { required: true, message: 'Please input your Password!' },
+                                    { min: 8, message: 'Password must be at least 8 characters'}
+                                    ],
                             })(
                                 <Input disabled={loading} prefix={<Icon type="lock" style={{ fontSize: 13 }} />} type="password" placeholder="Password" />
                             )}
                         </FormItem>
                         <FormItem>
                             {getFieldDecorator('confirmPassword', {
-                                rules: [{ required: true, message: 'Please input your Password!' }],
+                                rules: [
+                                    { required: true, message: 'Please input your Password!' },
+                                    {
+                                        validator: this.checkPassword,
+                                    }
+                                    ],
                             })(
                                 <Input disabled={loading} prefix={<Icon type="lock" style={{ fontSize: 13 }} />} type="password" placeholder="Confirm Password" />
                             )}
