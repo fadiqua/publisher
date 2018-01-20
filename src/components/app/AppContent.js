@@ -7,14 +7,13 @@ import classNames from 'classnames';
 import { getMe } from '../../routes';
 import {
     siderCollapsed,
-    isDesktop,
     isMobile,
     autoLogin,
     loginFailed
 } from '../../actions/actionTypes';
 
-
 class AppContent extends Component {
+
     constructor(){
         super();
         let matchMedia;
@@ -25,12 +24,14 @@ class AppContent extends Component {
             this.mql = matchMedia(`(max-width: 700px)`);
         }
     }
+
     componentWillMount() {
         if (this.mql) {
             this.mql.addListener(this.responsiveHandler);
             this.responsiveHandler(this.mql);
         }
     }
+
     async componentDidMount() {
         try {
             const result = await getMe();
@@ -48,12 +49,12 @@ class AppContent extends Component {
     }
 
     render() {
-        const { children,  screenSize:{collapsed, desktop, mobile}} = this.props;
+        const { children,  screenSize:{collapsed, mobile}} = this.props;
 
         return (
             <div className={ classNames(
                 'page-content',
-                { 'm-l-70': collapsed && desktop},
+                { 'm-l-70': collapsed && !mobile},
                 {'m-l-0': mobile})}>
                 <div>
                     { children }
@@ -68,10 +69,10 @@ class AppContent extends Component {
      */
     responsiveHandler = (mql) => {
         if(mql.matches) {
-            this.props.isMobile();
-        } else {
-            this.props.isDesktop();
+            this.props.isMobile(true);
+            return;
         }
+        this.props.isMobile(false);
     }
 }
 
@@ -79,7 +80,6 @@ const mapState = ({ auth:{ currentUser},screenSize }) => ({ currentUser,screenSi
 
 const mapDispatch = dispatch => bindActionCreators({
     siderCollapsed ,
-    isDesktop,
     isMobile,
     autoLogin,
     loginFailed

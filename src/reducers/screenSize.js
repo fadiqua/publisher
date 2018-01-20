@@ -1,13 +1,18 @@
+// npm packages
 import { createReducer } from 'redux-act';
-
-import initialState from './initialState';
+// project files
 import * as actions from '../actions/actionTypes';
+
+export const initialState =  {
+    mobile: false,
+    collapsed: false,
+    siderSelected: 'home'
+};
 
 const screenSizeReducer = createReducer({
     [actions.siderCollapsed]: (state) => ({...state, collapsed: !state.collapsed}),
-    [actions.isDesktop]: (state) => ({...state, mobile:false, desktop: true, collapsed: false}),
-    [actions.isMobile]: (state) => ({...state, mobile:true, desktop: false, collapsed: false}),
+    [actions.isMobile]: (state, payload) => ({...state, mobile: payload, collapsed: false}),
     [actions.siderSelected]: (state, payload) => ({ ...state, siderSelected: payload, collapsed: false })
-}, initialState.screenSize);
+}, initialState);
 
 export default screenSizeReducer;

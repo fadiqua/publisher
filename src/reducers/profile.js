@@ -1,8 +1,21 @@
+// npm packages
 import { createReducer } from 'redux-act';
-
-import initialState from './initialState';
+// project files
 import * as actions from '../actions/actionTypes';
 import { followUser } from './auth'
+
+export const initialState = {
+    loading: null,
+    user: {
+        _followers: [],
+        _following: []
+    },
+    stories: {
+        docs: [],
+        page: 1,
+        pages: "1"
+    },
+};
 
 const profileReducer = createReducer({
     [actions.fetchProfile]: (state) => ({ ...state, loading: 'fetchProfile'}),
@@ -34,7 +47,7 @@ const profileReducer = createReducer({
     //     ...state,
     //     responses: payload.data
     // })
-},initialState.profile);
+}, initialState);
 
 function followProfile(state, payload) {
     if(state._following.indexOf(payload) !== -1){

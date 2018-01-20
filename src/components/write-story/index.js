@@ -7,7 +7,6 @@ import WysiwygEditor from './WysiwygEditor';
 import TagBox from './TagBox';
 import SelectCategory from './SelectCategory';
 import UploadCover from './UploadCover';
-// import { createStory } from '../../actions/actionTypes';
 import { sanitize, slugify } from '../../utils/functions';
 import { createStory } from '../../routes';
 import './index.scss';
@@ -160,7 +159,6 @@ class WriteStory extends Component{
                         </Button>
                         <Button
                             disable={loading}
-                            loading={this.props.story.loading}
                             size={`large`} type={`primary`}
                             onClick={() => this.submitStory()} >
                             Publish
@@ -172,14 +170,4 @@ class WriteStory extends Component{
     }
 }
 
-const mapState = ({auth:{currentUser}, topics:{items}, story}) => ({
-    currentUser,
-    items,
-    story
-});
-
-// const mapDispatch = diapatch => bindActionCreators({
-//     createStory
-// }, diapatch);
-
-export default connect(mapState, undefined)(WriteStory);
+export default WriteStory;

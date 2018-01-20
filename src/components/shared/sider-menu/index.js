@@ -8,8 +8,7 @@ import { Scrollbars } from 'react-custom-scrollbars';
 import { Layout, Menu } from 'antd';
 // import pathToRegexp from 'path-to-regexp';
 // project files
-import { siderItems, siderItemsIcons } from '../../../utils/constants';
-import { slugify } from '../../../utils/functions';
+import { siderItemsIcons } from '../../../utils/constants';
 import { logout, fetchTopics, siderSelected } from '../../../actions/actionTypes';
 import { clearToken } from '../../../config/axios.config';
 import Logo from '../Logo';
@@ -69,9 +68,8 @@ class SiderMenu extends Component {
 
     renderMenuItems() {
         const { topics } = this.props;
-        if(topics.items.length > 0) {
-            siderItems[1].items = topics.items;
-            return siderItems.map(obj => this.groupView(obj.label, obj.items))
+        if(!topics.loading) {
+            return topics.menu.map(obj => this.groupView(obj.label, obj.items))
         }
     }
 
@@ -86,13 +84,13 @@ class SiderMenu extends Component {
         setTimeout(() => window.location = `/`, 150)
     };
     render() {
-        const { auth, screenSize:{collapsed, desktop, mobile, siderSelected },topics } = this.props;
+        const { auth, screenSize:{collapsed, mobile, siderSelected },topics } = this.props;
         return (
         <Sider className={classNames('sider-menu',
-            {'desktop-collapsed': desktop&&collapsed},
+            {'desktop-collapsed': !mobile && collapsed},
             {'open-sider-mobile': collapsed && mobile},
             {'close-sider-mobile': !collapsed && mobile})}
-               width={ collapsed&&desktop ? 70:250 }>
+               width={ collapsed&&!mobile ? 70:250 }>
             <Scrollbars style={{ height: "100vh"}} autoHide autoHideDuration={200} >
                 <Logo />
                 {!topics.loading ?

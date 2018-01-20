@@ -1,7 +1,12 @@
 import { createReducer } from 'redux-act';
 
-import initialState from './initialState';
 import * as actions from '../actions/actionTypes';
+
+export const initialState = {
+    siginVisible: false,
+    signupvisible: false,
+    loading: false,
+};
 
 const signReducer = createReducer({
     [actions.toggleSignin]: (state) => ({
@@ -15,6 +20,6 @@ const signReducer = createReducer({
         loading: false
     }),
     [actions.signinRequest]: (state) => ({ ...state, loading:true })
-}, initialState.sign);
+}, initialState);
 
 export default signReducer;

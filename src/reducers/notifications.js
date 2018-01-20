@@ -1,8 +1,18 @@
+// npm packages
 import { createReducer } from 'redux-act';
-
-import initialState from './initialState';
+// project files
 import * as actions from '../actions/actionTypes';
 import { addItem, addMultipleItems, deleteItem, sortMapByDate } from '../utils/functions';
+
+export const initialState =  {
+    fetching: null,
+    limit: 6,
+    page: 1,
+    pages: 1,
+    total: 0,
+    unreadCount: 0,
+    items: new Map()
+};
 
 const notificationsReducer = createReducer({
     [actions.getUnReadInitialNotificationsCount]: (state, payload) => ({
@@ -56,7 +66,7 @@ const notificationsReducer = createReducer({
             unreadCount: !payload ? 0: state.unreadCount
         }
     },
-}, initialState.notifications); // <-- This is the default state
+}, initialState); // <-- This is the default state
 
 function markNotificationsAsRead(map, payload) {
     let newItems = new Map();

@@ -28,6 +28,7 @@ export const followProfile = createAction('follow profile');
 export const fetchProfileResponsesSuccess = createAction('fetch profile responses success');
 export const initResponses = createAction('init responses ');
 
+
 // Story
 export const fetchStory = createAction('fetch story');
 export const fetchStorySuccess = createAction('fetch story success');

@@ -1,7 +1,17 @@
+// npm packages
 import { createReducer } from 'redux-act';
-
-import initialState from './initialState';
+// project files
 import * as actions from '../actions/actionTypes';
+
+export const initialState = {
+    loading: false,
+    error: false,
+    sortBy: 'date',
+    limit: 0,
+    page: 1,
+    docs: [],
+
+};
 
 const currentTopicReducer = createReducer({
     [actions.fetchCurrentTopic]: (state) => ({ ...state, loading: true, error: false}),
@@ -10,6 +20,6 @@ const currentTopicReducer = createReducer({
         ...initialState.currentTopic,
         error: true
     })
-}, initialState.currentTopic);
+}, initialState);
 
 export default currentTopicReducer;

@@ -1,7 +1,19 @@
+// npm packages
 import { createReducer } from 'redux-act';
-
+// project files
 import * as actions from '../actions/actionTypes';
-import initialState from './initialState';
+
+export const initialState = {
+    loading: true,
+    isAuthenticated: false,
+    currentUser: {
+        _id: null,
+        username: null,
+        email: null,
+        displayName: null,
+        photoURL: null
+    }
+};
 
 const authReducer = createReducer({
     [actions.fetchUserFromSocial]: (state) => ({ ...state, loading: true }),
@@ -26,7 +38,7 @@ const authReducer = createReducer({
         }
         return state;
     }
-}, initialState.auth); // <-- This is the default state
+}, initialState); // <-- This is the default state
 
 
 export function followUser(currentUser, userId, type='_following') {

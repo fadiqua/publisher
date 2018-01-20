@@ -1,8 +1,23 @@
+// npm packages
 import { createReducer } from 'redux-act';
-
-import initialState from './initialState';
+// project files
 import * as actions from '../actions/actionTypes';
 import { arrayToMap, addItem, deleteItem, duplicate, addMultipleItems } from '../utils/functions';
+
+export const initialState = {
+    docs: new Map(),
+    page: 1,
+    pages: 0,
+    responseStatus: null,
+    loadingReplies: null,
+    selectedResponse: {
+        response: {},
+        docs: new Map(),
+        page: 1,
+        pages: 0,
+    }
+
+}
 
 const responsesReducer = createReducer({
     [actions.createResponse]: (state) => ({ ...state, responseStatus: 'create'}),
@@ -78,7 +93,7 @@ const responsesReducer = createReducer({
         selectedResponse: initialState.responses.selectedResponse
     }),
     [actions.initResponses]: (state) => initialState.responses
-}, initialState.responses);
+}, initialState);
 
 function responseLike(state, id, user, isLiked) {
     const newMap = duplicate(state);

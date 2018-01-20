@@ -6,8 +6,10 @@ const Option = Select.Option;
 
 class SelectCategory extends Component {
 
-    renderTopics(){
-        return this.props.items.map(item => <Option key={item._id} value={item._id}>{item.name}</Option>)
+    _renderTopics(){
+        const { loading, items } = this.props;
+        if(loading) return null;
+        return items.map(item => <Option key={item._id} value={item._id}>{item.name}</Option>)
     }
 
     render(){
@@ -22,12 +24,16 @@ class SelectCategory extends Component {
                     onChange={ this.props.onChange }
                     size="large"
                     filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}>
-                    {this.renderTopics()}
+                    {this._renderTopics()}
                 </Select>
             </div>
         )
     }
 }
 
-const mapStateToProps = ({topics:{items}}) => ({items});
+const mapStateToProps = ({topics:{menu, loading}}) => ({
+    items: menu[1].items,
+    loading
+});
+
 export default connect(mapStateToProps, null)(SelectCategory);
