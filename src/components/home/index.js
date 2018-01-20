@@ -30,8 +30,10 @@ export class Home extends Component {
         }
         return stories.map((topic,i) =>
             <TopicSection
+                slug={topic[0]._topic.slug}
                 title={topic[0]._topic.name}
-                items={topic} key={`topic_${i}`}
+                items={topic}
+                key={`topic_${i}`}
             />);
     };
 

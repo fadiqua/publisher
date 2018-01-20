@@ -135,6 +135,7 @@ storyController.getHomePageData = async (req, res) => {
     const data = (await Promise.all(topics.map(topic =>
         db.Story.find({_topic: topic._id, ...params }).sort({createdAt: 1}).limit(4))))
         .filter(t => t.length > 0);
+    console.log('dataa ', data)
     res.status(200).send({
         stories: data
     });
@@ -146,11 +147,10 @@ storyController.getStoriesByTopic = async (req, res) => {
     let pageSize = 9;
     let params = {};
     params['isDeleted'] = false;
-    params['isDraft'] = false;
     if(!req.user) {
         params['membersOnly'] = false
     }
-    const topicObj = await db.Topic.findOne({name: topic });
+    const topicObj = await db.Topic.findOne({slug: topic });
     let sortBy = sortby || 'date';
     let sort = {};
     if(sortBy === 'date'){
@@ -161,7 +161,7 @@ storyController.getStoriesByTopic = async (req, res) => {
         sort['createdAt'] = 1
     }
     const aggregate = db.Story.aggregate();
-    if(topicObj !== null){
+    if(topicObj !== null) {
         params['_topic'] = topicObj._id;
         const stories = await db.Story.paginateRecords(aggregate,{
                 match: params,

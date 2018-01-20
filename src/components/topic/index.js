@@ -41,7 +41,10 @@ class Topic extends Component {
     renderTitle = () => {
         const { match:{params} } = this.props;
         return (
-            <TopicTitle link={`/topics/${params.topic}/?page=1&sortby=date`} title={params.topic}/>
+            <TopicTitle
+                link={`/topics/${params.topic}/?page=1&sortby=date`}
+                title={params.topic}
+            />
         )
     };
     renderSortBy = () => {

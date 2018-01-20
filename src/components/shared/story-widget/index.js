@@ -16,16 +16,16 @@ export class Story extends Component {
             <div className={`post post-${first ? 'first': ''}`}>
                 <Row type='flex' gutter={20}>
                     <Col  lg={{ span: first ? 15: 24}} md={{ span: 24}} xs={{ span: 24}}>
-                        <Link to={`/topics/${item._topic.name}/story/${item.slug}`}>
+                        <Link to={`/topics/${item._topic.slug}/story/${item.slug}`}>
                             <StoryCover link="/topic/popular/article-slug"
                                         imgSrc={`/media/${item.cover}`}/>
                             <StoryCounts likesCount={item.likesCount} commentsCount={item.commentsCount}/>
                         </Link>
                     </Col>
                     <Col  lg={{ span: first ? 9: 24}} md={{ span: 24}} className="-details">
-                        <Link to={`/topics/${item._topic.name}/story/${item.slug}`} className="post-short-details">
+                        <Link to={`/topics/${item._topic.slug}/story/${item.slug}`} className="post-short-details">
                             <PostShortDetails
-                                link={`/topics/${item._topic.name}/story/${item.slug}`}
+                                link={`/topics/${item._topic.slug}/story/${item.slug}`}
                                 title={item.title} description={item.description}
                             />
                         </Link>

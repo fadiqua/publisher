@@ -87,7 +87,7 @@ const autoPopulate = function (next) {
         select: 'thumbnail username firstName lastName _id'
     }).populate({
         path: '_topic',
-        select: 'name'
+        select: 'name slug _id'
     });
     next()
 };

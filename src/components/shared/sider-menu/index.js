@@ -43,8 +43,8 @@ class SiderMenu extends Component {
      */
     itemsView(items) {
         return items.map(item => (
-            <Menu.Item key={item.name}>
-            <Link to={item.url || `/topics/${slugify(item.name)}/?page=1&sortby=date`}>
+            <Menu.Item key={item.slug}>
+            <Link to={item.url || `/topics/${item.slug}/?page=1&sortby=date`}>
                 <div>
                     <span>{siderItemsIcons[item.icon]}</span>
                     <span className="nav-text text-capitalize">{item.name}</span>

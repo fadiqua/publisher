@@ -1,5 +1,7 @@
+// npm packages
 import React from 'react';
 import { Link } from 'react-router-dom';
+// project files
 import './index.scss'
 
 export const TopicTitle = ({link, title}) => (
@@ -12,4 +14,5 @@ export const TopicTitle = ({link, title}) => (
         </Link>
     </div>
 );
+
 export default TopicTitle;

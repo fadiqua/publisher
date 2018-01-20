@@ -38,7 +38,7 @@ class UserContentPopover extends Component {
         }
     };
 
-    renderTopStories = () => {
+    _renderTopStories = () => {
         const { topStories } = this.state;
         if(topStories.length > 0){
             return (
@@ -46,7 +46,8 @@ class UserContentPopover extends Component {
                     <small className="text-upper text-bold">top stories:</small>
                     <ol className="topic-stories">
                         {topStories.map(story => <li key={story._id}>
-                            <Link to={`/topics/${story._topic.name}/story/${story.slug}`}>{story.title}</Link></li>)}
+                            <Link to={`/topics/${story._topic.slug}/story/${story.slug}`}>{story.title}</Link>
+                        </li>)}
                     </ol>
                 </div>
             )
@@ -75,7 +76,7 @@ class UserContentPopover extends Component {
                         {userDesc}
                     </div>
                 </div>
-                {this.renderTopStories()}
+                {this._renderTopStories()}
                 <div className="clearfix footer">
                     <span className="pull-left">Followed by <strong>{formatNumber(followingCount)}</strong> people</span>
                     <FollowButton className="pull-right" user={user}/>

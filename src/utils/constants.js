@@ -40,16 +40,40 @@ export const siderItemsIcons = {
 }
 export const siderItems = [
     { label: "Main", key:"main", items: [
-        { name: "Home", icon: "home", url:'/'},
-        { name: "Popular", url: '/popular', icon: "whatshot"},
-        { name: "Members Only", key: "/members-only", icon: "group"},
+        {
+            name: "Home",
+            icon: "home",
+            url:'/',
+            slug: ''
+        },
+        {
+            name: "Popular",
+            url: '/popular',
+            icon: "whatshot",
+            slug: "popular"
+        },
+        {
+            name: "Members Only",
+            key: "/members-only",
+            icon: "group",
+            slug: "members-only"
+        },
     ]},
     {label: "Topics", key: "topics", items: [
 
     ]},
     {label: "Help", key: "help", items: [
-        { name: "Search",url:"/search/?q=", key: "/search", icon: "search" },
-        { name: "FQA",url:"/faq", key: "/faq", icon: "help" }]}
+        {
+            name: "Search",
+            url:"/search/?q=",
+            key: "/search",
+            icon: "search",
+            slug: "search"
+        },
+        {
+            name: "FQA",url:"/faq", key: "/faq", icon: "help" ,
+            slug: 'faq'
+        }]}
 ];
 
 export const defaultUserImg = "https://d2gcv4sxt84gxu.cloudfront.net/assets/default-user-avatars-original-d5efadcf497ea7b3d86c6f8d148d66633a29ce78fa8391af628adf32d9989354.png";
