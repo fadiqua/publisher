@@ -1,8 +1,11 @@
+// npm packages
+import punycode from 'punycode';
 import React, { Component } from 'react';
 import draftToHtml from 'draftjs-to-html';
 import { convertToRaw,  EditorState, ContentState } from 'draft-js';
 import htmlToDraft from 'html-to-draftjs';
 import { Editor } from 'react-draft-wysiwyg';
+// project files
 import uploadImageCallBack from '../../utils/uploadImageCallBack';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import './WysiwygEditor.scss';
@@ -14,6 +17,14 @@ export function importHTML(html){
     const contentState = ContentState.createFromBlockArray(contentBlocks);
     return EditorState.createWithContent(contentState);
 }
+function charCounter(editorState) {
+    const decodeUnicode = (str) => punycode.ucs2.decode(str); // func to handle unicode characters
+    const plainText = editorState.getCurrentContent().getPlainText('');
+    const regex = /(?:\r\n|\r|\n)/g;  // new line, carriage return, line feed
+    const cleanString = plainText.replace(regex, '').trim();  // replace above characters w/ nothing
+    return decodeUnicode(cleanString).length;
+};
+
 class WysiwygEditor extends Component{
     constructor(props){
         super(props);
@@ -34,11 +45,11 @@ class WysiwygEditor extends Component{
         return draftToHtml(convertToRaw(cont.getCurrentContent()))
     }
 
-    onEditorStateChange = ( editorContent) => {
+    onEditorStateChange (editorContent) {
         this.setState({
             editorContent,
         });
-        this.props.onChange(this.getEditorHTML(editorContent))
+        this.props.onChange(this.getEditorHTML(editorContent), charCounter(editorContent))
     };
 
 
@@ -62,15 +73,6 @@ class WysiwygEditor extends Component{
                         onEditorStateChange={this.onEditorStateChange.bind(this)}
                         toolbar={{
                             image: { uploadCallback: uploadImageCallBack },
-                            // options: ['inline', 'blockType'],
-                            // inline: {
-                            //     options: ['bold', 'italic', 'underline', 'strikethrough', 'monospace'],
-                            //     bold: { className: 'bordered-option-classname' },
-                            //     italic: { className: 'bordered-option-classname' },
-                            //     underline: { className: 'bordered-option-classname' },
-                            //     strikethrough: { className: 'bordered-option-classname' },
-                            //     code: { className: 'bordered-option-classname' },
-                            // },
                             blockType: {
                                 className: 'bordered-option-classname',
                             },

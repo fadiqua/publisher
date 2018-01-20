@@ -1,27 +1,15 @@
-import React, { Component } from 'react';
-// import { Parser } from 'html-to-react'
-import { Link } from 'react-router-dom';
-import classNames from 'classnames';
-import { isRtl } from '../../../utils/functions';
+import React, { PureComponent } from 'react';
 
-// const htmlToReact = new Parser();
-
-class StoryShortDetails extends Component {
+class StoryShortDetails extends PureComponent {
 
     render() {
-        const { content, title } = this.props;
+        const { description, title } = this.props;
         return (
             <div>
-                <div className={classNames("title",{
-                    'rtl': isRtl(title || '')
-                })}>
-                    <h1>{title}</h1>
+                <div className={'title'}>
+                    <h1 dir="auto">{title}</h1>
                 </div>
-                <div className={classNames("desc",{
-                    'rtl': isRtl(title || '')
-                })}>
-                    {/*{htmlToReact.parse(content)}*/}
-                </div>
+                <div dir="auto">{description}</div>
             </div>
         )
     }

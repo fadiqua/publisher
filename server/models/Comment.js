@@ -24,7 +24,7 @@ const commentSchema = new Schema({
         type: Schema.ObjectId, ref:'User'
     },
     _story: {
-        type: Schema.ObjectId, ref:'Post'
+        type: Schema.ObjectId, ref:'Story'
     },
     repliesCount: { type: Number, default: 0, min:0, integer: true },
     _parent: { type: Schema.ObjectId, ref:'Comment' },
@@ -64,7 +64,7 @@ const autoPopulateCreator = function(next) {
 // });
 commentSchema.pre('findById', autoPopulateCreator);
 commentSchema.pre('find', autoPopulateCreator);
-commentSchema.pre('findByIdAndUpdate', function () {
+commentSchema.pre('findByIdAndUpdate', function (next) {
     if(this.repliesCount < 0) {
         this.repliesCount = 0;
     }

@@ -17,33 +17,58 @@ const storyFields = {
     "createdAt": 1,
     "cover": 1,
     "_likes": 1,
-}
-storyController.post =  (req, res) => {
-    const { title, content, link, tags, cover, topicId, userId } = req.body;
+};
 
-    const story = new db.Story({
-        title, content, link,tags, cover,
-        _topic: topicId, _creator: userId
-    });
 
-    story.save().then(newStory => {
-        db.Story.populate(newStory, {
+storyController.post =  async (req, res) => {
+    const {
+        title, description, content,
+        count, tags, cover, topicId
+    } = req.body;
+    try {
+        if(!title || title.length < 8 || title.length > 100) {
+            throw new Error('Title must be between 8 and 100 characters.');
+        }
+        else if (!description || description.length < 20 || description.length > 240 ) {
+            throw new Error('Description must be between 20 and 240 characters.');
+        }
+        else if (!content || content.length < 5){
+            throw new Error('Content must be between 20 and 240 characters.');
+        }
+        else if (!cover) {
+            throw new Error('Cover is required');
+        }
+        else if (!tags || !tags.length) {
+            throw new Error('Tags is required');
+        }
+        else if (!topicId) {
+            throw new Error('Topic is missing');
+        }
+
+        const story = new db.Story({
+            title, content, count,
+            tags, cover, description,
+            _topic: topicId,
+            _creator: req.user.id
+        });
+        let newStory = await story.save();
+        newStory = await db.Story.populate(newStory, {
             path: '_topic',
             select: '-_id -icon'
-        }).then(ns => {
-            res.status(200).json({
-                success: true,
-                story: ns
-            })
-        })
-
-    }).catch(err => {
+        });
+        res.status(201).json({
+            success: true,
+            story: newStory
+        });
+    } catch (err) {
         res.status(500).json({
             success: false,
-            error: err
+            message: err.message
         })
-    })
+    }
+
 };
+
 storyController.get = async (req, res) => {
     const { user } = req;
     try {
@@ -64,7 +89,8 @@ storyController.get = async (req, res) => {
         })
     }
 
-}
+};
+
 storyController.getById = async (req, res) => {
     try {
         const { id } = req.params;
@@ -80,7 +106,8 @@ storyController.getById = async (req, res) => {
         })
     }
 
-}
+};
+
 storyController.getAll = async (req, res) => {
     try {
         const stories = await db.Story.find({}).populate({
@@ -98,6 +125,7 @@ storyController.getAll = async (req, res) => {
         })
     }
 };
+
 storyController.getHomePageData = async (req, res) => {
     const topics = await db.Topic.find({});
     const params = {};
@@ -111,6 +139,7 @@ storyController.getHomePageData = async (req, res) => {
         stories: data
     });
 };
+
 storyController.getStoriesByTopic = async (req, res) => {
     const { topic, page=1, sortby } = req.query;
     let stories;

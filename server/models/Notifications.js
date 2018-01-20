@@ -17,7 +17,7 @@ const notificationsSchema = new Schema({
         type: String,
     },
     _parentTarget: {
-        type: Schema.ObjectId, ref:'Post'
+        type: Schema.ObjectId, ref:'Story'
     },
     _target: String,
     isRead: {

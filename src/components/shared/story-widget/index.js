@@ -24,7 +24,10 @@ export class Story extends Component {
                     </Col>
                     <Col  lg={{ span: first ? 9: 24}} md={{ span: 24}} className="-details">
                         <Link to={`/topics/${item._topic.name}/story/${item.slug}`} className="post-short-details">
-                            <PostShortDetails link={`/topics/${item._topic.name}/story/${item.slug}`} title={item.title} content={item.content}/>
+                            <PostShortDetails
+                                link={`/topics/${item._topic.name}/story/${item.slug}`}
+                                title={item.title} description={item.description}
+                            />
                         </Link>
                         <StoryWriter
                             user={item._creator}

@@ -1,8 +1,9 @@
+// npm packages
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { message } from 'antd';
 import { Editor, EditorState, convertToRaw } from 'draft-js';
-
+// project files
 import ScrollToTopOnMount from '../shared/ScrollToTopOnMount';
 import StoryWriter from '../shared/story-widget/StoryWriter';
 import StoryCover from '../shared/story-widget/StoryCover';

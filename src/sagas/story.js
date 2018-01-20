@@ -12,20 +12,6 @@ import {
 } from '../routes';
 import * as actions from '../actions/actionTypes';
 
-export function* createStoryAsync(action) {
-    try {
-        const response = yield call(createStory, action.payload);
-        yield put({ type: actions.createStorySuccess, payload: response.data.story });
-        yield put({type: actions.clearCreatedStory});
-    } catch (e) {
-        console.log('error', e)
-    }
-}
-
-export function* watchCreateStory() {
-    yield takeEvery(actions.createStory, createStoryAsync)
-}
-
 // ---------------------------------------------------------------------------
 export function* fetchStoryAsync(action) {
     try {

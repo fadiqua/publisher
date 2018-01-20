@@ -11,8 +11,8 @@ export function slugify(str){
         .replace(/\-\-+/g, '-');        // Replace multiple - with single -
 }
 
-export function avgWordsPerMin(txt) {
-    return Math.floor(txt.length/250);
+export function avgWordsPerMin(count) {
+    return Math.ceil(count/250);
 }
 
 export function base64Encode(file) {

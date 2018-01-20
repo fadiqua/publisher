@@ -1,10 +1,11 @@
-import storyController from '../controllers/storyController';
 // import passport from 'passport';
-import { asyncMiddleware } from '../services';
+import storyController from '../controllers/storyController';
+import { jwtAuth, asyncMiddleware } from '../services';
 
 // const requireAuth =  passport.authenticate('jwt',{session:false});
+
 function story(routes) {
-    routes.post("/story", storyController.post);
+    routes.post("/story", jwtAuth, asyncMiddleware(storyController.post));
     routes.get("/popular", asyncMiddleware(storyController.getPopularStories));
     routes.get("/story/:slug", asyncMiddleware(storyController.get));
     routes.get("/story/id/:id", asyncMiddleware(storyController.getById));

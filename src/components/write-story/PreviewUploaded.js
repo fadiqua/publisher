@@ -24,11 +24,15 @@ class PreviewUploaded extends Component {
                     </div>
 
                 </div>}
-                <Modal visible={previewVisible}
-                       footer={null}
-                       style={{ top: '20px' }}
-                       onCancel={this.handleCancel}>
-                    <img alt="example" style={{ width: '100%' }} src={`/media/${image}`} />
+                <Modal
+                    visible={previewVisible}
+                    footer={null}
+                    onCancel={this.handleCancel}
+                    wrapClassName="preview-modal"
+                >
+                    <img alt="example"
+                         style={{ width: '100%' }}
+                         src={`/media/${image}`} />
                 </Modal>
             </div>
         )

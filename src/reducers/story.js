@@ -4,10 +4,6 @@ import initialState from './initialState';
 import * as actions from '../actions/actionTypes';
 
 const storyReducer = createReducer({
-    [actions.createStory]: (state) => ({...state, loading: true}),
-    [actions.createStorySuccess]: (state, payload) => ({...state, loading: false, created: true,
-        createdStory: payload}),
-    [actions.createStoryFailed]: (state) => ({...state, loading: false, createdStory: undefined}),
     [actions.fetchStory]: (state) => ({...state, loading: true}),
     [actions.fetchStorySuccess]: (state, payload) => ({...state, loading: false, currentStory: payload}),
     [actions.clearCreatedStory]: (state) => initialState.story,

@@ -1,21 +1,28 @@
 import mongoose , { Schema } from 'mongoose';
 import mongoosePaginate from 'mongoose-paginate';
 import paginateRecords from '../plugins/paginateRecords';
-import {stripTags, avgWordsPerMin } from '../utils/functions';
+import { avgWordsPerMin } from '../utils/functions';
 import slugify from 'slugify';
+import arslugify from 'arslugify';
 
 const storySchema = new Schema({
     title: {
         type: String,
         required: true,
-        minlength: [5, 'title must be 5 characters or more.'],
+        minlength: [8, 'Title at least 8 characters or more.'],
+        maxlength: [100, 'Title exceeds 100 characters'],
+        trim: true
     },
     slug: {
         type: String,
-
+        unique: true
     },
-    link: {
+    description: {
         type: String,
+        required: true,
+        minlength: [20, 'description at least 20 characters or more.'],
+        maxlength: [240, 'description exceeds 240 characters'],
+        trim: true
     },
     content: {
         type: String,
@@ -23,10 +30,6 @@ const storySchema = new Schema({
         minlength: [5, 'content must be 5 characters or more.'],
     },
     isDeleted: {
-        type: Boolean,
-        default: false
-    },
-    isDraft: {
         type: Boolean,
         default: false
     },
@@ -40,11 +43,16 @@ const storySchema = new Schema({
     },
     tags: [String],
     _topic: {
+        type: Schema.ObjectId,
+        ref: 'Topic',
         required: true,
-        type: Schema.ObjectId, ref: 'Topic'
+    },
+    count: {
+        type: Number
     },
     readTime: {
-      type: Number
+        type: Number,
+        default: 1
     },
     _creator: {
         required: true,
@@ -54,17 +62,11 @@ const storySchema = new Schema({
         type: Boolean,
         default: false
     },
-    draft: {
-        type: Boolean,
-        default: false
-    },
     _comments: [{ type: Schema.ObjectId, ref:'Comment' }],
     _likes: [{ type: Schema.ObjectId, ref:'Like' }]
 }, { toJSON: { virtuals: true }});
 
 storySchema.index({title: 'text', content:'text', tags: 'text'});
-
-// storySchema.statics.paginateRecords =
 
 storySchema.virtual('commentsCount').get(function () {
     const commentsCount = this._comments.length;
@@ -94,17 +96,44 @@ storySchema.plugin(mongoosePaginate);
 
 storySchema.plugin(paginateRecords);
 
-storySchema.pre('save', function (next) {
+storySchema.pre('save', async function (next) {
     const story = this;
-    story.slug = slugify(story.title);
-    story.readTime = avgWordsPerMin(stripTags(story.content));
-    next();
+    try {
+        const generatedSlug = await story.generateUniqueSlug(story.title);
+        story.slug = generatedSlug;
+        story.readTime = avgWordsPerMin(story.count);
+        next();
+    } catch (err) {
+        console.log('error:slug ', err.message)
+    }
+
 });
 
 storySchema.pre('findOne', autoPopulate);
 
 storySchema.pre('find', autoPopulate);
 
-const Story = mongoose.model('Post', storySchema);
+storySchema.methods.generateUniqueSlug = async function (title) {
+    const Story =  mongoose.model('Story');
+    let slug = slugify(title);
+    if(!slug) slug = arslugify(title);
+    return new Promise( async (resolve, reject) => {
+        const generate = async slug => {
+            const exists = await Story.findOne({ slug });
+            if(exists !== null) {
+                generate(`${slug}-${Math.floor(Math.random()*10 + 1)}`)
+            } else {
+                resolve(slug)
+            }
+        };
+        try {
+            generate(slug.toLowerCase())
+        } catch (err) {
+            reject(err)
+        }
+    });
+};
+
+const Story = mongoose.model('Story', storySchema);
 
 export default Story;

@@ -55,7 +55,7 @@ class Navbar extends Component {
             return (
                 <Menu.Item key="2" className="write-article-link">
                     <Tooltip placement="bottomLeft" title="Publish and share your story with others">
-                        <NavLink to="/write-story">Write article...</NavLink>
+                        <NavLink to="/write-story">Write story...</NavLink>
                     </Tooltip>
                 </Menu.Item>
             )

@@ -33,25 +33,6 @@ export function sanitize(dirty) {
 export function stripTags(str, split) {
     return str.replace(/(<([^>]+)>)/ig, split || "");
 }
-export function isRtl(str) {
-    return str.match(/[\u0600-\u06FF]+/g)
-}
-// export function renderHTMLString(text) {
-//     let textArray = stripTags(text, ',').split(',').filter(tag => tag.trim().length > 0);
-//     const ltrP = `<p>`;
-//     const rtlP = `<p style='direction: rtl'>`;
-//     const endP = `</p>`;
-//     let renderedText='';
-//     textArray.map(item => {
-//         if(!item.match(/[\u0600-\u06FF]+/g)){
-//             renderedText+= `${ltrP} ${item} ${endP}`
-//         } else {
-//             renderedText+= `${rtlP} ${item} ${endP}`
-//         }
-//     })
-//     const htmlToReactParser = new Parser();
-//     return htmlToReactParser.parse(renderedText)
-// }
 
 export function importHTMLToDraft(html){
     let blocksFromHTML = htmlToDraft(html);

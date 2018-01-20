@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "antd": "^3.1.3",
+    "arslugify": "^1.0.1",
     "autoprefixer": "7.1.6",
     "axios": "^0.17.1",
     "babel-core": "6.26.0",
