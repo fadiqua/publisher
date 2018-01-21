@@ -49,8 +49,8 @@ export function fetchHomePageData() {
 }
 
 // users -------------------------------------
-export function getUserById(id) {
-    return axios.get(`/api/user/${id}`)
+export function getUserByUsername(username) {
+    return axios.get(`/api/user/${username}`)
 }
 
 export function getProfileStories(username, page) {

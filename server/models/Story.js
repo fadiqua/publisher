@@ -62,7 +62,7 @@ const storySchema = new Schema({
         type: Boolean,
         default: false
     },
-    _comments: [{ type: Schema.ObjectId, ref:'Comment' }],
+    _comments: [{ type: Schema.ObjectId, ref:'Response' }],
     _likes: [{ type: Schema.ObjectId, ref:'Like' }]
 }, { toJSON: { virtuals: true }});
 

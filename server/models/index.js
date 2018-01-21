@@ -2,7 +2,7 @@ import User from './User';
 import LocalAuth from './LocalAuth';
 import SocialAuth from './SocialAuth';
 import Story from './Story';
-import Comment from './Comment';
+import Response from './Response';
 import Topic from './Topic';
 import Follow from './Follow';
 import Notifications from './Notifications';
@@ -13,7 +13,7 @@ export default {
     LocalAuth,
     SocialAuth,
     Story,
-    Comment,
+    Response,
     Topic,
     Follow,
     Notifications,

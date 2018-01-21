@@ -2,7 +2,7 @@
 import { put, call, takeEvery } from 'redux-saga/effects'
 // project files
 import {
-    getUserById,
+    getUserByUsername,
     getProfileStories,
     getProfileResponses
 } from '../routes';
@@ -10,7 +10,7 @@ import * as actions from '../actions/actionTypes';
 
 export function* fetchProfileAsync(action) {
     try {
-        const response = yield call(getUserById, action.payload);
+        const response = yield call(getUserByUsername, action.payload);
         yield put({type: actions.fetchProfileSuccess, payload: response.data.user})
     } catch (e) {
         yield put({type: actions.fetchProfileError})
@@ -27,7 +27,8 @@ export function* fetchProfileStoriesAsync (action) {
     try {
         const response = yield call(getProfileStories, username, page);
         yield put({ type: actions.fetchProfileStoriesSuccess, payload: {
-            data:  response.data, type: type || null }})
+            data:  response.data, type: type || null }
+        })
     } catch (e) {
 
     }

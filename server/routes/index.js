@@ -1,7 +1,7 @@
 import express from 'express';
 import user from './user';
 import story from './story';
-import comment from './comment';
+import response from './response';
 import topic from './topic';
 import uploads from './uploads';
 import notifications from './notifications';
@@ -11,7 +11,7 @@ import generic from './generic';
 const routes = express();
 user(routes);
 story(routes);
-comment(routes);
+response(routes);
 topic(routes);
 uploads(routes);
 notifications(routes);

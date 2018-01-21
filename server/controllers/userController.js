@@ -96,11 +96,11 @@ userController.socialLogin = async (req, res) => {
 };
 
 
-userController.getUserById = async (req, res) => {
-    const { id } = req.params;
+userController.getUserByUsername = async (req, res) => {
+    const { username } = req.params;
     try {
-        const user = await db.User.findById(id);
-        const topStories = await db.Story.find({_creator: id,})
+        const user = await db.User.findOne({ username });
+        const topStories = await db.Story.find({_creator: user._id})
             // .sort({ '_likes.length': -1, '_comments.length': -1 })
             .limit(3);
         res.status(200).json({
@@ -198,14 +198,14 @@ userController.updateProfile = async (req, res) => {
 };
 
 userController.getUserStories = async (req, res)  => {
-    const { id } = req.params;
+    const { username } = req.params;
     const { page } = req.query;
     try {
+        const user = await db.User.findOne({ username });
         const stories = await db.Story
             .paginate({
-                    _creator: id,
+                    _creator: user._id,
                     isDeleted: false,
-                    isDraft: false,
                     membersOnly: false
                 },
                 {

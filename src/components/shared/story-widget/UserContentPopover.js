@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Popover } from 'antd';
 import UserAvatar from '../../shared/UserAvatar';
 import FollowButton from '../FollowButton';
-import { getUserById } from '../../../routes';
+import { getUserByUsername } from '../../../routes';
 import timeSince from '../../../utils/timeSince';
 import { formatNumber } from '../../../utils/functions';
 
@@ -22,19 +22,20 @@ class UserContentPopover extends Component {
         this.setState({ visible });
     };
 
-    fetchUserData = () => {
+    fetchUserData = async () => {
         if(this.state.fetching ) {
             const { user} = this.props;
-            getUserById(user._id)
-                .then(result => {
-                    this.setState({
-                        fetching: false, visible: true,
-                        userProfile: result.data.user,
-                        topStories: result.data.topStories,
-                    });
-                }).catch(error => {
-                this.setState({fetching: false, error})
-            })
+            try {
+                const { data } = await  getUserByUsername(user.username);
+
+                this.setState({
+                    fetching: false, visible: true,
+                    userProfile: data.user,
+                    topStories: data.topStories,
+                });
+            } catch (err) {
+                this.setState({ fetching: false, visible: false })
+            }
         }
     };
 
@@ -64,7 +65,7 @@ class UserContentPopover extends Component {
         const contentPopover = (
             <div className="-content">
                 <div className="clearfix">
-                    <Link to={`/profile/${userProfile._id}`} className="pull-right">
+                    <Link to={`/profile/${userProfile.username}`} className="pull-right">
                         <UserAvatar type="circle"
                                     width="80px"
                                     height="80px"
@@ -72,7 +73,11 @@ class UserContentPopover extends Component {
                                     imgSrc={userProfile.picture}/>
                     </Link>
                     <div className="pull-left user-data" style={{marginRight: "15px"}}>
-                        <h2 className="text-capitalize"><Link to={'/'}>{userProfile.displayName}</Link></h2>
+                        <h2 className="text-capitalize">
+                            <Link to={`/profile/${userProfile.username}`}>
+                                {userProfile.displayName}
+                                </Link>
+                        </h2>
                         {userDesc}
                     </div>
                 </div>

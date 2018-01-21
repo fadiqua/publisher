@@ -20,6 +20,7 @@ import './index.scss';
 const { Header } = Layout;
 
 class Navbar extends Component {
+
     constructor(){
         super();
         this.state = {
@@ -82,7 +83,7 @@ class Navbar extends Component {
         if(auth.isAuthenticated){
             return (
             <Menu.Item key="5" className="pull-right">
-                <NavLink to={`/profile/${auth.currentUser._id}`} title="profile">
+                <NavLink to={`/profile/${auth.currentUser.username}`} title="profile">
                     <UserAvatar prefix="/media/thumbs/" imgSrc={auth.currentUser.thumbnail} type="circle" width="35px" height="35px"/>
                 </NavLink>
             </Menu.Item>

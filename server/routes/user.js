@@ -10,8 +10,8 @@ function user(routes) {
     routes.post("/signup", asyncMiddleware(userController.localSignup));
     routes.put("/user", jwtAuth, asyncMiddleware(userController.updateProfile));
     routes.get("/user/me", asyncMiddleware(userController.getMe));
-    routes.get("/user/:id", asyncMiddleware(userController.getUserById));
-    routes.get("/user/:id/stories", asyncMiddleware(userController.getUserStories));
+    routes.get("/user/:username", asyncMiddleware(userController.getUserByUsername));
+    routes.get("/user/:username/stories", asyncMiddleware(userController.getUserStories));
     routes.post("/follow", jwtAuth, userController.followUser);
     routes.get("/followers/:id", userController.getFollowers);
     routes.get("/followings/:id", userController.getFollowings);

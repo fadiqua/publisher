@@ -52,7 +52,7 @@ export const routes = [
         ]
     },
     {
-        path: '/profile/:id',
+        path: '/profile/:username',
         component: Profile,
         routes: [
             {

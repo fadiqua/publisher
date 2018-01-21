@@ -133,13 +133,14 @@ commentController.update = (req, res) => {
 };
 
 commentController.getUserResponses = async (req, res) => {
-    const { userId } = req.params;
+    const { username } = req.params;
     const { page } = req.query;
     try {
+        const user = await db.User.findOne({ username });
         const responses = await db.Comment
             .paginate(
                 {
-                    _creator: userId,
+                    _creator: user._id,
                     isDeleted: false,
                 },
                 {

@@ -1,7 +1,7 @@
-import moment from 'moment';
+// npm packages
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Popover } from 'antd';
+// project files
 import UserContentPopover from './UserContentPopover';
 import UserAvatar from '../UserAvatar';
 import FollowButton from '../FollowButton';
@@ -11,7 +11,7 @@ import './StoryWriter.scss';
 const StoryWriter = ({ width,height, user, readTime, createdAt, withFollow }) => (
     <div className="post-writer clearfix">
         <UserContentPopover user={user}>
-            <Link to={`/profile/${user.id}`}>
+            <Link to={`/profile/${user.username}`}>
                 <UserAvatar prefix="/media/thumbs/" type="circle"
                             width={width}
                             height={height}
@@ -21,7 +21,7 @@ const StoryWriter = ({ width,height, user, readTime, createdAt, withFollow }) =>
         <div className="writer-name">
             <div className="inline-block" style={{marginRight: "15px"}}>
                 { user && <UserContentPopover user={user}>
-                    <Link to={`/profile/${user.id}`}>
+                    <Link to={`/profile/${user.username}`}>
                         <strong className="text-capitalize">{ user.displayName }</strong>
                     </Link>
                 </UserContentPopover>}

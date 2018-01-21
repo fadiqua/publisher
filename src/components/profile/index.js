@@ -13,15 +13,15 @@ class Profile extends Component {
 
     componentDidMount(){
         const { params } = this.props.match;
-        this.props.fetchProfile(params.id);
+        this.props.fetchProfile(params.username);
         window.scroll(0,0)
     }
 
     // When the profile url change
-    componentWillReceiveProps(nextProps) {
-        const { params } = nextProps.match;
-        if(this.props.match.params.id !== params.id){
-            this.props.fetchProfile(params.id);
+    componentWillReceiveProps({ match: { params } }) {
+        const { username } = this.props.match.params;
+        if(username!== params.username){
+            this.props.fetchProfile(params.username);
         }
     }
 
@@ -30,9 +30,9 @@ class Profile extends Component {
         const selectedTap = location.pathname.split('/')[3] || 'stories';
         return (
             <div className="user-profile base-sec">
-                <UserHeader id={params.id}/>
+                <UserHeader id={params.username}/>
                 <div className="profile-content">
-                    <BrowsableTaps user={params.id} selectedTap={selectedTap}/>
+                    <BrowsableTaps user={params.username} selectedTap={selectedTap}/>
                 </div>
                 <Switch>{renderRoutes(this.props.routes)}</Switch>
             </div>
