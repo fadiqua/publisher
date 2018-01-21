@@ -1,3 +1,4 @@
+import decode from 'jwt-decode';
 import React from 'react';
 import { Route, Redirect, Switch } from 'react-router-dom';
 
@@ -15,6 +16,7 @@ import Notifications from '../components/notifications';
 import Tag from '../components/tag';
 import NotFound from '../components/NotFound';
 import NotifictionRedirect from '../components/NotifictionRedirect';
+import store from '../store';
 
 /**
  * Routes configuration Array
@@ -24,8 +26,10 @@ export const routes = [
         exact: true,
         component: Home
     },
-    { path: '/write-Story',
-        component: WriteStory
+    {
+        path: '/write-Story',
+        component: WriteStory,
+        requireAuth: true
     },
     { path: '/popular',
         component: Popular
@@ -94,15 +98,24 @@ export const routes = [
  * test if the route is requiredAuth and the user is Authenticated, then decide
  * how the user will navigate.
  */
-export const CustomRoute = ({ component: Component,key, requireAuth, routes, ...rest }) => {
-    let isAuth = true; // to implement private routes
-    // store.subscribe(()=>{
-    //     isAuth = store.getState().auth.authenticated;
-    // })
+const isAuthenticated = () => {
+    const token = localStorage.getItem('token');
+    // const refreshToken = localStorage.getItem('refreshToken');
+    try {
+        decode(token);
+        // decode(refreshToken);
+    } catch (err) {
+        return false;
+    }
+    return true;
+};
+
+export const CustomRoute = ({ component: Component, key, requireAuth, routes, ...rest }) => {
+    const isAuth = isAuthenticated();
     return (
         <Route {...rest} key={key} render={props => (
             requireAuth && !isAuth ? (
-                <Redirect to={{pathname: '/sigin', state: { from: props.location }}}/>
+                <Redirect to={{pathname: '/', state: { from: props.location }}}/>
             ) : (
                 <Component  {...props} routes={routes} onEnter={console.log('enter')}/>
             )
@@ -115,9 +128,5 @@ export const CustomRoute = ({ component: Component,key, requireAuth, routes, ...
  * @returns: rendered routes with CustomRoute component
  */
 export const renderRoutes = (routes) => {
-    return routes ? (
-        <Switch>
-            {routes.map((route,i)=>CustomRoute({...route,key:i}))}
-        </Switch>
-    ):null;
+    return routes && routes.map((route, i)=> CustomRoute({...route, key: i }))
 };

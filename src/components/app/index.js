@@ -1,18 +1,20 @@
 // npm packages
 import { bindActionCreators } from 'redux';
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
+import { Switch, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 // project files
-import { getMe } from '../../routes';
+import SiderMenu from '../shared/sider-menu';
+import Navbar from '../shared/nav-bar';
+import { renderRoutes, routes } from '../../routes'
+
 import {
     siderCollapsed,
     isMobile,
-    autoLogin,
-    loginFailed
 } from '../../actions/actionTypes';
 
-class AppContent extends Component {
+class AppContent extends PureComponent {
 
     constructor(){
         super();
@@ -32,15 +34,6 @@ class AppContent extends Component {
         }
     }
 
-    async componentDidMount() {
-        try {
-            const result = await getMe();
-            this.props.autoLogin({ ...result.data.me, fromToken: true });
-        } catch (err) {
-            this.props.loginFailed()
-        }
-    }
-
     componentWillUnmount() {
         if (this.mql) {
             this.mql.removeListener(this.responsiveHandler);
@@ -49,15 +42,23 @@ class AppContent extends Component {
     }
 
     render() {
-        const { children,  screenSize:{collapsed, mobile}} = this.props;
-
+        const { loading, screenSize:{collapsed, mobile}} = this.props;
+        if (loading) return <div />;
         return (
-            <div className={ classNames(
-                'page-content',
-                { 'm-l-70': collapsed && !mobile},
-                {'m-l-0': mobile})}>
+            <div className="body-content">
+                <SiderMenu/>
                 <div>
-                    { children }
+                    <Navbar />
+                    <div className={ classNames(
+                        'page-content',
+                        { 'm-l-70': collapsed && !mobile},
+                        {'m-l-0': mobile})}>
+                        <div>
+                            <Switch>
+                                {renderRoutes(routes)}
+                            </Switch>
+                        </div>
+                    </div>
                 </div>
             </div>
         )
@@ -76,13 +77,11 @@ class AppContent extends Component {
     }
 }
 
-const mapState = ({ auth:{ currentUser},screenSize }) => ({ currentUser,screenSize });
+const mapState = ({ auth:{ loading, currentUser},screenSize }) => ({ loading, currentUser,screenSize });
 
 const mapDispatch = dispatch => bindActionCreators({
     siderCollapsed ,
     isMobile,
-    autoLogin,
-    loginFailed
 }, dispatch);
 
-export default connect(mapState, mapDispatch)(AppContent)
+export default withRouter(connect(mapState, mapDispatch)(AppContent))

@@ -33,10 +33,12 @@ class WysiwygEditor extends Component{
         };
         this.onEditorStateChange = this.onEditorStateChange.bind(this);
     }
+
     componentDidMount(){
-        if(this.props.editorValue){
+        const { editorValue } = this.props;
+        if(editorValue){
             this.setState({
-                editorContent: importHTML(this.props.editorValue),
+                editorContent: importHTML(editorValue),
             });
         }
     }

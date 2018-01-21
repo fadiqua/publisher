@@ -11,8 +11,7 @@ import SignupModal from '../../signin/SignupModal';
 import UserAvatar from '../UserAvatar';
 import Notifications from './Notifications';
 import SearchInput from './SearchInput';
-import LoadingSegment from '../LoadingSegmant';
-import {toggleSignin, siderCollapsed, isMobile} from '../../../actions/actionTypes';
+import {toggleSignin, siderCollapsed} from '../../../actions/actionTypes';
 import { login } from '../../../actions/actionTypes';
 import bigLogo from '../../../assets/publisher-logo.png';
 import smallLogo from '../../../assets/small-logo.png';
@@ -35,15 +34,7 @@ class Navbar extends Component {
 
     renderSignIn(){
         const { auth } = this.props;
-        if(auth.loading) {
-            const btnLoading = {
-                width: "75px",
-                height: "25px",
-                verticalAlign: "middle"
-            };
-            return <LoadingSegment style={btnLoading} />
-        }
-        else if(!auth.isAuthenticated){
+        if(!auth.isAuthenticated){
             return (
                 <Menu.Item key="1">
                     <Button type="primary"

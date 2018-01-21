@@ -10,8 +10,13 @@ export const initialState = {
         _id: null,
         username: null,
         email: null,
+        firstName: null,
+        lastName: null,
         displayName: null,
-        photoURL: null
+        picture: null,
+        permission: null,
+        thumbnail: null,
+        draft: null
     }
 };
 
@@ -19,15 +24,14 @@ const authReducer = createReducer({
     [actions.fetchUserFromSocial]: (state) => ({ ...state, loading: true }),
     [actions.autoLogin]: (state) => ({ ...state, loading: true }),
     [actions.loginFailed]: (state) => ({ ...state, loading: false }),
-    [actions.fetchUserSuccess]: (state, payload) => {
-        return {
-            isAuthenticated:true,
-            loading: false,
-            currentUser: payload
-        }
-    },
+    [actions.fetchUserSuccess]: (state, payload) => ({
+        isAuthenticated:true,
+        loading: false,
+        currentUser: payload
+    }),
     [actions.updateProfile]: (state, payload) => ({ ...state,
-        currentUser: { ...state.currentUser, ...payload }}),
+        currentUser: { ...state.currentUser, ...payload
+    }}),
     [actions.followUserSuccess]: (state, payload) => {
         if(state.isAuthenticated){
             const currentUser = followUser(state.currentUser, payload);

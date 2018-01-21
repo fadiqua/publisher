@@ -1,7 +1,4 @@
 import db from '../models/index';
-import mongoose from 'mongoose';
-
-// import fs from 'fs';
 
 const  storyController = {};
 
@@ -23,7 +20,8 @@ const storyFields = {
 storyController.post =  async (req, res) => {
     const {
         title, description, content,
-        count, tags, cover, topicId
+        count, tags, cover, topicId,
+        membersOnly
     } = req.body;
     try {
         if(!title || title.length < 8 || title.length > 100) {
@@ -48,17 +46,21 @@ storyController.post =  async (req, res) => {
         const story = new db.Story({
             title, content, count,
             tags, cover, description,
+            membersOnly,
             _topic: topicId,
             _creator: req.user.id
         });
         let newStory = await story.save();
-        newStory = await db.Story.populate(newStory, {
-            path: '_topic',
-            select: '-_id -icon'
-        });
+        const [ns] = await Promise.all([
+            db.Story.populate(newStory, {
+                path: '_topic',
+                select: '-_id -icon'
+            }),
+            db.User.findByIdAndUpdate(req.user.id, { draft: null })
+        ]);
         res.status(201).json({
             success: true,
-            story: newStory
+            story: ns
         });
     } catch (err) {
         res.status(500).json({

@@ -21,3 +21,16 @@
     }
   }
 }
+.write-article-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  > div:first-of-type {
+    flex-direction: row;
+    display: flex;
+    align-items: center;
+    .members-only {
+      margin: 0 16px;
+    }
+  }
+}

@@ -12,13 +12,17 @@ const userSchema = new Schema({
     thumbnail: String,
     picture: String,
     bio: String,
-    createdAt: {
-        type: Date,
-        default: Date.now
-    },
     permission: {
         type: String,
         default: 'writer'
+    },
+    draft: {
+        type: String,
+        default: ''
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now
     },
     _following: [{ type: Schema.ObjectId, ref:'User' }],
     _followers: [{ type: Schema.ObjectId, ref:'User' }]
@@ -34,7 +38,6 @@ userSchema.virtual('displayName').get(function () {
 ;
 userSchema.statics.generateUniqueUserName = async function ({ firstName, lastName }) {
     const User = this;
-    console.log('firstName ', firstName)
     let username = `${firstName.toLowerCase()}.${lastName.toLowerCase()}`;
     return new Promise( async (resolve, reject) => {
        const generate = async username => {
@@ -51,7 +54,8 @@ userSchema.statics.generateUniqueUserName = async function ({ firstName, lastNam
            reject(err)
        }
     })
-}
+};
+
 const User = mongoose.model('User', userSchema);
 
 export default User;

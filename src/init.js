@@ -1,9 +1,15 @@
 import hello from 'hellojs';
 
+import { getMe } from './routes';
 import * as actions from './actions/actionTypes';
 import { socialId, API_URL } from './utils/constants';
 
 export default (store) => {
+    getMe()
+        .then(result => store.dispatch(actions.autoLogin({
+            ...result.data.me, fromToken: true
+        })))
+        .catch(err => store.dispatch(actions.loginFailed()));
     hello.init({
         facebook: socialId.facebook,
         google: socialId.google

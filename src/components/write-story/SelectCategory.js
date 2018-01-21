@@ -13,6 +13,7 @@ class SelectCategory extends Component {
     }
 
     render(){
+        const { selectedTopic, loading } = this.props;
         return (
             <div className={`${this.props.className || ''}`}>
                 <Select
@@ -23,6 +24,7 @@ class SelectCategory extends Component {
                     optionFilterProp="children"
                     onChange={ this.props.onChange }
                     size="large"
+                    value={!loading ? selectedTopic: null }
                     filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}>
                     {this._renderTopics()}
                 </Select>

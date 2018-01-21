@@ -92,7 +92,7 @@ const responsesReducer = createReducer({
         ...state,
         selectedResponse: initialState.responses.selectedResponse
     }),
-    [actions.initResponses]: (state) => initialState.responses
+    [actions.initResponses]: (state) => initialState
 }, initialState);
 
 function responseLike(state, id, user, isLiked) {

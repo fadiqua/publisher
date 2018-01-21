@@ -1,5 +1,6 @@
 // npm packages
 import React, { Component } from 'react';
+import { Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { message } from 'antd';
 import { Editor, EditorState, convertToRaw } from 'draft-js';
@@ -38,7 +39,6 @@ class Article extends Component {
         this.props.initResponses();
         this.props.fetchStory({slug});
         this.onSubmitComment = this.onSubmitComment.bind(this);
-
     }
 
     componentWillReceiveProps(nextProps){
@@ -118,7 +118,11 @@ class Article extends Component {
                     { showResponsesBtn &&
                     <ShowComments loading= {responses.responseStatus === 'fetch'}
                                   onClick={this.onShowResponses}/> }
-                    {story.currentStory._id && renderRoutes(this.props.routes)}
+                    {story.currentStory._id &&
+                    <Switch>
+                        { renderRoutes(this.props.routes) }
+                    </Switch>
+                    }
                     {/*<CommentArea comments={responses}*/}
                                  {/*parent={story.currentStory._id}*/}
                                  {/*onDeleteResponse={this.props.deleteResponse}*/}

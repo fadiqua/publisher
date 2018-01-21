@@ -16,6 +16,7 @@ export function getMe() {
     return axios.get('/api/user/me');
 }
 
+
 // Notifications ----------------------------------
 export function getUnreadNotifCount() {
     return axios.get('/api/notifications/unread')

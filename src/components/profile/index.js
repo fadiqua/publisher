@@ -1,6 +1,8 @@
+// npm packages
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
+import { Switch } from 'react-router-dom';
+// project files
 import BrowsableTaps from './BrowsableTaps';
 import UserHeader from './UserHeader';
 import { renderRoutes } from '../../routes'
@@ -32,7 +34,7 @@ class Profile extends Component {
                 <div className="profile-content">
                     <BrowsableTaps user={params.id} selectedTap={selectedTap}/>
                 </div>
-                {renderRoutes(this.props.routes)}
+                <Switch>{renderRoutes(this.props.routes)}</Switch>
             </div>
         )
     }

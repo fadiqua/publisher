@@ -1,37 +1,57 @@
 // npm packages
 import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Input, Button, message } from 'antd';
+import { Input, Button, message, Checkbox  } from 'antd';
 // project files
 import WysiwygEditor from './WysiwygEditor';
 import TagBox from './TagBox';
 import SelectCategory from './SelectCategory';
 import UploadCover from './UploadCover';
 import { sanitize, slugify } from '../../utils/functions';
-import { createStory } from '../../routes';
+import { createStory, updateProfile } from '../../routes';
+import { updateProfile as updateProfileAction } from '../../actions/actionTypes';
 import './index.scss';
 
-class WriteStory extends Component{
+class WriteStory extends Component {
+
     constructor(props){
         super(props);
         this.state = {
             title: null,
             description: null,
-            // editorState: null,
-            // editorContent: null,
+            editorContent: null,
             selectedTopic: null,
             tags: [],
             uploadedCover: null,
-            loading: false
+            membersOnly: false,
+            loading: false,
         };
-        this.editorContent = null;
+        this.didMount = false;
         this.charactersCount = 0;
         this.onSelectChange = this._onSelectChange.bind(this);
         this.onTagsChange = this._onTagsChange.bind(this);
         this.onValueChange = this._onValueChange.bind(this);
+        this.submitStory = this._submitStory.bind(this);
+        this.saveDraft = this._saveDraft.bind(this);
         this.onUploadCoverChange = this.onUploadCoverChange.bind(this);
         this.onRemoveUploadCover = this.onRemoveUploadCover.bind(this);
     }
+
+    componentWillMount() {
+        const { draft } = this.props;
+        if(draft !== null) {
+            const draftData = JSON.parse(draft);
+            this.charactersCount = draftData.charactersCount;
+            this.fulFilledState(draftData);
+        }
+
+    }
+
+    fulFilledState(draft) {
+        delete draft.charactersCount;
+        this.setState(draft)
+    };
 
     _onSelectChange (selectedTopic) {
         this.setState({ selectedTopic })
@@ -42,17 +62,14 @@ class WriteStory extends Component{
     };
 
     _onValueChange (e) {
-        const { name, value } = e.target;
-        this.setState({ [name]: value })
-
+        const { name, value, checked } = e.target;
+        this.setState({ [name]: checked || value });
     };
 
-    onEditorChange = (editorState, count) => {
-        this.editorContent = editorState;
+    onEditorChange = (editorContent, count) => {
+        // i didn't put in the state to enhance rendering, so the cost is more complexity
+        this.setState({ editorContent });
         this.charactersCount = count;
-        // this.setState({editorState})
-        // this.setState({editorContent: editorState})
-        // console.log('onEditorChange')
     };
 
     onUploadCoverChange(uploadedCover){
@@ -65,29 +82,32 @@ class WriteStory extends Component{
         // }
     }
 
-    async submitStory () {
-        const errors = {};
+    async _submitStory () {
         const {
             title, description,
-            tags, uploadedCover, selectedTopic
+            tags, uploadedCover,
+            selectedTopic,
+            editorContent,
+            membersOnly
         } = this.state;
 
-        if(!title || !this.editorContent || tags.length === 0 || !uploadedCover || !selectedTopic){
+        if(!title || !editorContent || tags.length === 0 || !uploadedCover || !selectedTopic){
             message.error('All fields are required.')
         } else {
             const story = {
                 title: sanitize(title),
                 description: sanitize(description),
-                content: sanitize(this.editorContent),
+                content: sanitize(editorContent),
                 tags, cover: uploadedCover,
                 topicId: selectedTopic,
-                userId: this.props.currentUser._id,
-                count: this.charactersCount
+                count: this.charactersCount,
+                membersOnly
             };
             try {
-                this.toggleLoading()
+                this.toggleLoading();
                 const { data } = await createStory(story);
                 this.toggleLoading();
+                this.props.updateProfileAction({ draft: null });
                 this.props.history.push(`/topics/${slugify(data.story._topic.name)}/story/${data.story.slug}`)
             } catch (err) {
                 message.error(err.response.data.message);
@@ -96,15 +116,41 @@ class WriteStory extends Component{
         }
 
     }
+
+    async _saveDraft(){
+        try {
+            const draftStory = {
+                ...this.state,
+                loading: false,
+                charactersCount: this.charactersCount,
+            };
+            this.toggleLoading();
+            const { data } = await updateProfile({ draft: JSON.stringify(draftStory, null, -1)})
+            this.toggleLoading();
+            this.props.updateProfileAction(data.user)
+        } catch (err) {
+            console.log('error ', err)
+            this.toggleLoading();
+        }
+    }
+
     toggleLoading() {
         this.setState(prev => ({ loading: !prev.loading }))
     }
+
     render(){
-        const { loading } = this.state;
+        const {
+            loading, membersOnly,
+            title, description,
+            selectedTopic,
+            editorContent,
+            tags
+        } = this.state;
         return (
             <div>
                 <div className="write-title">
                     <Input
+                        value={title}
                         dir="auto"
                         placeholder="Story title"
                         type="text"
@@ -117,6 +163,7 @@ class WriteStory extends Component{
                 <br/>
                 <div className="write-title">
                     <Input.TextArea
+                        value={description}
                         dir="auto"
                         placeholder="Story short description"
                         onChange={ this.onValueChange }
@@ -128,13 +175,13 @@ class WriteStory extends Component{
                 <br/>
                 <WysiwygEditor
                     onChange={ this.onEditorChange }
-                    editorValue={this.state.editorContent}
+                    editorValue={editorContent}
                     readOnly={loading}
                 />
                 <br/>
                 <br/>
                 <TagBox
-                    tags={this.state.tags}
+                    tags={tags}
                     onChange={ this.onTagsChange }
                     limit={3}
                 />
@@ -145,22 +192,35 @@ class WriteStory extends Component{
                     removeUpload={this.onRemoveUploadCover}
                 />
                 <br/>
-                <div className="clearfix write-article-footer">
-                    <SelectCategory
-                        className="pull-left"
-                        onChange={this.onSelectChange }
-                    />
+                <div className="write-article-footer">
+                    <div>
+                        <SelectCategory
+                            selectedTopic={selectedTopic}
+                            onChange={this.onSelectChange }
+                        />
+                        <Checkbox
+                            disabled={loading}
+                            checked={membersOnly}
+                            size="large"
+                            onChange={this.onValueChange}
+                            name="membersOnly"
+                            className="members-only"
+                        >
+                            Members only
+                        </Checkbox>
+
+                    </div>
                     <div className="pull-right ctrl-btns">
                         <Button
-                            disable={loading}
+                            disabled={loading}
                             size={`large`}
-                            type={`default`} >
+                            type={`default`} onClick={this.saveDraft} >
                             Draft
                         </Button>
                         <Button
-                            disable={loading}
+                            disabled={loading}
                             size={`large`} type={`primary`}
-                            onClick={() => this.submitStory()} >
+                            onClick={this.submitStory} >
                             Publish
                         </Button>
                     </div>
@@ -170,4 +230,10 @@ class WriteStory extends Component{
     }
 }
 
-export default WriteStory;
+const mapState = ({ auth: { currentUser: { draft }}}) => ({ draft });
+
+const mapDispatch = dispatch => bindActionCreators({
+    updateProfileAction
+}, dispatch);
+
+export default connect(mapState, mapDispatch)(WriteStory);

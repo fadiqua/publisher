@@ -4,7 +4,7 @@ import { createReducer } from 'redux-act';
 import * as actions from '../actions/actionTypes';
 import { addItem, addMultipleItems, deleteItem, sortMapByDate } from '../utils/functions';
 
-export const initialState =  {
+export const initialState = {
     fetching: null,
     limit: 6,
     page: 1,
