@@ -60,7 +60,7 @@ export function getProfileStories(username, page) {
 }
 
 export function getProfileResponses(username, page) {
-    return axios.get(`/api/comment/${username}/stories`, {
+    return axios.get(`/api/user/${username}/responses`, {
         params: { page }
     })
 }

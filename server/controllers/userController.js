@@ -227,6 +227,38 @@ userController.getUserStories = async (req, res)  => {
     }
 }
 
+userController.getUserResponses = async (req, res) => {
+    const { username } = req.params;
+    const { page } = req.query;
+    try {
+        const user = await db.User.findOne({ username });
+        const responses = await db.Response
+            .paginate(
+                {
+                    _creator: user._id,
+                    isDeleted: false,
+                },
+                {
+                    sort: {
+                        createdAt: -1
+                    },
+                    populate: '_story',
+                    page: page || 1,
+                    limit: 6
+                });
+        res.status(200).json({
+            success: true,
+            ...responses
+        })
+    } catch (e) {
+        res.status(500).json({
+            success: false,
+            error: e.message
+        })
+    }
+
+};
+
 userController.getFollowers = async (req, res) => {
     const { id } = req.params;
     const { page } = req.query;
@@ -244,7 +276,8 @@ userController.getFollowers = async (req, res) => {
             error: e.message
         })
     }
-}
+};
+
 userController.getFollowings = async (req, res) => {
     const { id } = req.params;
     const { page } = req.query;

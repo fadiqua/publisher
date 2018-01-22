@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Input, Button, message, Checkbox  } from 'antd';
+import DocumentTitle from 'react-document-title';
 // project files
 import WysiwygEditor from './WysiwygEditor';
 import TagBox from './TagBox';
@@ -147,85 +148,87 @@ class WriteStory extends Component {
             tags
         } = this.state;
         return (
-            <div>
-                <div className="write-title">
-                    <Input
-                        value={title}
-                        dir="auto"
-                        placeholder="Story title"
-                        type="text"
-                        size={`large`}
-                        name="title"
-                        onChange={this.onValueChange}
-                        disabled={loading}
-                    />
-                </div>
-                <br/>
-                <div className="write-title">
-                    <Input.TextArea
-                        value={description}
-                        dir="auto"
-                        placeholder="Story short description"
-                        onChange={ this.onValueChange }
-                        name="description"
-                        autosize={{ minRows: 2, maxRows: 6}}
-                        disabled={loading}
-                    />
-                </div>
-                <br/>
-                <WysiwygEditor
-                    onChange={ this.onEditorChange }
-                    editorValue={editorContent}
-                    readOnly={loading}
-                />
-                <br/>
-                <br/>
-                <TagBox
-                    tags={tags}
-                    onChange={ this.onTagsChange }
-                    limit={3}
-                />
-                <br/>
-                <UploadCover
-                    uploadChange={this.onUploadCoverChange}
-                    uploadedCover={this.state.uploadedCover}
-                    removeUpload={this.onRemoveUploadCover}
-                />
-                <br/>
-                <div className="write-article-footer">
-                    <div>
-                        <SelectCategory
-                            selectedTopic={selectedTopic}
-                            onChange={this.onSelectChange }
-                        />
-                        <Checkbox
-                            disabled={loading}
-                            checked={membersOnly}
-                            size="large"
-                            onChange={this.onValueChange}
-                            name="membersOnly"
-                            className="members-only"
-                        >
-                            Members only
-                        </Checkbox>
-
-                    </div>
-                    <div className="pull-right ctrl-btns">
-                        <Button
-                            disabled={loading}
+            <DocumentTitle title="Write Story">
+                <div>
+                    <div className="write-title">
+                        <Input
+                            value={title}
+                            dir="auto"
+                            placeholder="Story title"
+                            type="text"
                             size={`large`}
-                            type={`default`} onClick={this.saveDraft} >
-                            Draft
-                        </Button>
-                        <Button
+                            name="title"
+                            onChange={this.onValueChange}
                             disabled={loading}
-                            size={`large`} type={`primary`}
-                            onClick={this.submitStory} >
-                            Publish
-                        </Button>
+                        />
+                    </div>
+                    <br/>
+                    <div className="write-title">
+                        <Input.TextArea
+                            value={description}
+                            dir="auto"
+                            placeholder="Story short description"
+                            onChange={ this.onValueChange }
+                            name="description"
+                            autosize={{ minRows: 2, maxRows: 6}}
+                            disabled={loading}
+                        />
+                    </div>
+                    <br/>
+                    <WysiwygEditor
+                        onChange={ this.onEditorChange }
+                        editorValue={editorContent}
+                        readOnly={loading}
+                    />
+                    <br/>
+                    <br/>
+                    <TagBox
+                        tags={tags}
+                        onChange={ this.onTagsChange }
+                        limit={3}
+                    />
+                    <br/>
+                    <UploadCover
+                        uploadChange={this.onUploadCoverChange}
+                        uploadedCover={this.state.uploadedCover}
+                        removeUpload={this.onRemoveUploadCover}
+                    />
+                    <br/>
+                    <div className="write-article-footer">
+                        <div>
+                            <SelectCategory
+                                selectedTopic={selectedTopic}
+                                onChange={this.onSelectChange }
+                            />
+                            <Checkbox
+                                disabled={loading}
+                                checked={membersOnly}
+                                size="large"
+                                onChange={this.onValueChange}
+                                name="membersOnly"
+                                className="members-only"
+                            >
+                                Members only
+                            </Checkbox>
+
+                        </div>
+                        <div className="pull-right ctrl-btns">
+                            <Button
+                                disabled={loading}
+                                size={`large`}
+                                type={`default`} onClick={this.saveDraft} >
+                                Draft
+                            </Button>
+                            <Button
+                                disabled={loading}
+                                size={`large`} type={`primary`}
+                                onClick={this.submitStory} >
+                                Publish
+                            </Button>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </DocumentTitle>
         )
     }
 }

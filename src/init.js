@@ -1,5 +1,6 @@
+// npm packages
 import hello from 'hellojs';
-
+// project files
 import { getMe } from './routes';
 import * as actions from './actions/actionTypes';
 import { socialId, API_URL } from './utils/constants';

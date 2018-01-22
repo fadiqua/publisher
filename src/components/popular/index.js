@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { Row, Col } from 'antd';
+import DocumentTitle from 'react-document-title';
 // project files
 import Story from "../shared/story-widget";
 import PaginateLoading from '../shared/paginate-loading';
@@ -71,18 +72,19 @@ class Popular extends Component {
         const { page, pages, loading } = this.state.data;
 
         return (
-            <div  className="base-sec">
-                <InfiniteScroll
-                    style={{ overflowY: 'auto',overflowX: 'hidden', paddingTop:'10px'}}
-                    next={this.loadMoreStories}
-                    hasMore={page != pages}
-                    loader={<PaginateLoading loading={loading && page > 1} canPaginate={true} />}>
-                    <Row type='flex' className="stories" gutter={20}>
-                        { this.renderStories() }
-                    </Row>
-                </InfiniteScroll>
-            </div>
-
+            <DocumentTitle title={'Publisher - Popular'}>
+                <div  className="base-sec">
+                    <InfiniteScroll
+                        style={{ overflowY: 'auto',overflowX: 'hidden', paddingTop:'10px'}}
+                        next={this.loadMoreStories}
+                        hasMore={page != pages}
+                        loader={<PaginateLoading loading={loading && page > 1} canPaginate={true} />}>
+                        <Row type='flex' className="stories" gutter={20}>
+                            { this.renderStories() }
+                        </Row>
+                    </InfiniteScroll>
+                </div>
+            </DocumentTitle>
         )
     }
 }

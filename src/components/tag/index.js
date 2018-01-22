@@ -1,7 +1,9 @@
+// npm packages
 import React, { Component } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { Row, Col } from 'antd';
-
+import DocumentTitle from 'react-document-title';
+// project files
 import Story from '../shared/story-widget';
 import PaginateLoading from '../shared/paginate-loading';
 import TopicLoading from '../topic/TopicLoading';
@@ -63,19 +65,20 @@ class Tag extends Component {
         const { match } = this.props;
         const tag = match.params.tag.split('-').join(' ');
         return (
-            <div  className="stories base-sec">
-                <h1 className="text-capitalize topic-title">Tag# {tag}</h1>
-                <InfiniteScroll
-                    style={{ overflowY: 'auto',overflowX: 'hidden', paddingTop:'10px'}}
-                    next={this.loadMoreStories}
-                    hasMore={page != pages}
-                    loader={<PaginateLoading loading={this.state.loading && page > 1} canPaginate={true} />}>
-                    <Row type='flex' gutter={20}>
-                        { this.renderStories() }
-                    </Row>
-                </InfiniteScroll>
-            </div>
-
+            <DocumentTitle title={tag}>
+                <div  className="stories base-sec">
+                    <h1 className="text-capitalize topic-title">Tag# {tag}</h1>
+                    <InfiniteScroll
+                        style={{ overflowY: 'auto',overflowX: 'hidden', paddingTop:'10px'}}
+                        next={this.loadMoreStories}
+                        hasMore={page != pages}
+                        loader={<PaginateLoading loading={this.state.loading && page > 1} canPaginate={true} />}>
+                        <Row type='flex' gutter={20}>
+                            { this.renderStories() }
+                        </Row>
+                    </InfiniteScroll>
+                </div>
+            </DocumentTitle>
         )
     }
 }

@@ -4,6 +4,7 @@ import { Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { message } from 'antd';
 import { Editor, EditorState, convertToRaw } from 'draft-js';
+import DocumentTitle from 'react-document-title';
 // project files
 import ScrollToTopOnMount from '../shared/ScrollToTopOnMount';
 import StoryWriter from '../shared/story-widget/StoryWriter';
@@ -24,7 +25,7 @@ import './index.scss';
 import { renderRoutes } from '../../routes';
 
 import { stripTags, importHTMLToDraft } from '../../utils/functions';
-// title.match(/[\u0600-\u06FF]+/g)?`rtl`:''
+
 const StoryTitle = ({title}) => (
     <div className="article-title">
         <br/>
@@ -82,54 +83,56 @@ class Article extends Component {
     };
 
     render(){
-        const { currentUser, story, responses } = this.props;
-        const isOwner = currentUser._id === story.currentStory._creator._id;
-        const editor = story.currentStory.content?importHTMLToDraft(story.currentStory.content):EditorState.createEmpty();
-        const isLiked = story.currentStory._likes.indexOf(currentUser._id) !== -1;
-        const showResponsesBtn = this.props.location.pathname.indexOf('/responses') === -1;
+        const { currentUser, story: { currentStory }, responses, location } = this.props;
+        const isOwner = currentUser._id === currentStory._creator._id;
+        const editor = currentStory.content?importHTMLToDraft(currentStory.content):EditorState.createEmpty();
+        const isLiked = currentStory._likes.indexOf(currentUser._id) !== -1;
+        const showResponsesBtn = location.pathname.indexOf('/responses') === -1;
         return (
-            <div className="article base-sec">
-                <ScrollToTopOnMount />
-                {/*<ShareButtons/>*/}
-                <StoryWriter user={story.currentStory._creator}
-                            readTime={story.currentStory.readTime}
-                            createdAt={story.currentStory.createdAt}
-                            withFollow width="50px" height="50px"/>
-                <StoryCover link="/topic/popular/article-slug" imgSrc={`/media/${story.currentStory.cover}`}/>
-                <StoryTitle title={story.currentStory.title}/>
+            <DocumentTitle title={currentStory.title}>
+                <div className="article base-sec">
+                    <ScrollToTopOnMount />
+                    {/*<ShareButtons/>*/}
+                    <StoryWriter user={currentStory._creator}
+                                 readTime={currentStory.readTime}
+                                 createdAt={currentStory.createdAt}
+                                 withFollow width="50px" height="50px"/>
+                    <StoryCover link="/topic/popular/article-slug" imgSrc={`/media/${currentStory.cover}`}/>
+                    <StoryTitle title={currentStory.title}/>
 
-                <div className="article-content">
-                    <Editor readOnly={true} ref={(node) => { this.storyContent = node; }}
-                            editorState={editor}
-                            onChange={() => {}}
-                            spellCheck={false} />
-                </div>
+                    <div className="article-content">
+                        <Editor readOnly={true} ref={(node) => { this.storyContent = node; }}
+                                editorState={editor}
+                                onChange={() => {}}
+                                spellCheck={false} />
+                    </div>
 
-                <TagList tags={story.currentStory.tags}/>
-                <LikeButton id={story.currentStory._id}
-                            isLiked={isLiked} type="Story"
-                            count={story.currentStory.likesCount}/>
-                <ResponseButton count={story.currentStory.commentsCount}/>
-                <div className="comments">
-                    <CommentEditer user={currentUser}
-                                   onSubmit={this.onSubmitComment}
-                                   loading={ responses.responseStatus === 'create' }
-                                   clearEditor={responses.responseStatus=== 'created'} />
-                    { showResponsesBtn &&
-                    <ShowComments loading= {responses.responseStatus === 'fetch'}
-                                  onClick={this.onShowResponses}/> }
-                    {story.currentStory._id &&
-                    <Switch>
-                        { renderRoutes(this.props.routes) }
-                    </Switch>
-                    }
-                    {/*<CommentArea comments={responses}*/}
-                                 {/*parent={story.currentStory._id}*/}
-                                 {/*onDeleteResponse={this.props.deleteResponse}*/}
-                                 {/*currentUser={currentUser} />*/}
+                    <TagList tags={currentStory.tags}/>
+                    <LikeButton id={currentStory._id}
+                                isLiked={isLiked} type="Story"
+                                count={currentStory.likesCount}/>
+                    <ResponseButton count={currentStory.commentsCount}/>
+                    <div className="comments">
+                        <CommentEditer user={currentUser}
+                                       onSubmit={this.onSubmitComment}
+                                       loading={ responses.responseStatus === 'create' }
+                                       clearEditor={responses.responseStatus=== 'created'} />
+                        { showResponsesBtn &&
+                        <ShowComments loading= {responses.responseStatus === 'fetch'}
+                                      onClick={this.onShowResponses}/> }
+                        {currentStory._id &&
+                        <Switch>
+                            { renderRoutes(this.props.routes) }
+                        </Switch>
+                        }
+                        {/*<CommentArea comments={responses}*/}
+                        {/*parent={story.currentStory._id}*/}
+                        {/*onDeleteResponse={this.props.deleteResponse}*/}
+                        {/*currentUser={currentUser} />*/}
+                    </div>
+                    {this.scrollToSubmittedResponse()}
                 </div>
-                {this.scrollToSubmittedResponse()}
-            </div>
+            </DocumentTitle>
         )
     }
 

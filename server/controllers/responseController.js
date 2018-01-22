@@ -5,7 +5,7 @@ const  commentController = {};
 
 commentController.post = async (req, res) => {
     const { text, storyId, userId, parentId } = req.body;
-    const comment = new db.Comment({
+    const comment = new db.Response({
         text,
         _story: storyId ,
         _creator: userId,
@@ -19,7 +19,7 @@ commentController.post = async (req, res) => {
                     storyId,
                     { $push: { '_comments': newComment._id }}
                 ),
-                db.Comment.populate(newComment, {
+                db.Response.populate(newComment, {
                     path: "_creator",
                     select: '-password -createdAt -facebook'
                 })
@@ -37,9 +37,9 @@ commentController.post = async (req, res) => {
         }
         else {
             console.log('parentId ', parentId)
-            await db.Comment.findByIdAndUpdate(parentId, { $inc: { repliesCount: 1}})
+            await db.Response.findByIdAndUpdate(parentId, { $inc: { repliesCount: 1}})
         }
-        let c = await db.Comment.populate(newComment, {
+        let c = await db.Response.populate(newComment, {
             path: '_creator',
             select: '-_following -_followers -facebook -google'
         });
@@ -60,7 +60,7 @@ commentController.get = async (req, res) => {
     const { page } = req.query;
     // console.log('storyId ', storyId);
     try {
-        const comments = await db.Comment
+        const comments = await db.Response
             .paginate({
                 _story: storyId,
                 isDeleted: false,
@@ -88,13 +88,13 @@ commentController.delete = async (req, res) => {
     const { id, storyId, parentId } = req.query;
     try {
         let promises = [
-            db.Comment.findByIdAndUpdate(id, {
+            db.Response.findByIdAndUpdate(id, {
                 isDeleted: true
             }),
             db.Story.findByIdAndUpdate(storyId, { $pull: { _comments: id}}),
         ];
         if(parentId){
-            promises.push(db.Comment.findByIdAndUpdate(parentId, { $inc: { repliesCount: -1}}))
+            promises.push(db.Response.findByIdAndUpdate(parentId, { $inc: { repliesCount: -1}}))
         }
         await Promise.all(promises);
         res.status(200).send({
@@ -110,7 +110,7 @@ commentController.delete = async (req, res) => {
 commentController.update = (req, res) => {
     const { id, text } = req.body;
     if(id && text) {
-        db.Comment.findByIdAndUpdate(id,{text})
+        db.Response.findByIdAndUpdate(id,{text})
             .then(comment => {
                 res.status(200).json({
                     success: true,
@@ -137,7 +137,7 @@ commentController.getUserResponses = async (req, res) => {
     const { page } = req.query;
     try {
         const user = await db.User.findOne({ username });
-        const responses = await db.Comment
+        const responses = await db.Response
             .paginate(
                 {
                     _creator: user._id,
@@ -166,7 +166,7 @@ commentController.getUserResponses = async (req, res) => {
 commentController.getReponseById = async (req, res) => {
     try {
         const { responseId } = req.params;
-        const response = await db.Comment.findById(responseId).populate({
+        const response = await db.Response.findById(responseId).populate({
             path: '_creator',
             select: 'thumbnail username firstName lastName _id'
         });
@@ -183,7 +183,7 @@ commentController.getReplies = async (req, res) => {
     try {
         const { responseId } = req.params;
         const { page } = req.query;
-        const response = await db.Comment
+        const response = await db.Response
             .paginate(
                 {
                     _parent: responseId,
