@@ -10,7 +10,6 @@ const storyFields = {
     "_topic": 1,
     "isDeleted": 1,
     "_comments": 1,
-    "isDraft": 1,
     "createdAt": 1,
     "cover": 1,
     "_likes": 1,
@@ -224,7 +223,7 @@ storyController.getPopularStories = async (req, res) => {
     const pageSize = 9;
     const aggregate = db.Story.aggregate();
     const data = await db.Story.paginateRecords(aggregate,{
-            match: { "isDeleted": false, "isDraft":false},
+            match: { "isDeleted": false },
             project: {
                 ...storyFields,
                 "commentsCount": { "$size": "$_comments" },

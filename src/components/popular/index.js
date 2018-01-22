@@ -1,11 +1,13 @@
+// npm packages
 import React, { Component } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { Row, Col } from 'antd';
+// project files
 import Story from "../shared/story-widget";
 import PaginateLoading from '../shared/paginate-loading';
 import TopicLoading from '../topic/TopicLoading';
-
 import { getPopularStories } from '../../routes';
+import './index.scss';
 
 class Popular extends Component {
 
@@ -69,13 +71,13 @@ class Popular extends Component {
         const { page, pages, loading } = this.state.data;
 
         return (
-            <div  className="stories base-sec">
+            <div  className="base-sec">
                 <InfiniteScroll
                     style={{ overflowY: 'auto',overflowX: 'hidden', paddingTop:'10px'}}
                     next={this.loadMoreStories}
                     hasMore={page != pages}
                     loader={<PaginateLoading loading={loading && page > 1} canPaginate={true} />}>
-                    <Row type='flex' gutter={20}>
+                    <Row type='flex' className="stories" gutter={20}>
                         { this.renderStories() }
                     </Row>
                 </InfiniteScroll>

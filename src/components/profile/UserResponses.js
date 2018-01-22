@@ -17,10 +17,12 @@ class UserResponses extends Component {
         const { responses, auth:{currentUser}} = this.props;
         let responsesJSX = [];
         responses.docs.forEach((response, key) => {
-            const currentComment = <Col key={response._id} offset={3} xs={18} sm={18} md={18} lg={18}>
-                <UserResponseBox item={response} edit={false}
-                                 owner={currentUser._id}/>
-            </Col>;
+            const currentComment = (
+                <Col key={response._id} offset={3} xs={18} sm={18} md={18} lg={18}>
+                    <UserResponseBox item={response} edit={false}
+                                     owner={currentUser._id}/>
+                </Col>
+            );
             responsesJSX.push(currentComment)
 
         });
