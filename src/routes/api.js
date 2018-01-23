@@ -127,9 +127,7 @@ export function deleteStory(id) {
 }
 
 export function editStory(data) {
-    return axios.put('/api/story',{
-        params: data
-    })
+    return axios.put('/api/story', data)
 }
 
 export function createResponse(data) {

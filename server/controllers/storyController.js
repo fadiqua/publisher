@@ -95,12 +95,21 @@ storyController.get = async (req, res) => {
 };
 
 storyController.updateStory = async (req, res) => {
+    const { id, story } = req.body;
     try {
-        const { id, story } = req.query;
         // if(story._creator._id.toString() !== req.user.id)
         //     throw new Error(`You don't have a privilege`);
 
-        const updatedStory = await db.Story.findByIdAndUpdate(id, story, { new: true });
+        const updatedStory = await db.Story.findOneAndUpdate(
+            {
+                _id: id,
+                _creator: req.user.id
+            },
+            story,
+            { new: true }
+            ).populate('_topic');
+        if(!updatedStory)
+            throw new Error("Maybe the story is deleted or you aren\'t the owner or Poor connection");
         res.status(201).json({
             success: true,
             story: updatedStory
@@ -116,12 +125,16 @@ storyController.updateStory = async (req, res) => {
 storyController.deleteStory = async (req, res) => {
     const { id } = req.query;
     try {
-        const story = await db.Story.findById(id);
-        if(story._creator._id.toString() !== req.user.id)
-            throw new Error(`You don't have a privilege`);
-        await db.Story.findByIdAndUpdate(id, { isDeleted: true });
+        const deletedStory =  await db.Story.findOneAndUpdate(
+            { _id: id, _creator: req.user.id },
+            { isDeleted: true }
+            );
+
+        if(!deletedStory)
+            throw new Error(`You don't have a permission`);
+
         res.status(200).send({
-            story
+            success: true
         })
     } catch (err) {
         res.status(500).send({

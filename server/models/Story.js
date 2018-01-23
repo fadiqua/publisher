@@ -104,14 +104,20 @@ storySchema.pre('save', async function (next) {
         story.readTime = avgWordsPerMin(story.count);
         next();
     } catch (err) {
-        console.log('error:slug ', err.message)
+        next(err);
     }
 
 });
 
+storySchema.pre('findOneAndUpdate', function (next) {
+    const story = this;
+    console.log('sstoryyy ', story.count)
+    story.readTime = avgWordsPerMin(story.count);
+    next();
+});
+
 storySchema.pre('findOne', autoPopulate);
 storySchema.pre('find', autoPopulate);
-storySchema.pre('findByIdAndUpdate', autoPopulate);
 
 storySchema.methods.generateUniqueSlug = async function (title) {
     const Story =  mongoose.model('Story');

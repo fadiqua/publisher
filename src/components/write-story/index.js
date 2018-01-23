@@ -129,14 +129,13 @@ class WriteStory extends Component {
             const fromEdit = state && state.story;
             const endPoint = fromEdit ? editStory : createStory;
             const params = { story };
-            if(fromEdit) params['id'] = story._id;
+            if(fromEdit) params['id'] = state.story._id;
             const { data } = await endPoint(params);
             this.toggleLoading();
             this.props.updateProfileAction({ draft: null });
             this.props.history.push(`/topics/${data.story._topic.slug}/story/${data.story.slug}`)
         } catch (err) {
-            console.log('error ', err)
-            // message.error(err.response.data.message);
+            err.response && message.error(err.response.data.message);
             this.toggleLoading();
         }
     }

@@ -121,7 +121,7 @@ class Story extends Component {
         const {
             currentUser,
             story: { currentStory }, responses,
-            history, location
+            location
         } = this.props;
         const editor = currentStory.content ? importHTMLToDraft(currentStory.content):EditorState.createEmpty();
         const isLiked = currentStory._likes.indexOf(currentUser._id) !== -1;
@@ -138,6 +138,7 @@ class Story extends Component {
                                      createdAt={currentStory.createdAt}
                                      withFollow width="50px" height="50px"
                         />
+                        {currentStory.isOwner &&
                         <ButtonGroup>
                             <Button
                                 onClick={this.onEditResponse}
@@ -149,7 +150,7 @@ class Story extends Component {
                                 type="danger"
                                 icon="delete"
                             />
-                        </ButtonGroup>
+                        </ButtonGroup>}
                     </div>
                     <StoryCover link="/topic/popular/article-slug"
                                 imgSrc={`/media/${currentStory.cover}`}/>
