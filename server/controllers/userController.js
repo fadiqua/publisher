@@ -169,13 +169,15 @@ userController.getMe = async (req, res) => {
     try {
         if(!req.user) throw new Error('');
         const me = await db.User.findById(user.id);
+        if(!me) throw new Error('Invalid signature');
         res.status(200).json({
             success: true,
             me
         })
     } catch(error) {
         res.status(403).json({
-            success: false
+            success: false,
+            message: error.message
         });
     }
 };
