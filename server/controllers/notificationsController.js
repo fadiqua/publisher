@@ -40,10 +40,11 @@ notificationsController.clearUnreadBadgeCount = async (req, res) => {
 };
 notificationsController.getUnreadCount = async (req, res) => {
     try {
-        // const count = await db.Notifications.find({ _to: req.user.id, isRead: false }).count();
+        const count = await db.Notifications.find({ _to: req.user.id, isRead: false }).count();
+        console.log('unreeeeead ', count)
         res.status(200).json({
             success: true,
-            count: 0
+            count
         })
     } catch (e) {
         res.status(500).json({
@@ -72,7 +73,8 @@ notificationsController.getNotificationById = async (req, res) => {
     try {
         const { id } = req.params;
         const notification = await db.Notifications.findById(id);
-        if(req.user.id !== notification._to.toString()) throw new Error('invalid notification id');
+        if(req.user.id !== notification._to.toString())
+            throw new Error('invalid notification id');
         res.status(200).json({
             success: true,
             notification

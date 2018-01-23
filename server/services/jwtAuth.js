@@ -13,7 +13,7 @@ export  function jwtAuth(req, res, next) {
     } catch (e){
         res.status(401).send({
             success: false,
-            error: e
+            error: e.message
         })
     }
 

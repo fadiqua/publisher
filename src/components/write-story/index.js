@@ -45,10 +45,15 @@ class WriteStory extends Component {
         if(state && state.story) {
             this.fulFilledStateForEdit(state.story)
         }
-        else if(draft !== null) {
-            const draftData = JSON.parse(draft);
-            this.charactersCount = draftData.charactersCount;
-            this.fulFilledStateFromDraft(draftData);
+        else if(!!draft) {
+            try {
+                const draftData = JSON.parse(draft);
+                this.charactersCount = draftData.charactersCount;
+                this.fulFilledStateFromDraft(draftData);
+            } catch (err) {
+                this.toggleLoading();
+            }
+
         } else {
             this.toggleLoading();
         }
