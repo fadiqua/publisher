@@ -7,6 +7,7 @@ import { message, Button, Modal } from 'antd';
 import { Editor, EditorState, convertToRaw } from 'draft-js';
 import DocumentTitle from 'react-document-title';
 // project files
+import StoryLoading from './StoryLoading';
 import ScrollToTopOnMount from '../shared/ScrollToTopOnMount';
 import StoryWriter from '../shared/story-widget/StoryWriter';
 import StoryCover from '../shared/story-widget/StoryCover';
@@ -120,12 +121,14 @@ class Story extends Component {
     render(){
         const {
             currentUser,
-            story: { currentStory }, responses,
+            story: { loading, currentStory }, responses,
             location
         } = this.props;
         const editor = currentStory.content ? importHTMLToDraft(currentStory.content):EditorState.createEmpty();
         const isLiked = currentStory._likes.indexOf(currentUser._id) !== -1;
         const showResponsesBtn = location.pathname.indexOf('/responses') === -1;
+
+        if(loading) return <StoryLoading />;
 
         return (
             <DocumentTitle title={currentStory.title || 'Publisher'}>

@@ -2,7 +2,7 @@ import React from 'react';
 import LoadingSegmant from '../shared/LoadingSegmant';
 
 const TopicLoading = () => (
-    <div className="topic-loading clearfix" style={{ width: '100%'}}>
+    <div className="topic-loading base-sec clearfix" style={{ width: '100%'}}>
         <LoadingSegmant style={{
             width: '50%',
             height: '200px', float:'left' }} />

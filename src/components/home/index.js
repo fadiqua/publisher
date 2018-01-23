@@ -13,14 +13,17 @@ export class Home extends Component {
         stories: [[]],
     };
 
-    componentDidMount(){
-        fetchHomePageData()
-            .then(result => {
-                this.setState({
-                    loading: false,
-                    stories: result.data.stories,
-                })
-        })
+    async componentDidMount(){
+        try {
+            const result = await fetchHomePageData();
+            this.setState({
+                loading: false,
+                stories: result.data.stories,
+            })
+        } catch (err) {
+
+        }
+
     }
 
     renderContent = () => {

@@ -1,6 +1,7 @@
 import mongoose, { Schema } from 'mongoose';
 import { fileUniqueName } from '../utils/functions';
 import download from 'image-downloader';
+import fs from 'fs';
 
 const socialAuthSchema = new Schema({
     provider: {
@@ -17,10 +18,19 @@ const socialAuthSchema = new Schema({
     user: { type: Schema.ObjectId, ref:'User' }
 });
 
+const filesDir = './files';
+const thumbsDir = `${filesDir}/thumbs`;
+
 socialAuthSchema.statics.findOrCreate = function (network, data) {
     const socialObj = new this();
     const UserModel = mongoose.model('User');
     const userObj = new UserModel();
+    if (!fs.existsSync(filesDir)){
+        fs.mkdirSync(filesDir);
+        if(!fs.existsSync(thumbsDir)) {
+            fs.mkdirSync(thumbsDir);
+        }
+    }
     return new Promise( async (resolve, reject) => {
         try {
             const user = await this.findOne({ provider: network, providerId: data.id });
@@ -38,7 +48,7 @@ socialAuthSchema.statics.findOrCreate = function (network, data) {
                 if(data.thumbnail) {
                     let thumbnailName = `thumb-50-${fileUniqueName()}.jpg`;
                     const { filename, image } = await download.image({url: data.thumbnail,
-                        dest: `./files/thumbs/${thumbnailName}`});
+                        dest: `${thumbsDir}/${thumbnailName}`});
                     userObj['thumbnail'] = thumbnailName;
                 }
                 // userObj['thumbnail'] = data.thumbnail;
@@ -47,7 +57,7 @@ socialAuthSchema.statics.findOrCreate = function (network, data) {
                     if(data.picture){
                         const { filename, image } = await download.image({
                             url:data.picture+'?type=large',
-                            dest: `./files/${pictureName}`
+                            dest: `${filesDir}/${pictureName}`
                         });
                         userObj['picture'] = pictureName;
                     }
@@ -56,7 +66,7 @@ socialAuthSchema.statics.findOrCreate = function (network, data) {
                     let pictureName = `g-${fileUniqueName()}.jpg`;
                     if(data.picture) {
                         const { filename, image } = await download.image({url:data.picture.split('?sz=')[0],
-                            dest: `./files/${pictureName}`});
+                            dest: `${filesDir}/${pictureName}`});
                         userObj['picture'] = pictureName;
                     }
                 }

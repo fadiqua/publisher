@@ -19,7 +19,7 @@ export default (store) => {
     hello.on('auth.login', async function(auth) {
         const socialToken = auth.authResponse.access_token;
         const data = await hello(auth.network).api('me');
-        store.dispatch(actions.fetchUser({network: auth.network, socialToken, data}));
+        store.dispatch(actions.fetchUserFromSocial({network: auth.network, socialToken, data}));
         hello.logout(auth.network)
     });
 }

@@ -6,3 +6,5 @@ export default {
     "dbUri": process.env.NODE_ENV === 'production' ? process.env.DB_HOST : localDB,
     "jwtSecret": "fadiquader"
 };
+
+// use admin

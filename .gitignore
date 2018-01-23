@@ -8,6 +8,7 @@
 # production
 /build
 /dist
+files/thumbs/*.*
 files/*.*
 # misc
 .DS_Store
