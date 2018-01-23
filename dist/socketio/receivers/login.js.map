@@ -1,1 +1,0 @@
-{"version":3,"sources":["../../../server/socketio/receivers/login.js"],"names":["login","usersLogin","client","username"],"mappings":";;;;;QAGgBA,K,GAAAA,K;AAHhB,SAASC,UAAT,CAAoBC,MAApB,EAA4B,CAE3B;AACM,SAASF,KAAT,OAA2B;AAAA,MAAXG,QAAW,QAAXA,QAAW;AAEjC","file":"login.js","sourcesContent":["function usersLogin(client) {\n\n}\nexport function login({username}) {\n\n}"]}
