@@ -136,6 +136,7 @@
     "extends": "react-app"
   },
   "devDependencies": {
+    "babel": "^6.23.0",
     "babel-plugin-import": "^1.6.3",
     "babel-polyfill": "^6.26.0",
     "babel-preset-es2015": "^6.24.1",
