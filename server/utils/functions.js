@@ -12,7 +12,7 @@ export function slugify(str){
 }
 
 export function avgWordsPerMin(count) {
-    return Math.ceil(count/250);
+    return Math.ceil(count/1050);
 }
 
 export function base64Encode(file) {

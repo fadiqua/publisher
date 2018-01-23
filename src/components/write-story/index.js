@@ -9,8 +9,8 @@ import WysiwygEditor from './WysiwygEditor';
 import TagBox from './TagBox';
 import SelectCategory from './SelectCategory';
 import UploadCover from './UploadCover';
-import { sanitize, slugify } from '../../utils/functions';
-import { createStory, updateProfile } from '../../routes';
+import { sanitize } from '../../utils/functions';
+import { createStory, editStory, updateProfile } from '../../routes';
 import { updateProfile as updateProfileAction } from '../../actions/actionTypes';
 import './index.scss';
 
@@ -26,7 +26,7 @@ class WriteStory extends Component {
             tags: [],
             uploadedCover: null,
             membersOnly: false,
-            loading: false,
+            loading: true,
         };
         this.didMount = false;
         this.charactersCount = 0;
@@ -40,20 +40,37 @@ class WriteStory extends Component {
     }
 
     componentWillMount() {
-        const { draft } = this.props;
-        if(draft !== null) {
+        // location.search
+        const { draft, location: { state } } = this.props;
+        if(state && state.story) {
+            this.fulFilledStateForEdit(state.story)
+        }
+        else if(draft !== null) {
             const draftData = JSON.parse(draft);
             this.charactersCount = draftData.charactersCount;
-            this.fulFilledState(draftData);
+            this.fulFilledStateFromDraft(draftData);
+        } else {
+            this.toggleLoading();
         }
-
     }
 
-    fulFilledState(draft) {
+    fulFilledStateFromDraft(draft) {
         delete draft.charactersCount;
         this.setState(draft)
     };
-
+    fulFilledStateForEdit(story) {
+        this.charactersCount = story.count;
+        this.setState({
+            title: story.title,
+            description: story.description,
+            uploadedCover: story.cover,
+            membersOnly: story.membersOnly,
+            editorContent: story.content,
+            selectedTopic: story._topic._id,
+            tags: story.tags,
+            loading: false
+        })
+    }
     _onSelectChange (selectedTopic) {
         this.setState({ selectedTopic })
     };
@@ -68,7 +85,6 @@ class WriteStory extends Component {
     };
 
     onEditorChange = (editorContent, count) => {
-        // i didn't put in the state to enhance rendering, so the cost is more complexity
         this.setState({ editorContent });
         this.charactersCount = count;
     };
@@ -91,31 +107,38 @@ class WriteStory extends Component {
             editorContent,
             membersOnly
         } = this.state;
+        const { state } = this.props.location;
 
-        if(!title || !editorContent || tags.length === 0 || !uploadedCover || !selectedTopic){
-            message.error('All fields are required.')
-        } else {
-            const story = {
-                title: sanitize(title),
-                description: sanitize(description),
-                content: sanitize(editorContent),
-                tags, cover: uploadedCover,
-                topicId: selectedTopic,
-                count: this.charactersCount,
-                membersOnly
-            };
-            try {
-                this.toggleLoading();
-                const { data } = await createStory(story);
-                this.toggleLoading();
-                this.props.updateProfileAction({ draft: null });
-                this.props.history.push(`/topics/${slugify(data.story._topic.name)}/story/${data.story.slug}`)
-            } catch (err) {
-                message.error(err.response.data.message);
-                this.toggleLoading();
-            }
+        if(!title || !editorContent
+            || tags.length === 0 ||
+            !uploadedCover || !selectedTopic){
+            message.error('All fields are required.');
+            return;
         }
-
+        const story = {
+            title: sanitize(title),
+            description: sanitize(description),
+            content: sanitize(editorContent),
+            tags, cover: uploadedCover,
+            topicId: selectedTopic,
+            count: this.charactersCount,
+            membersOnly
+        };
+        try {
+            this.toggleLoading();
+            const fromEdit = state && state.story;
+            const endPoint = fromEdit ? editStory : createStory;
+            const params = { story };
+            if(fromEdit) params['id'] = story._id;
+            const { data } = await endPoint(params);
+            this.toggleLoading();
+            this.props.updateProfileAction({ draft: null });
+            this.props.history.push(`/topics/${data.story._topic.slug}/story/${data.story.slug}`)
+        } catch (err) {
+            console.log('error ', err)
+            // message.error(err.response.data.message);
+            this.toggleLoading();
+        }
     }
 
     async _saveDraft(){
@@ -129,9 +152,11 @@ class WriteStory extends Component {
             const { data } = await updateProfile({ draft: JSON.stringify(draftStory, null, -1)})
             this.toggleLoading();
             this.props.updateProfileAction(data.user)
+            message.success("Successfully saved draft!")
         } catch (err) {
             console.log('error ', err)
             this.toggleLoading();
+            message.error("Error happened when trying to save draft!")
         }
     }
 
@@ -141,12 +166,17 @@ class WriteStory extends Component {
 
     render(){
         const {
-            loading, membersOnly,
-            title, description,
+            loading,
+            membersOnly,
+            title,
+            description,
             selectedTopic,
             editorContent,
             tags
         } = this.state;
+        const { location } = this.props;
+        if(loading) return null;
+        const editMode = location.state && location.state.story;
         return (
             <DocumentTitle title="Write Story">
                 <div>
@@ -213,17 +243,17 @@ class WriteStory extends Component {
 
                         </div>
                         <div className="pull-right ctrl-btns">
-                            <Button
+                            {!editMode && <Button
                                 disabled={loading}
                                 size={`large`}
                                 type={`default`} onClick={this.saveDraft} >
                                 Draft
-                            </Button>
+                            </Button>}
                             <Button
                                 disabled={loading}
                                 size={`large`} type={`primary`}
                                 onClick={this.submitStory} >
-                                Publish
+                                { !editMode ? 'Publish' : 'Update' }
                             </Button>
                         </div>
                     </div>

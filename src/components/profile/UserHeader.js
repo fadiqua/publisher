@@ -48,7 +48,7 @@ class UserHeader extends Component {
 
     renderContent = () => {
         const { profile } = this.props;
-        if(profile.loading){
+        if(profile.loading === 'fetchProfile'){
             return <UserHeaderLoading/>
         }
         return (

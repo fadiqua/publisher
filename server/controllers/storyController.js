@@ -23,6 +23,7 @@ storyController.post =  async (req, res) => {
         membersOnly
     } = req.body;
     try {
+        // start validation
         if(!title || title.length < 8 || title.length > 100) {
             throw new Error('Title must be between 8 and 100 characters.');
         }
@@ -41,7 +42,7 @@ storyController.post =  async (req, res) => {
         else if (!topicId) {
             throw new Error('Topic is missing');
         }
-
+        // end validation
         const story = new db.Story({
             title, content, count,
             tags, cover, description,
@@ -79,6 +80,7 @@ storyController.get = async (req, res) => {
         if(user) {
             story.isUserLiked = !!story._likes.find(id => id.toString() === user.id)
         }
+        story.isOwner = user && user.id == story._creator._id;
         res.status(200).json({
             success: true,
             story
@@ -90,6 +92,42 @@ storyController.get = async (req, res) => {
         })
     }
 
+};
+
+storyController.updateStory = async (req, res) => {
+    try {
+        const { id, story } = req.query;
+        // if(story._creator._id.toString() !== req.user.id)
+        //     throw new Error(`You don't have a privilege`);
+
+        const updatedStory = await db.Story.findByIdAndUpdate(id, story, { new: true });
+        res.status(201).json({
+            success: true,
+            story: updatedStory
+        });
+    } catch (err) {
+        res.status(500).send({
+            success: false,
+            message: err.message
+        })
+    }
+};
+
+storyController.deleteStory = async (req, res) => {
+    const { id } = req.query;
+    try {
+        const story = await db.Story.findById(id);
+        if(story._creator._id.toString() !== req.user.id)
+            throw new Error(`You don't have a privilege`);
+        await db.Story.findByIdAndUpdate(id, { isDeleted: true });
+        res.status(200).send({
+            story
+        })
+    } catch (err) {
+        res.status(500).send({
+            message: err.message
+        })
+    }
 };
 
 storyController.getById = async (req, res) => {
@@ -136,7 +174,6 @@ storyController.getHomePageData = async (req, res) => {
     const data = (await Promise.all(topics.map(topic =>
         db.Story.find({_topic: topic._id, ...params }).sort({createdAt: 1}).limit(4))))
         .filter(t => t.length > 0);
-    console.log('dataa ', data)
     res.status(200).send({
         stories: data
     });

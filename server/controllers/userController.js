@@ -182,7 +182,6 @@ userController.getMe = async (req, res) => {
 
 userController.updateProfile = async (req, res) => {
     const { data } = req.body;
-    console.log(data);
     try {
         // new: true => return the updated object
         const user = await db.User.findByIdAndUpdate(req.user.id, { ...data }, {new: true});

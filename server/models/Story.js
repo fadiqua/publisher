@@ -110,13 +110,13 @@ storySchema.pre('save', async function (next) {
 });
 
 storySchema.pre('findOne', autoPopulate);
-
 storySchema.pre('find', autoPopulate);
+storySchema.pre('findByIdAndUpdate', autoPopulate);
 
 storySchema.methods.generateUniqueSlug = async function (title) {
     const Story =  mongoose.model('Story');
     let slug = slugify(title);
-    if(!slug) slug = arslugify(title);
+    if(!slug) slug = arslugify(title); // for other languages like arabic
     return new Promise( async (resolve, reject) => {
         const generate = async slug => {
             const exists = await Story.findOne({ slug });

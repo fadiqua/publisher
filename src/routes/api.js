@@ -36,12 +36,12 @@ export function clearUnreadBadgeCountAPI() {
 
 //  --------------------------------------------
 export function deleteResponse(id, storyId, owner, parentId=null) {
-    return axios.delete(`/api/comment`,
+    return axios.delete(`/api/response`,
         { params: { id, storyId, owner, parentId } })
 }
 
 export function updateResponse(id, text, owner) {
-    return axios.put(`/api/comment`, {id, text, owner })
+    return axios.put(`/api/response`, {id, text, owner })
 }
 
 export function fetchHomePageData() {
@@ -112,36 +112,48 @@ export function like(payload) {
 }
 
 // Topics & Stories & Responses -----------------------
-export function createStory(data) {
-    return axios.post('/api/story', data)
+export function createStory({ story }) {
+    return axios.post('/api/story', story)
 }
 
 export function getStory(slug) {
     return axios.get(`/api/story/${slug}`)
 }
 
+export function deleteStory(id) {
+    return axios.delete('/api/story',{
+        params: { id }
+    })
+}
+
+export function editStory(data) {
+    return axios.put('/api/story',{
+        params: data
+    })
+}
+
 export function createResponse(data) {
-    return axios.post(`/api/comment`, data)
+    return axios.post(`/api/response`, data)
 }
 
 export function getResponses(id, page = 1) {
-    return axios.get(`/api/comment/${id}`, {
+    return axios.get(`/api/response/${id}`, {
         params: { page }
     })
 }
 
 export function getResponseById(id) {
-    return axios.get(`/api/comment/${id}/response`);
+    return axios.get(`/api/response/${id}/response`);
 }
 
 export function getReplies(id, page = 1) {
-    return axios.get(`/api/comment/${id}/replies`, {
+    return axios.get(`/api/response/${id}/replies`, {
         params: { page }
     })
 }
 
 export function createReply(data) {
-    return axios.post(`/api/comment`, data)
+    return axios.post(`/api/response`, data)
 }
 
 export function getPopularStories(page=1) {

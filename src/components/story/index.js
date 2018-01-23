@@ -1,8 +1,9 @@
 // npm packages
+import { bindActionCreators } from 'redux';
 import React, { Component } from 'react';
 import { Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { message } from 'antd';
+import { message, Button, Modal } from 'antd';
 import { Editor, EditorState, convertToRaw } from 'draft-js';
 import DocumentTitle from 'react-document-title';
 // project files
@@ -21,10 +22,13 @@ import {
     deleteResponse,
     initResponses
 } from '../../actions/actionTypes'
+import { renderRoutes, deleteStory } from '../../routes';
 import './index.scss';
-import { renderRoutes } from '../../routes';
 
 import { stripTags, importHTMLToDraft } from '../../utils/functions';
+
+const confirm = Modal.confirm;
+const ButtonGroup = Button.Group;
 
 const StoryTitle = ({title}) => (
     <div className="article-title">
@@ -33,8 +37,14 @@ const StoryTitle = ({title}) => (
     </div>
 );
 
-class Article extends Component {
+class Story extends Component {
 
+    constructor(props) {
+        super(props);
+
+        this.deleteStory = this._deleteStory.bind(this);
+        this.onEditResponse = this._onEditResponse.bind(this);
+    }
     componentDidMount(){
         const slug = this.props.match.params.story;
         this.props.initResponses();
@@ -82,25 +92,69 @@ class Article extends Component {
 
     };
 
+    _deleteStory() {
+        const { story: { currentStory }, history } = this.props;
+        confirm({
+            title: 'Do you really want to delete this story?',
+            onOk() {
+                return deleteStory(currentStory._id)
+                    .then(() => history.replace('/'))
+                    .catch(() => Modal.error({
+                        title: 'Error Happened!',
+                        content: 'Sorry, Error occurred during deletion, try again.',
+                    }))
+            },
+            onCancel() {},
+        });
+    }
+
+    _onEditResponse() {
+     const { history, story: { currentStory } } = this.props;
+        history.push({
+            pathname: `/write-story`,
+            // search: `?edit=${currentUser._id}`,
+            state: { story: currentStory }
+        })
+    }
+
     render(){
-        const { currentUser, story: { currentStory }, responses, location } = this.props;
-        const isOwner = currentUser._id === currentStory._creator._id;
-        const editor = currentStory.content?importHTMLToDraft(currentStory.content):EditorState.createEmpty();
+        const {
+            currentUser,
+            story: { currentStory }, responses,
+            history, location
+        } = this.props;
+        const editor = currentStory.content ? importHTMLToDraft(currentStory.content):EditorState.createEmpty();
         const isLiked = currentStory._likes.indexOf(currentUser._id) !== -1;
         const showResponsesBtn = location.pathname.indexOf('/responses') === -1;
+
         return (
-            <DocumentTitle title={currentStory.title}>
-                <div className="article base-sec">
+            <DocumentTitle title={currentStory.title || 'Publisher'}>
+                <div className="story base-sec">
                     <ScrollToTopOnMount />
                     {/*<ShareButtons/>*/}
-                    <StoryWriter user={currentStory._creator}
-                                 readTime={currentStory.readTime}
-                                 createdAt={currentStory.createdAt}
-                                 withFollow width="50px" height="50px"/>
-                    <StoryCover link="/topic/popular/article-slug" imgSrc={`/media/${currentStory.cover}`}/>
-                    <StoryTitle title={currentStory.title}/>
-
-                    <div className="article-content">
+                    <div className="story-header">
+                        <StoryWriter user={currentStory._creator}
+                                     readTime={currentStory.readTime}
+                                     createdAt={currentStory.createdAt}
+                                     withFollow width="50px" height="50px"
+                        />
+                        <ButtonGroup>
+                            <Button
+                                onClick={this.onEditResponse}
+                                type="primary"
+                                icon="edit"
+                            />
+                            <Button
+                                onClick={this.deleteStory}
+                                type="danger"
+                                icon="delete"
+                            />
+                        </ButtonGroup>
+                    </div>
+                    <StoryCover link="/topic/popular/article-slug"
+                                imgSrc={`/media/${currentStory.cover}`}/>
+                    <StoryTitle title={currentStory.title} />
+                    <div className="story-content">
                         <Editor readOnly={true} ref={(node) => { this.storyContent = node; }}
                                 editorState={editor}
                                 onChange={() => {}}
@@ -138,12 +192,15 @@ class Article extends Component {
 
 }
 
-
-const mapStateToProps = ({auth:{currentUser},story, responses}) => ({
+const mapState = ({auth:{currentUser},story, responses}) => ({
     currentUser,
     story,
     responses
 });
 
-export default connect(mapStateToProps, { fetchStory, createResponse,
-    fetchResponses, deleteResponse, initResponses })(Article);
+const mapDispatch = dispatch => bindActionCreators({
+    fetchStory, createResponse,
+    fetchResponses, deleteResponse, initResponses
+}, dispatch);
+
+export default connect(mapState, mapDispatch)(Story);

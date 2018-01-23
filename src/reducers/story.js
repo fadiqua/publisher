@@ -8,6 +8,7 @@ export const initialState =  {
     responseStatus: null,
     showResponses: false,
     currentStory: {
+        isOwner: false,
         _creator: {},
         _comments: [],
         _likes:[]
@@ -15,7 +16,9 @@ export const initialState =  {
 }
 const storyReducer = createReducer({
     [actions.fetchStory]: (state) => ({...state, loading: true}),
-    [actions.fetchStorySuccess]: (state, payload) => ({...state, loading: false, currentStory: payload}),
+    [actions.fetchStorySuccess]: (state, payload) => ({
+        ...state, loading: false, currentStory: payload
+    }),
     [actions.clearCreatedStory]: (state) => initialState.story,
     [actions.createResponseSuccess]: (state, payload) => ({...state,
         currentStory: {...state.currentStory, commentsCount: state.currentStory.commentsCount + 1 }}),

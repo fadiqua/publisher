@@ -6,6 +6,8 @@ import { jwtAuth, asyncMiddleware } from '../services';
 
 function story(routes) {
     routes.post("/story", jwtAuth, asyncMiddleware(storyController.post));
+    routes.put("/story", jwtAuth, asyncMiddleware(storyController.updateStory));
+    routes.delete("/story", jwtAuth, asyncMiddleware(storyController.deleteStory));
     routes.get("/popular", asyncMiddleware(storyController.getPopularStories));
     routes.get("/story/:slug", asyncMiddleware(storyController.get));
     routes.get("/story/id/:id", asyncMiddleware(storyController.getById));

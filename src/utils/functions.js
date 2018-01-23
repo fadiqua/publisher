@@ -70,7 +70,7 @@ export function formatNumber(value) {
     return `${prefix}${result}${list[1] ? `.${list[1]}` : ''}`;
 }
 
-export const getUrlQuery = (search) => querystring.parse(url.parse(search).query);
+export const getUrlQuery = search => querystring.parse(url.parse(search).query);
 
 export function arrayToMap(map=[]) {
     const newMap = new Map();

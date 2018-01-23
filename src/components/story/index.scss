@@ -1,10 +1,15 @@
 @import "../../assets/scss/variables";
 
-.article {
-  .article-title {
+.story {
+  .story-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .story-title {
     font-size: 16px;
   }
-  .article-content  {
+  .story-content  {
     .public-DraftEditor-content {
       font-size: 1.3em;
       line-height: 1.6;
