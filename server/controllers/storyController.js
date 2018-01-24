@@ -6,6 +6,7 @@ const storyFields = {
     "title": 1,
     "slug": 1,
     "content": 1,
+    "description": 1,
     "_creator": 1,
     "_topic": 1,
     "isDeleted": 1,

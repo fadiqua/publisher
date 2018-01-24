@@ -23,10 +23,12 @@ export class Story extends Component {
                         </Link>
                     </Col>
                     <Col  lg={{ span: first ? 9: 24}} md={{ span: 24}} className="-details">
-                        <Link to={`/topics/${item._topic.slug}/story/${item.slug}`} className="post-short-details">
+                        <Link to={`/topics/${item._topic.slug}/story/${item.slug}`}
+                              className="post-short-details">
                             <PostShortDetails
                                 link={`/topics/${item._topic.slug}/story/${item.slug}`}
-                                title={item.title} description={item.description}
+                                title={item.title}
+                                description={item.description}
                             />
                         </Link>
                         <StoryWriter
