@@ -5,7 +5,7 @@ import * as actions from '../actions/actionTypes';
 import { followUser } from './auth'
 
 export const initialState = {
-    loading: null,
+    loading: true,
     user: {
         _followers: [],
         _following: []
@@ -26,7 +26,7 @@ const profileReducer = createReducer({
         ...state, loading: false, error: true
     }),
     [actions.updateProfile]: (state, payload) => ({
-        ...state, user: payload
+        ...state, user: { ...state.user, ...payload }
     }),
     [actions.fetchProfileStories]: (state) =>  ({ ...state, loading: 'fetchProfileStories'}),
     [actions.fetchProfileStoriesSuccess]: (state, payload) => {
