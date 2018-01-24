@@ -2,6 +2,7 @@ import mongoose, { Schema } from 'mongoose';
 import mongoosePaginate from 'mongoose-paginate';
 
 import server from '../index';
+import { socket } from '../socketio/socketServer';
 
 const notificationsSchema = new Schema({
     _from: {
@@ -59,7 +60,10 @@ notificationsSchema.post('save', (model, next) => {
             // select: 'thumbnail username firstName lastName _id'
         // }
         ).then(data => {
-            server.io.emit(`notification.new_${model._to}`, {
+            // server.io.emit(`notification.new_${model._to}`, {
+            //     notification: data
+            // });
+            socket.emit(`notification.new_${model._to}`, {
                 notification: data
             });
     });
@@ -68,7 +72,10 @@ notificationsSchema.post('save', (model, next) => {
 
 notificationsSchema.post('findOneAndRemove', (model, next) => {
     console.log('remove noti ', model._to);
-    server.io.emit(`notification.remove_${model._to}`, {
+    // server.io.emit(`notification.remove_${model._to}`, {
+    //     notification: model._id
+    // });
+    socket.emit(`notification.remove_${model._to}`, {
         notification: model._id
     });
     next();

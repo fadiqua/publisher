@@ -41,7 +41,7 @@ export function* authorize (action) {
 
 export function* getUnreadNotificationsCount () {
     try {
-        const response = yield call(getUnreadNotifCount)
+        const response = yield call(getUnreadNotifCount);
         yield put({
             type: actions.getUnReadInitialNotificationsCount,
             payload:response.data.count

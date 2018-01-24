@@ -12,16 +12,19 @@ class LikeButton extends Component {
     doLike = async () => {
         const { type, id, parent} = this.props;
         try {
-            this.setState({ loading: true });
-            let res = await like({ id,type, parent: type !== 'Story' ? parent: null });
-            let { user, isLiked } = res.data;
-            if(type !== 'Story'){
-                this.props.likeComment({user, isLiked, id});
-                return;
-            }
-            this.props.likeStory({user, isLiked});
-            this.setState({ loading: false });
-            return;
+            this.props.likeStory({ id,type, parent: type !== 'Story' ? parent: null });
+
+
+            // this.setState({ loading: true });
+            // let res = await like({ id,type, parent: type !== 'Story' ? parent: null });
+            // let { user, isLiked } = res.data;
+            // if(type !== 'Story'){
+            //     this.props.likeComment({user, isLiked, id});
+            //     return;
+            // }
+            // this.props.likeStory({user, isLiked});
+            // this.setState({ loading: false });
+            // return;
 
         }
         catch (e) {

@@ -8,7 +8,8 @@ import {
     getResponses,
     getResponseById,
     getReplies,
-    createReply
+    createReply,
+    like
 } from '../routes';
 import * as actions from '../actions/actionTypes';
 
@@ -29,6 +30,21 @@ export function* watchFetchStory() {
 
 // -------------------------------------------------------------------
 
+export function* likeStoryAsync (action) {
+    try {
+        // const { id, type, parent } = action.payload;
+        const response = yield like(action.payload)
+        console.log('response ', response)
+    } catch (err) {
+
+    }
+}
+
+export function* watchLikeStory () {
+    yield takeEvery(actions.likeStory, likeStoryAsync)
+}
+
+// -------------------------------------------------------------------
 export function* createResponseAsync(action) {
     try {
         const response = yield call(createResponse, action.payload);

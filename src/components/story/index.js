@@ -62,15 +62,16 @@ class Story extends Component {
         }
     }
 
-    onSubmitComment(text){
-        if(text && stripTags(text).length > 9){
+    onSubmitComment(text) {
+        if(text && stripTags(text).length > 1){
             this.props.createResponse({
                 text,
                 storyId: this.props.story.currentStory._id,
                 userId: this.props.currentUser._id
             })
+
         } else {
-            message.error(`Response at least must contain 10 characters.`);
+            message.error(`Response at least must contain 2 characters.`);
         }
 
     }
@@ -164,7 +165,8 @@ class Story extends Component {
 
                     <TagList tags={currentStory.tags}/>
                     <LikeButton id={currentStory._id}
-                                isLiked={isLiked} type="Story"
+                                isLiked={isLiked}
+                                type="Story"
                                 count={currentStory.likesCount}/>
                     <ResponseButton count={currentStory.commentsCount}/>
                     <div className="comments">
@@ -181,7 +183,7 @@ class Story extends Component {
                         </Switch>
                         }
                     </div>
-                    {this.scrollToSubmittedResponse()}
+                    {/*{this.scrollToSubmittedResponse()}*/}
                 </div>
             </DocumentTitle>
         )

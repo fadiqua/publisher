@@ -2,9 +2,9 @@ import db from '../models/index'
 
 const sockets = [];
 const users = {};
-let socket = null;
+var socket = null;
 
-const socketServer = (io) => {
+export const socketServer = (io) => {
     io.on('connection', (client) => {
         socket = client;
         sockets.push(client);
@@ -22,20 +22,18 @@ const socketServer = (io) => {
             sockets.splice(sockets.indexOf(client), 1);
             socket = null;
         });
-        client.on('login', ({username}) => {
-            console.log('login listener ', username);
-            client.emit('users.login', {username: 'fadi emit'});
-        });
+        // client.on('login', ({username}) => {
+        //     console.log('login listener ', username);
+        //     client.emit('users.login', {username: 'fadi emit'});
+        // });
     });
 
     io.listen(3092);
     console.log('io connected on port 3092');
     return io
-}
-
-export default {
-    socketServer,
-    sockets,
-    socket,
-    users
 };
+
+export { sockets };
+export { socket };
+export { users };
+

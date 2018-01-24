@@ -1,4 +1,10 @@
 @import "../../../assets/scss/variables";
+
+.notifications-list {
+  list-style: none;
+  padding: 0;
+}
+
 .notifications-icon {
   display: block;
   width: 44px;
@@ -25,6 +31,9 @@
   }
 }
 .notifications {
+  h3, p {
+    margin: 0;
+  }
   .react-scrollbar-default .-reactjs-scrollbar-track {
     opacity: 0;
     z-index: 9;

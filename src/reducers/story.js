@@ -13,7 +13,8 @@ export const initialState =  {
         _comments: [],
         _likes:[]
     }
-}
+};
+
 const storyReducer = createReducer({
     [actions.fetchStory]: (state) => ({...state, loading: true}),
     [actions.fetchStorySuccess]: (state, payload) => ({
@@ -24,8 +25,8 @@ const storyReducer = createReducer({
         currentStory: {...state.currentStory, commentsCount: state.currentStory.commentsCount + 1 }}),
     [actions.deleteResponse]: (state, payload) =>  ({...state,
         currentStory: {...state.currentStory, commentsCount: state.currentStory.commentsCount - 1 }}),
-    [actions.likeStory]: (state, payload) =>({...state,
-            currentStory: storyLike(state.currentStory, payload.user, payload.isLiked)}),
+    // [actions.likeStory]: (state, payload) =>({...state,
+    //         currentStory: storyLike(state.currentStory, payload.user, payload.isLiked)}),
 }, initialState);
 
 function storyLike(state, payload, isLiked) {

@@ -102,8 +102,7 @@ class CommentEditer extends Component {
                 <div onClick={this.commentClick.bind(this)}
                      className="comment-editor">
                     {this._renderCommentEditor()}
-                    { clicked && <div className="text-right"
-                    >
+                    { clicked && <div className="text-right" >
                         <Button type="primary"
                                 loading={loading}
                                 onClick={this.submitComment}>Submit</Button>

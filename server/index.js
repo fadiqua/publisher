@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import app from './app';
-import socketio from './socketio/socketServer';
+import { socketServer } from './socketio/socketServer';
 import mongooseConnction from './config/mongooseConfig';
 
 const PORT = process.env.PORT || 3091;
@@ -13,7 +13,7 @@ mongooseConnction.on('connected', function() {
     console.log('Mongoose connected to ');
     const server = app.listen(PORT, () => {
         console.log(`listening on port ${PORT}`);
-        io = socketio.socketServer(require('socket.io')(server));
+        io = socketServer(require('socket.io')(server));
     });
 });
 

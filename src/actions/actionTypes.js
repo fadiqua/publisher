@@ -1,9 +1,10 @@
 import { createAction } from 'redux-act';
 
+// responsive screen
 export const siderCollapsed = createAction('sider collapsed');
-export const isDesktop = createAction('desktop');
 export const isMobile = createAction('mobile');
 export const siderSelected = createAction('sider selected');
+
 // sign
 export const toggleSignin = createAction('toggleSignin');
 export const toggleSignup = createAction('toggleSignup');
@@ -33,6 +34,8 @@ export const initResponses = createAction('init responses ');
 export const fetchStory = createAction('fetch story');
 export const fetchStorySuccess = createAction('fetch story success');
 export const clearCreatedStory = createAction('clear created story');
+export const likeStory = createAction('like_story');
+// export const likeStory = createAction('like_story');
 
 // Responses
 export const createResponse = createAction('create response');
@@ -42,7 +45,7 @@ export const fetchResponsesSuccess = createAction('fetch responses success');
 export const clearResponseStatus = createAction('clear responses status');
 export const deleteResponse = createAction('delete response');
 export const addResponse = createAction('add response');
-export const likeStory = createAction('like story');
+// export const likeStory = createAction('like story');
 export const likeComment = createAction('like comment');
 export const likeResponse = createAction('like response');
 export const selectedResponseForReply = createAction('selected response for reply');
