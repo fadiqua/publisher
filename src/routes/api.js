@@ -170,9 +170,9 @@ export function getStoriesByTag(tag, page=1) {
     })
 }
 
-export function getCurrentTopicStories(query, topic) {
+export function getCurrentTopicStories(query, params) {
     return axios.get(`/api/topic/stories/${query}`, {
-        params: { topic }
+        params
     })
 }
 

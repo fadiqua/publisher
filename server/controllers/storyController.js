@@ -14,6 +14,7 @@ const storyFields = {
     "createdAt": 1,
     "cover": 1,
     "_likes": 1,
+    "membersOnly": 1
 };
 
 
@@ -195,26 +196,35 @@ storyController.getHomePageData = async (req, res) => {
 
 storyController.getStoriesByTopic = async (req, res) => {
     const { topic, page=1, sortby } = req.query;
-    let stories;
+    console.log('req.query ', req.query)
     let pageSize = 9;
     let params = {};
     params['isDeleted'] = false;
-    if(!req.user) {
-        params['membersOnly'] = false
-    }
-    const topicObj = await db.Topic.findOne({slug: topic });
-    let sortBy = sortby || 'date';
-    let sort = {};
-    if(sortBy === 'date'){
-        sort['createdAt'] = 1
-    } else {
-        sort["commentsCount"] = -1;
-        sort["likesCount"] = -1;
-        sort['createdAt'] = 1
-    }
-    const aggregate = db.Story.aggregate();
-    if(topicObj !== null) {
-        params['_topic'] = topicObj._id;
+    if(!req.user) params['membersOnly'] = false;
+    try {
+        if(topic === 'members-only' && !req.user) {
+            res.status(401).json({
+                success: false,
+                error: 'Authentication is not provided'
+            });
+            return;
+        } else if(topic === 'members-only') {
+            params['membersOnly'] = true
+        }
+        const topicObj = await db.Topic.findOne({ slug: topic });
+        if(topic !== 'members-only' && topicObj === null) throw new Error("Invalid Topic");
+        let sortBy = sortby || 'date';
+        let sort = {};
+        if(sortBy === 'date') {
+            sort['createdAt'] = 1
+        } else {
+            sort["commentsCount"] = -1;
+            sort["likesCount"] = -1;
+            sort['createdAt'] = 1
+        }
+
+        const aggregate = db.Story.aggregate();
+        if(topicObj !== null) params['_topic'] = topicObj._id;
         const stories = await db.Story.paginateRecords(aggregate,{
                 match: params,
                 project: {
@@ -232,38 +242,11 @@ storyController.getStoriesByTopic = async (req, res) => {
             success: true,
             stories
         })
-    }
-    else if (topic === 'members-only'){
-        if(!req.user) {
-            res.status(401).json({
-                success: false,
-                error: 'Authentication is not provided'
-            });
-        } else {
-            stories = await db.Story.paginateRecords(aggregate,{
-                    match: params,
-                    project: {
-                        ...storyFields,
-                        "commentsCount": { "$size": "$_comments" },
-                        "likesCount": { "$size": "$_likes" }
-                    },
-                    sort,
-                    page,
-                    pageSize
-                },
-                ['_creator', '_topic']
-            );
-            res.status(200).json({
-                success: true,
-                stories
-            })
-        }
 
-    }
-    else {
+    } catch (err) {
         res.status(500).json({
             success: false,
-            error: 'Not valid topic'
+            message: err.message
         })
     }
 

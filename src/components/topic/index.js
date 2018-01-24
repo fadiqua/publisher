@@ -84,7 +84,10 @@ class Topic extends Component {
     componentDidMount(){
         window.scrollTo(0, 0);
         const { match:{params}, location } = this.props;
-        this.props.fetchStories({topic:params.topic, query: location.search});
+        this.props.fetchStories({
+            topic:params.topic,
+            query: location.search,
+        });
     }
 
     componentWillReceiveProps(nextProps) {

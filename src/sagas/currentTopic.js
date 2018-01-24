@@ -7,7 +7,7 @@ import * as actions from '../actions/actionTypes';
 export function* fetchCurrentTopicStoriesAsync(action) {
     try {
         const { query, topic } =  action.payload;
-        const response = yield call(getCurrentTopicStories, query, topic);
+        const response = yield call(getCurrentTopicStories, query, {topic});
         yield put({ type: actions.fetchCurrentTopicSuccess, payload: response.data.stories });
         // yield put({type: actions.clearCreatedStory});
     } catch (e) {
