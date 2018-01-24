@@ -38,14 +38,15 @@ const notificationsSchema = new Schema({
     }
 });
 
-function autoPopulate(next) {
-    this.populate({
-        path: "_from",
-        select: 'thumbnail username firstName lastName displayName _id'
-    }).populate('_parentTarget');
+const autoPopulate = function (next) {
+    // this.populate({
+    //     path: "_from",
+    //     select: 'thumbnail username firstName lastName displayName _id'
+    // }).populate('_parentTarget');
     next()
 
-}
+};
+
 notificationsSchema.plugin(mongoosePaginate);
 
 notificationsSchema.pre('find', autoPopulate);

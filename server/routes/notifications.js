@@ -7,7 +7,7 @@ function notifications(routes) {
     routes.get("/notifications", jwtAuth, asyncMiddleware(notificationsController.getNotifications));
     routes.get("/notifications/:id", jwtAuth, asyncMiddleware(notificationsController.getNotificationById));
     routes.post("/notifications/all", jwtAuth, asyncMiddleware(notificationsController.clearUnreadBadgeCount));
-    routes.get("/notifications/unread", jwtAuth, asyncMiddleware(notificationsController.getUnreadCount));
+    // routes.get("/notifications/unread", jwtAuth, asyncMiddleware(notificationsController.getUnreadCount));
 
 }
 
