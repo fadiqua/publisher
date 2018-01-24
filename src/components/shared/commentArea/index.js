@@ -3,6 +3,7 @@ import { Modal } from 'antd';
 
 import CommentBox from './CommentBox';
 import { deleteResponse } from '../../../routes';
+
 import './index.scss';
 
 const confirm = Modal.confirm;

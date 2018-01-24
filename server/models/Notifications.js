@@ -39,10 +39,10 @@ const notificationsSchema = new Schema({
 });
 
 const autoPopulate = function (next) {
-    // this.populate({
-    //     path: "_from",
-    //     select: 'thumbnail username firstName lastName displayName _id'
-    // }).populate('_parentTarget');
+    this.populate({
+        path: "_from",
+        select: 'thumbnail username firstName lastName displayName _id'
+    }).populate('_parentTarget');
     next()
 
 };

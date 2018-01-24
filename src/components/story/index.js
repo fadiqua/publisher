@@ -46,6 +46,7 @@ class Story extends Component {
         this.deleteStory = this._deleteStory.bind(this);
         this.onEditResponse = this._onEditResponse.bind(this);
     }
+
     componentDidMount(){
         const slug = this.props.match.params.story;
         this.props.initResponses();
@@ -53,11 +54,11 @@ class Story extends Component {
         this.onSubmitComment = this.onSubmitComment.bind(this);
     }
 
-    componentWillReceiveProps(nextProps){
-        const slug = nextProps.match.params.story;
-        if(nextProps.location.pathname !== this.props.location.pathname){
-            nextProps.initResponses();
-            nextProps.fetchStory({slug});
+    componentWillReceiveProps({location, match: { params }, initResponses, fetchStory}) {
+        const slug = params.story;
+        if(location.pathname !== this.props.location.pathname){
+            initResponses();
+            fetchStory({slug});
         }
     }
 
@@ -78,10 +79,6 @@ class Story extends Component {
         const { location } = this.props;
         // this.props.fetchResponses(story.currentStory._id)
         this.props.history.push(`${location.pathname}/responses`)
-    };
-
-    onCommentClick = (e) =>{
-        console.log('comment')
     };
 
     scrollToSubmittedResponse = () => {
@@ -183,10 +180,6 @@ class Story extends Component {
                             { renderRoutes(this.props.routes) }
                         </Switch>
                         }
-                        {/*<CommentArea comments={responses}*/}
-                        {/*parent={story.currentStory._id}*/}
-                        {/*onDeleteResponse={this.props.deleteResponse}*/}
-                        {/*currentUser={currentUser} />*/}
                     </div>
                     {this.scrollToSubmittedResponse()}
                 </div>

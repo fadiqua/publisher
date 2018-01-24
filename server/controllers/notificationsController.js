@@ -14,7 +14,7 @@ notificationsController.markNotificationAsRead = async (req, res) => {
            await db.Notifications.update({isClicked: false}, {
                 isClicked: true,
                 isRead: true
-            }, { multiple: true})
+            }, { multiple: true});
             res.status(200).json({
                 success: true
             })
@@ -73,6 +73,9 @@ notificationsController.getNotificationById = async (req, res) => {
     try {
         const { id } = req.params;
         const notification = await db.Notifications.findById(id);
+        if(!notification) {
+            res.status(403)
+        }
         if(req.user.id !== notification._to.toString())
             throw new Error('invalid notification id');
         res.status(200).json({

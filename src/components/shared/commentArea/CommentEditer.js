@@ -1,13 +1,17 @@
+// npm packages
 import React, { Component } from 'react';
 import { Button } from 'antd';
 import { Editor, EditorState, convertToRaw } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
-
+// project files
 import UserAvatar from '../UserAvatar';
+import './CommentEditor.scss';
 
-class CommentEditer extends Component{
-    constructor(){
+class CommentEditer extends Component {
+
+    constructor() {
         super();
+
         this.state = {
             readOnly: false,
             onFocus: false,
@@ -15,13 +19,23 @@ class CommentEditer extends Component{
             editorState: EditorState.createEmpty(),
             plainText: null
         };
+
         this.editorStateChanged = this.editorStateChanged.bind(this);
         this.submitComment = this.submitComment.bind(this);
     }
-    commentClick(){
-        this.setState({...this.state, clicked: true})
-        this.commentContent.focus();
+
+    componentWillReceiveProps(nextProps){
+        if(nextProps.clearEditor){
+            this.clearEditor();
+        }
+        // console.log('cccc',this.commentContent )
     }
+
+    commentClick () {
+        this.setState({ clicked: true }, () => this.commentContent.focus());
+
+    }
+
     editorStateChanged (newEditorState){
         const contentState = newEditorState.getCurrentContent();
         const rawJson = convertToRaw(contentState);
@@ -34,18 +48,14 @@ class CommentEditer extends Component{
     submitComment(){
         this.props.onSubmit(this.state.html)
     }
+
     clearEditor = () => {
         this.setState({
             editorState: EditorState.createEmpty()
         })
     };
-    componentWillReceiveProps(nextProps){
-        if(nextProps.clearEditor){
-            this.clearEditor();
-        }
-        // console.log('cccc',this.commentContent )
-    }
-    renderCommentEditor = () => {
+
+    _renderCommentEditor = () => {
         const { clicked, editorState } = this.state;
         const {canExpand } = this.props;
         if(!canExpand) {
@@ -85,12 +95,15 @@ class CommentEditer extends Component{
                                 imgSrc={user.thumbnail}/>
                     <strong style={{
                         top: clicked ? '0': '30px'
-                    }}>{user.displayName}</strong>
+                    }}>
+                        {user.displayName}
+                    </strong>
                 </div>
-                <div onClick={ () => this.commentClick() }
+                <div onClick={this.commentClick.bind(this)}
                      className="comment-editor">
-                    {this.renderCommentEditor()}
-                    { clicked && <div className="text-right" style={{ padding: '4px 2px', backgroundColor:'#eee'}}>
+                    {this._renderCommentEditor()}
+                    { clicked && <div className="text-right"
+                    >
                         <Button type="primary"
                                 loading={loading}
                                 onClick={this.submitComment}>Submit</Button>
@@ -101,7 +114,7 @@ class CommentEditer extends Component{
     }
 }
 CommentEditer.defaultProps = {
-    className: null,
+    className: '',
     canExpand: true
 }
 export default CommentEditer;

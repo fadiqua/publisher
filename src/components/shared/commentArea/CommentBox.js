@@ -1,9 +1,10 @@
+// npm packages
 import React, { Component } from 'react';
 import { Editor, EditorState, convertToRaw } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 import classNames  from 'classnames';
 import { Modal } from 'antd';
-
+// project files
 import StoryWriter from '../story-widget/StoryWriter';
 import ReadMoreButton from './ReadMoreButton';
 import CtrlDropdown from '../../shared/CtrlDropdown';
@@ -11,6 +12,7 @@ import EditButtons from '../../shared/EditButtons';
 import { importHTMLToDraft } from '../../../utils/functions';
 import { updateResponse } from '../../../routes';
 import LikeButton from '../LikeButton';
+import './CommentBox.scss';
 
 class CommentBox extends Component{
     constructor(props){
