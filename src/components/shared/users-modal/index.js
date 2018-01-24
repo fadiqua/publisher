@@ -40,21 +40,34 @@ class UsersModal extends Component {
         return data.docs.map(obj => <li key={obj._id} >
             <UserWidget item={obj._followed} followCallback={this.props.followCallback} /></li>)
     };
+
     renderLoadMoreButton = () => {
         const { loading, data } = this.state;
         if(data.page== data.pages) {
             return;
         }
-        return <li>
-            <Button onClick={this.loadMore} loading={loading && data.docs.length > 0} className="load-more" size="large">load more</Button>
-        </li>
-    }
+        return (
+            <li>
+                <Button
+                    onClick={this.loadMore}
+                    loading={loading && data.docs.length > 0}
+                    className="load-more" size="large">
+                    load more
+                </Button>
+            </li>
+        )
+    };
+
     render() {
         const { visible, loading, data } = this.state;
         const { title } = this.props;
         return (
             <div className="users-modal-box">
-                <span onClick={this.openModal}>{this.props.children}</span>
+                <span
+                    className={`${!data.count ? 'disabled' : ''}`}
+                    onClick={data.count && this.openModal}>
+                    {this.props.children}
+                </span>
                 {visible && <Modal title={title} visible={visible}
                                    width={450} footer={null}
                                    wrapClassName="users-modal"

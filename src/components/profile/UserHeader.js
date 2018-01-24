@@ -62,7 +62,11 @@ class UserHeader extends Component {
                 <div className="follow-info">
                     <UsersModal title="Following users"
                                 followCallback={(id) => this.onFollowCallback(id,'_following')}
-                                data={{id: profile.user._id}} api={getFollowings}>
+                                data={{
+                                    id: profile.user._id,
+                                    count: profile.user._following.length
+                                }}
+                                api={getFollowings}>
                         <button className="icon-btn">
                             <strong title={profile.user._following.length}>
                                 {formatNumber(profile.user._following.length)}
@@ -72,7 +76,11 @@ class UserHeader extends Component {
                     </UsersModal>
                     <UsersModal title="Follower users"
                                 followCallback={(id) => this.onFollowCallback(id,'_following')}
-                                data={{id: profile.user._id}} api={getFollowers}>
+                                data={{
+                                    id: profile.user._id,
+                                    count: profile.user._followers.length
+                                }}
+                                api={getFollowers}>
                         <button className="icon-btn">
                             <strong title={profile.user._followers.length}>
                                 {formatNumber(profile.user._followers.length)}

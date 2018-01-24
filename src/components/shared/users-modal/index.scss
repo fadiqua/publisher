@@ -7,6 +7,12 @@
     color: $primary-color;
     font-size: 1.2em;
   }
+  .disabled {
+    .icon-btn {
+      color: $text-color;
+      cursor: default;
+    }
+  }
 }
 .users-modal {
   .ant-modal-body {
