@@ -68,11 +68,11 @@ class Navbar extends Component {
     };
 
     renderNotifications = () => {
-        const { auth, notifications } = this.props;
+        const { auth, notifications, screenSize : { mobile } } = this.props;
         if(auth.isAuthenticated){
             return (
                 <Menu.Item key="4" className="pull-right notification-btn">
-                    <Notifications />
+                    <Notifications mobile={mobile} />
                 </Menu.Item>
             )
         }

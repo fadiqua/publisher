@@ -123,7 +123,8 @@ class Story extends Component {
             location
         } = this.props;
         const editor = currentStory.content ? importHTMLToDraft(currentStory.content):EditorState.createEmpty();
-        const isLiked = currentStory._likes.indexOf(currentUser._id) !== -1;
+        // const isLiked = currentStory._likes.indexOf(currentUser._id) !== -1;
+        // const isLiked = currentStory._likes.indexOf(currentUser._id) !== -1;
         const showResponsesBtn = location.pathname.indexOf('/responses') === -1;
 
         if(loading) return <StoryLoading />;
@@ -165,7 +166,7 @@ class Story extends Component {
 
                     <TagList tags={currentStory.tags}/>
                     <LikeButton id={currentStory._id}
-                                isLiked={isLiked}
+                                isLiked={currentStory.isUserLiked}
                                 type="Story"
                                 count={currentStory.likesCount}/>
                     <ResponseButton count={currentStory.commentsCount}/>

@@ -20,12 +20,13 @@ export default () => (
         <SiderSegment />
         <br/>
         <br/>
-        <LoadingSegmant style={{ width: '30%' }}/>
-        <br/>
-        <SiderSegment />
-        <br/>
-        <SiderSegment />
-        <br/>
-        <SiderSegment />
+        {/*<LoadingSegmant style={{ width: '30%' }}/>*/}
+        {/*<br/>*/}
+        {/*<SiderSegment />*/}
+        {/*<br/>*/}
+        {/*<SiderSegment />*/}
+        {/*<br/>*/}
+        {/*<SiderSegment />*/}
+
     </div>
 )

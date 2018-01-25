@@ -27,15 +27,29 @@ const storyReducer = createReducer({
         currentStory: {...state.currentStory, commentsCount: state.currentStory.commentsCount - 1 }}),
     // [actions.likeStory]: (state, payload) =>({...state,
     //         currentStory: storyLike(state.currentStory, payload.user, payload.isLiked)}),
+    [actions.likeStory]: (state, payload) =>({...state,
+            currentStory: storyLike(state.currentStory, payload.user)}),
+    [actions.likeStoryResponse]: (state, payload) => {
+        const { currentStory } = state;
+        const { isLiked, user } = payload;
+        const story = isLiked === currentStory.isUserLiked ?
+            currentStory : storyLike(currentStory, user);
+        return {
+            ...state,
+            currentStory: story
+        }
+    },
 }, initialState);
 
-function storyLike(state, payload, isLiked) {
+function storyLike(state, payload) {
+    const isLiked = !state.isUserLiked;
     const _likes = !isLiked?
         state._likes.filter(id => id !== payload):[...state._likes, payload];
     return {
         ...state,
         likesCount:  !isLiked ? state.likesCount - 1:  state.likesCount + 1,
-        _likes
+        _likes,
+        isUserLiked: isLiked
     }
 }
 

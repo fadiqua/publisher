@@ -1,6 +1,9 @@
-import React, {Component} from "react";
-import InfiniteScroll from 'react-infinite-scroll-component';
+// npm packages
+import { bindActionCreators } from 'redux';
+import React, { Component } from "react";
 import { connect } from 'react-redux';
+import InfiniteScroll from 'react-infinite-scroll-component';
+// project files
 import NotificationItem from '../shared/nav-bar/NotificationItem';
 import PaginateLoading from '../shared/paginate-loading';
 import NotificationsLoading from './NotificationsLoading';
@@ -14,6 +17,12 @@ import {
 import './index.scss';
 
 class Notifications extends Component {
+
+    componentDidMount(){
+        window.scrollTo(0,0);
+        this.props.fetchNotifications({type: 'initial', page: 1});
+    }
+
     /**
      *  Mark clicked notification as read
      * @param id: Notification id
@@ -32,7 +41,7 @@ class Notifications extends Component {
     };
 
     // Render notifications list
-    renderNotificationsItems = () => {
+    _renderNotificationsItems = () => {
         const { notifications: { fetching, items} } = this.props;
         let notificationsJSX = [];
         items.forEach((notification, key) => {
@@ -66,27 +75,29 @@ class Notifications extends Component {
         this.props.markNotificationAsRead(null)
     };
 
-    componentDidMount(){
-        window.scrollTo(0,0);
-        this.props.fetchNotifications({type: 'initial', page: 1});
-    }
-
     render() {
         const { notifications:{page, pages} } = this.props;
+        const infiniteScrollStyle = {
+            overflowY: 'auto',overflowX: 'hidden', paddingTop:'10px'
+        };
+
         return (
             <div id="notifications" className="base-sec">
-                <InfiniteScroll  style={{ overflowY: 'auto',overflowX: 'hidden', paddingTop:'10px'}}
+                <InfiniteScroll  style={infiniteScrollStyle}
                                  next={this.loadMore}
                                  hasMore={page != pages}
                                  loader={<PaginateLoading loading={true} canPaginate={page != pages}/>}>
                     <div className="-title clearfix">
                         <h3 className="pull-left">Notifications</h3>
                         <p className="pull-right">
-                            <button onClick={this.markAllAsReadClick} className="icon-btn text-capitalize">mark all as read</button>
+                            <button onClick={this.markAllAsReadClick}
+                                    className="icon-btn text-capitalize">
+                                mark all as read
+                            </button>
                         </p>
                     </div>
                     <ul className="notifications-list" >
-                        { this.renderNotificationsItems() }
+                        { this._renderNotificationsItems() }
                     </ul>
                 </InfiniteScroll>
             </div>
@@ -94,14 +105,13 @@ class Notifications extends Component {
     }
 }
 
-function mapStateToProps({ notifications}) {
-    return {
-        notifications
-    }
-}
+const mapState = ({ notifications}) => ({ notifications });
 
-export default connect(mapStateToProps, {
+const mapDispatch = dispatch => bindActionCreators({
     clearUnreadBadgeNotifications,
     markNotificationAsRead,
     fetchNotifications,
-})(Notifications);
+}, dispatch);
+
+
+export default connect(mapState, mapDispatch)(Notifications);

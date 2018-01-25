@@ -16,6 +16,7 @@ const StoryLoading = () => (
         </div>
         <div>
             <br/>
+            <LoadingSegmant style={{ width: '80%' }}/>
             <LoadingSegmant style={{ width: '50%' }}/>
         </div>
     </div>

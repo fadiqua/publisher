@@ -1,3 +1,4 @@
+// npm packages
 import React from 'react';
 
 String.prototype.plural = function(revert){
@@ -115,4 +116,5 @@ const PluralWord = ({count, word, showCount }) => (
 PluralWord.defaultProps = {
     showCount: true
 };
+
 export default PluralWord;

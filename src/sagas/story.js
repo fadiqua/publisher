@@ -1,5 +1,5 @@
 // npm packages
-import { put, call, takeEvery, all } from 'redux-saga/effects'
+import { put, call, takeEvery, all, takeLatest } from 'redux-saga/effects'
 // project files
 import {
     createStory,
@@ -33,15 +33,16 @@ export function* watchFetchStory() {
 export function* likeStoryAsync (action) {
     try {
         // const { id, type, parent } = action.payload;
-        const response = yield like(action.payload)
+        const response = yield like(action.payload);
         console.log('response ', response)
+        yield put({ type: actions.likeStoryResponse, payload: response.data })
     } catch (err) {
 
     }
 }
 
 export function* watchLikeStory () {
-    yield takeEvery(actions.likeStory, likeStoryAsync)
+    yield takeLatest(actions.likeStory, likeStoryAsync)
 }
 
 // -------------------------------------------------------------------

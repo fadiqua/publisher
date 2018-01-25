@@ -1,16 +1,27 @@
+// npm packages
+import { bindActionCreators } from 'redux';
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { Popover, Badge  } from 'antd';
+// project files
 import NotificationItem from './NotificationItem';
 import PaginateLoading from '../paginate-loading';
-import './Notifications.scss';
 import { clearUnreadBadgeCountAPI } from '../../../routes';
-
-import { clearUnreadBadgeNotifications, markNotificationAsRead, fetchNotifications } from '../../../actions/actionTypes';
+import {
+    clearUnreadBadgeNotifications,
+    markNotificationAsRead,
+    fetchNotifications
+} from '../../../actions/actionTypes';
+import './Notifications.scss';
 
 class Notifications extends Component {
+    constructor() {
+        super();
+
+
+    }
     state = {
         visible: false,
         initialNotificationsIsLoaded: false,
@@ -21,13 +32,14 @@ class Notifications extends Component {
             visible
         });
     };
+
     hidePopover = () => {
         this.setState({
             visible: false
         })
     };
 
-    onNotificationClick = (id) => {
+    onNotificationClick(id) {
         const { notifications } = this.props;
         if(!notifications.items.get(id).isClicked){
             this.props.markNotificationAsRead(id)
@@ -47,7 +59,7 @@ class Notifications extends Component {
             </li>
         )
     };
-    renderNotificationsItems = () => {
+    _renderNotificationsItems = () => {
         const { notifications: { fetching, items} } = this.props;
         const loadingItem = this.spinnerBottomLodaingNotifications();
         let notificationsJSX = [];
@@ -64,7 +76,7 @@ class Notifications extends Component {
                 </li>
             )
         }
-        if(fetching === null && items.size === 0) {
+        else if(fetching === null && items.size === 0) {
             return (
                 <li className="text-center " >
                     <br/>
@@ -100,8 +112,10 @@ class Notifications extends Component {
             this.props.fetchNotifications({ type: 'paginate', page: parseInt(page) + 1 });
         }
     };
+
     render(){
-        const { notifications } = this.props;
+        const { notifications, mobile } = this.props;
+        const popoverPosition = mobile ? "bottomRight" : "bottomLeft";
         const notificationTitle = (
             <div className="-title clearfix">
                 <h3 className="pull-left">Notifications</h3>
@@ -121,18 +135,22 @@ class Notifications extends Component {
                             onScrollFrame={(values) => setTimeout(()=>{this.onScrollFrame(values)}, 300)}
                             ref={ node => this.scrollbars = node }>
                     <ul className="notifications-list"  >
-                        { this.renderNotificationsItems()}
+                        { this._renderNotificationsItems() }
                     </ul>
                 </Scrollbars>
                 <div className="text-center -footer">
-                    <Link to="/notifications" onClick={this.hidePopover}><strong className="text-capitalize">see all</strong></Link>
+                    <Link
+                        to="/notifications"
+                        onClick={this.hidePopover}>
+                        <strong className="text-capitalize">see all</strong>
+                    </Link>
                 </div>
             </div>
-        )
+        );
         return (
             <Popover visible={this.state.visible }
                      overlayClassName="notifications-popover"
-                     placement="bottomLeft"
+                     placement={popoverPosition}
                      onVisibleChange={this.onVisibleChange}
                      content={notificationsMenu}
                      trigger="click">
@@ -148,12 +166,12 @@ class Notifications extends Component {
     }
 }
 
-function mapStateToProps({ notifications}) {
-    return {
-        notifications
-    }
-}
+const mapState = ({ notifications }) => ({ notifications });
 
-export default connect(mapStateToProps, { clearUnreadBadgeNotifications,
+const mapDispatch = dispatch => bindActionCreators({
+    clearUnreadBadgeNotifications,
     markNotificationAsRead,
-    fetchNotifications,})(Notifications);
+    fetchNotifications
+}, dispatch);
+
+export default connect(mapState, mapDispatch)(Notifications);
