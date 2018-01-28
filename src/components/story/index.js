@@ -56,10 +56,11 @@ class Story extends Component {
     }
 
     componentWillReceiveProps({location, match: { params }, initResponses, fetchStory}) {
-        const slug = params.story;
-        if(location.pathname !== this.props.location.pathname){
+        const { topic, story } = params;
+        const { match } = this.props;
+        if(topic !== match.params.topic || story !== match.params.story){
             initResponses();
-            fetchStory({slug});
+            fetchStory({slug: story});
         }
     }
 
