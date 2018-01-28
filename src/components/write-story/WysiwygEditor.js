@@ -1,29 +1,13 @@
 // npm packages
-import punycode from 'punycode';
 import React, { Component } from 'react';
 import draftToHtml from 'draftjs-to-html';
-import { convertToRaw,  EditorState, ContentState } from 'draft-js';
-import htmlToDraft from 'html-to-draftjs';
+import { convertToRaw,  EditorState } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 // project files
 import uploadImageCallBack from '../../utils/uploadImageCallBack';
+import { importHTML, charCounter } from '../../utils/functions';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import './WysiwygEditor.scss';
-
-
-export function importHTML(html){
-    let blocksFromHTML = htmlToDraft(html);
-    const contentBlocks = blocksFromHTML.contentBlocks;
-    const contentState = ContentState.createFromBlockArray(contentBlocks);
-    return EditorState.createWithContent(contentState);
-}
-function charCounter(editorState) {
-    const decodeUnicode = (str) => punycode.ucs2.decode(str); // func to handle unicode characters
-    const plainText = editorState.getCurrentContent().getPlainText('');
-    const regex = /(?:\r\n|\r|\n)/g;  // new line, carriage return, line feed
-    const cleanString = plainText.replace(regex, '').trim();  // replace above characters w/ nothing
-    return decodeUnicode(cleanString).length;
-};
 
 class WysiwygEditor extends Component{
     constructor(props){

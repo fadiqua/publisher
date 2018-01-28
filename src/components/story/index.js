@@ -44,10 +44,11 @@ class Story extends Component {
         super(props);
 
         this.deleteStory = this._deleteStory.bind(this);
-        this.onEditResponse = this._onEditResponse.bind(this);
+        this.onEdit = this._onEdit.bind(this);
     }
 
     componentDidMount(){
+        window.scrollTo(0,0);
         const slug = this.props.match.params.story;
         this.props.initResponses();
         this.props.fetchStory({slug});
@@ -107,8 +108,8 @@ class Story extends Component {
         });
     }
 
-    _onEditResponse() {
-     const { history, story: { currentStory } } = this.props;
+    _onEdit() {
+        const { history, story: { currentStory } } = this.props;
         history.push({
             pathname: `/write-story`,
             // search: `?edit=${currentUser._id}`,
@@ -132,7 +133,7 @@ class Story extends Component {
         return (
             <DocumentTitle title={currentStory.title || 'Publisher'}>
                 <div className="story base-sec">
-                    <ScrollToTopOnMount />
+                    {/*<ScrollToTopOnMount />*/}
                     {/*<ShareButtons/>*/}
                     <div className="story-header">
                         <StoryWriter user={currentStory._creator}
@@ -143,7 +144,7 @@ class Story extends Component {
                         {currentStory.isOwner &&
                         <ButtonGroup>
                             <Button
-                                onClick={this.onEditResponse}
+                                onClick={this.onEdit}
                                 type="primary"
                                 icon="edit"
                             />
@@ -175,6 +176,7 @@ class Story extends Component {
                                        onSubmit={this.onSubmitComment}
                                        loading={ responses.responseStatus === 'create' }
                                        clearEditor={responses.responseStatus=== 'created'} />
+
                         { showResponsesBtn &&
                         <ShowComments loading= {responses.responseStatus === 'fetch'}
                                       onClick={this.onShowResponses}/> }

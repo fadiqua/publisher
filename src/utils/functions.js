@@ -1,8 +1,26 @@
+import punycode from 'punycode';
 import DOMPurify from 'dompurify';
 import { EditorState, ContentState } from 'draft-js';
 import htmlToDraft from 'html-to-draftjs';
 import querystring from 'querystring';
 import url from 'url';
+
+
+
+export function importHTML(html){
+    let blocksFromHTML = htmlToDraft(html);
+    const contentBlocks = blocksFromHTML.contentBlocks;
+    const contentState = ContentState.createFromBlockArray(contentBlocks);
+    return EditorState.createWithContent(contentState);
+}
+
+export function charCounter(editorState) {
+    const decodeUnicode = (str) => punycode.ucs2.decode(str); // func to handle unicode characters
+    const plainText = editorState.getCurrentContent().getPlainText('');
+    const regex = /(?:\r\n|\r|\n)/g;  // new line, carriage return, line feed
+    const cleanString = plainText.replace(regex, '').trim();  // replace above characters w/ nothing
+    return decodeUnicode(cleanString).length;
+};
 
 export function getBase64(img, callback) {
     const reader = new FileReader();

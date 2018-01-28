@@ -2,44 +2,12 @@
 import { put, call, takeEvery, all, takeLatest } from 'redux-saga/effects'
 // project files
 import {
-    createStory,
-    getStory,
-    createResponse,
-    getResponses,
     getResponseById,
     getReplies,
     createReply,
-    like
 } from '../routes';
 import * as actions from '../actions/actionTypes';
 
-// ---------------------------------------------------------------------------
-export function* fetchStoryAsync(action) {
-    try {
-        const response = yield call(getStory, action.payload.slug);
-        yield put({type: actions.fetchStorySuccess, payload: response.data.story});
-    } catch (e) {
-    } finally {
-
-    }
-}
-
-export function* watchFetchStory() {
-    yield takeEvery(actions.fetchStory, fetchStoryAsync)
-}
-
-// -------------------------------------------------------------------
-
-export function* likeStoryAsync (action) {
-    try {
-        // const { id, type, parent } = action.payload;
-        const response = yield like(action.payload);
-        console.log('response ', response);
-        yield put({ type: actions.likeStoryResponse, payload: response.data })
-    } catch (err) {
-        yield put({ type: actions.likeStoryResponse, payload: { error: true} })
-    }
-}
 
 export function* watchLikeStory () {
     yield takeLatest(actions.likeStory, likeStoryAsync)

@@ -9,6 +9,8 @@ import CommentBox from '../shared/commentArea/CommentBox';
 import  PaginateLoading from '../shared/paginate-loading'
 import StoryResponse from './StoryResponse';
 import PluralWord from '../shared/PluralWord';
+import EditResponseModal from '../shared/commentArea/EditResponseModal';
+
 import { deleteResponse } from '../../routes';
 import {
     fetchResponses,
@@ -66,27 +68,28 @@ class StoryResponses extends Component {
         })
     };
 
-    _renderComments () {
+    renderResponses () {
         const { id } = this.state;
         const { responses, currentUser, story } = this.props;
-        let commentsJSX = [];
-        responses.docs.forEach((comment, key) => {
-            // console.log(comment);
-            const currentComment = <CommentBox key={key}
+        let responsesJSX = [];
+        responses.docs.forEach((response, key) => {
+            console.log(response);
+            const currentResponse = <CommentBox key={key}
                                                owner={currentUser._id}
                                                story={story.currentStory}
-                                               comment={comment}
-                                               edit={comment._id === id}
+                                               comment={response}
+                                               edit={response._id === id}
                                                onEdit={this.onEditResponse}
                                                onDropDownClick={this.onDropDownClick}>
                 <Link className="reply"
-                      to={`/topics/${story.currentStory._topic.name}/story/${story.currentStory.slug}/responses?responseid=${comment._id}`}>
-                    <PluralWord word="Reply" count={comment.repliesCount}/>
+                      to={`/topics/${story.currentStory._topic.name}/story/${story.currentStory.slug}/responses?responseid=${response._id}`}>
+                    <PluralWord word="Reply" count={response.repliesCount}/>
                 </Link>
             </CommentBox>;
-            commentsJSX.push(currentComment)
+            responsesJSX.push(currentResponse)
         });
-        return commentsJSX;
+
+        return responsesJSX;
 
     };
 
@@ -104,7 +107,9 @@ class StoryResponses extends Component {
     render(){
         // responses.page != responses.pages
         const { responses } = this.props;
-
+        const { id } = this.state;
+        let editResponse = null;
+        if(id) editResponse = responses.docs.get(id);
         return (
             <InfiniteScroll
                 style={{ overflowY: 'auto',overflowX: 'hidden', paddingTop:'10px'}}
@@ -112,7 +117,8 @@ class StoryResponses extends Component {
                 className="story-responses"
                 hasMore={responses.page != responses.pages}
                 loader={<PaginateLoading loading={true} canPaginate={true} />}>
-                { this._renderComments() }
+                {editResponse && <EditResponseModal content={editResponse} />}
+                { this.renderResponses() }
                 { this._renderResponseById() }
             </InfiniteScroll>
         )
