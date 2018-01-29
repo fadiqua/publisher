@@ -1,9 +1,9 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
-import CommentBox from '../shared/commentArea/CommentBox';
+import ResponseBox from '../shared/commentArea/ResponseBox';
 
 const UserResponseBox = ({ item, owner }) => (
-    <CommentBox comment={item} owner={owner}
+    <ResponseBox response={item} owner={owner}
                 parent={item._story._id}>
         <Link className="-story" title={item._story.title}
               to={`/topics/${item._story._topic.name}/story/${item._story.slug}`}>
@@ -21,7 +21,7 @@ const UserResponseBox = ({ item, owner }) => (
 
             </div>
         </Link>
-    </CommentBox>
+    </ResponseBox>
 );
 
 export default UserResponseBox;

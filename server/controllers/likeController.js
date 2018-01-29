@@ -3,13 +3,16 @@ import db from '../models/index';
 const likeController = {};
 likeController.post = async (req, res) => {
     const { id, type, parent } = req.body;
+    console.log('tyype ', type)
     const obj = await db.Like.findOne({
         _creator:req.user.id,
         _object: id, type
     });
     if(!obj) {
         const like = new db.Like({
-            _creator:req.user.id, _object: id, type, parent: parent || null
+            _creator: req.user.id,
+            _object: id, type,
+            parent: parent || null
         });
         await like.save();
         const story = await db[type].findByIdAndUpdate(

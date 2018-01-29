@@ -196,7 +196,6 @@ storyController.getHomePageData = async (req, res) => {
 
 storyController.getStoriesByTopic = async (req, res) => {
     const { topic, page=1, sortby } = req.query;
-    console.log('req.query ', req.query)
     let pageSize = 9;
     let params = {};
     params['isDeleted'] = false;

@@ -1,12 +1,13 @@
 import mongoose, { Schema } from 'mongoose';
 import mongoosePaginate from 'mongoose-paginate';
+import paginateRecords from '../plugins/paginateRecords';
 
 const responseSchema = new Schema({
 
     text: {
         type: String,
         required: true,
-        minlength: [5, 'content must be 5 characters or more.'],
+        minlength: [2, 'content must be 5 characters or more.'],
     },
     isDeleted: {
         type: Boolean,
@@ -47,21 +48,7 @@ const autoPopulateCreator = function(next) {
     this.where('isDeleted').equals(false);
     next()
 };
-// responseSchema.virtual('repliesCount',  {
-//     ref: 'Comment',
-//     localField: '_id',
-//     foreignField: '_parent'
-// })
-//     .get(async function() {
-//     mongoose.model('Comment').count({_parent: this._id})
-//         .then(count => {
-//             console.log('count ', count);
-//             return count
-//         })
-//         .catch(error => {
-//             return 0
-//         })
-// });
+
 responseSchema.pre('findById', autoPopulateCreator);
 responseSchema.pre('find', autoPopulateCreator);
 responseSchema.pre('findByIdAndUpdate', function (next) {
@@ -70,7 +57,9 @@ responseSchema.pre('findByIdAndUpdate', function (next) {
     }
     next();
 });
+
 responseSchema.plugin(mongoosePaginate);
+responseSchema.plugin(paginateRecords);
 
 const Response = mongoose.model('Response', responseSchema);
 

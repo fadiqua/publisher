@@ -9,11 +9,14 @@ import { watchFetchTopics } from './topics';
 import {
     watchFetchStory,
     watchLikeStory,
+} from './story';
+import {
     watchCreateResponse,
     watchFetchResponses,
     watchFetchReplies,
-    watchCreateReply
-} from './story';
+    watchCreateReply,
+    watchLikeResponse
+} from './responses';
 import { watchFetchCurrentTopicStories } from './currentTopic';
 import {
     watchFetchNotifications,
@@ -33,6 +36,7 @@ export default function* rootSaga() {
         watchLikeStory(),
         watchCreateResponse(),
         watchFetchResponses(),
+        watchLikeResponse(),
         watchFetchReplies(),
         watchCreateReply(),
         watchFetchCurrentTopicStories(),

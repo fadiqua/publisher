@@ -27,7 +27,7 @@ const storyReducer = createReducer({
         currentStory: {...state.currentStory, commentsCount: state.currentStory.commentsCount - 1 }}),
     [actions.likeStory]: (state, payload) =>({...state,
             currentStory: storyLike(state.currentStory, payload.user)}),
-    [actions.likeStoryResponse]: (state, payload) => {
+    [actions.likeStoryRes]: (state, payload) => {
         const { currentStory } = state;
         const { isLiked, user, error } = payload;
         const story = isLiked === currentStory.isUserLiked && !error ?

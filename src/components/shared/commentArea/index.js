@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Modal } from 'antd';
 
-import CommentBox from './CommentBox';
+import ResponseBox from './ResponseBox';
 import { deleteResponse } from '../../../routes';
 
 import './index.scss';
@@ -37,20 +37,20 @@ class CommentArea extends Component{
             id: null
         })
     }
-    renderComments = (comments, owner, id) => {
-        let commentsJSX = [];
-        comments.forEach((comment, key) => {
-            const currentComment = <CommentBox key={key}
+    _renderResponses = (responses, owner, id) => {
+        let responsesJSX = [];
+        responses.forEach((response, key) => {
+            const currentResponse = <ResponseBox key={key}
                                                owner={owner}
                                                parent={this.props.parent || null}
-                                               comment={comment}
-                                               edit={comment._id === id}
+                                               response={response}
+                                               edit={response._id === id}
                                                onEdit={this.onEditResponse}
                                                onDropDownClick={this.onDropDownClick}/>;
-            commentsJSX.push(currentComment)
+            responsesJSX.push(currentResponse)
 
         });
-       return commentsJSX;
+       return responsesJSX;
 
     };
 
@@ -59,7 +59,7 @@ class CommentArea extends Component{
         const { id } = this.state;
         return (
             <div>
-                {this.renderComments(comments.docs || [], currentUser._id, id)}
+                {this._renderResponses(comments.docs || [], currentUser._id, id)}
             </div>
         )
     }

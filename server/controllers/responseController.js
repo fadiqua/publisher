@@ -1,9 +1,20 @@
+import { Types } from 'mongoose';
 import db from '../models/index';
 import server from '../index';
 
-const  commentController = {};
+const  responseController = {};
 
-commentController.post = async (req, res) => {
+const responseFields = {
+    "text": 1,
+    "_story": 1,
+    // "_parent": 1,
+    "_creator": 1,
+    "isDeleted": 1,
+    "createdAt": 1,
+    "_likes": 1,
+};
+
+responseController.post = async (req, res) => {
     const { text, storyId, userId, parentId } = req.body;
     const comment = new db.Response({
         text,
@@ -55,26 +66,47 @@ commentController.post = async (req, res) => {
     }
 };
 
-commentController.get = async (req, res) => {
+responseController.get = async (req, res) => {
     const { storyId } = req.params;
     const { page } = req.query;
-    // console.log('storyId ', storyId);
+    console.log('storyId ', storyId, req.user);
     try {
-        const comments = await db.Response
-            .paginate({
-                _story: storyId,
-                isDeleted: false,
-                _parent: null
-            },{
-                sort: {
-                    createdAt: -1
+        const aggregate = db.Response.aggregate();
+        const responses = await db.Response.paginateRecords(aggregate,{
+                match: {
+                    _story: Types.ObjectId(storyId),
+                    isDeleted: false,
+                    _parent: null
                 },
-                populate: '_story',
-                page: page || 1,
-                limit: 2
-            });
+                project: {
+                    ...responseFields,
+                    "isOwner": { $eq: [ "$_creator",  req.user ?  Types.ObjectId(req.user.id) : '' ] },
+                    "isLiked": { $in: [ req.user ?  Types.ObjectId(req.user.id) : '', "$_likes" ] },
+                    "likesCount": { "$size": "$_likes" }
+                },
+                sort: {
+                    createdAt: '1'
+                },
+                page,
+                pageSize: 10,
+            },
+            ['_creator']
+        );
+        // const comments = await db.Response
+        //     .paginate({
+        //         _story: storyId,
+        //         isDeleted: false,
+        //         _parent: null
+        //     },{
+        //         sort: {
+        //             createdAt: -1
+        //         },
+        //         populate: '_story',
+        //         page: page || 1,
+        //         limit: 2
+        //     });
         res.status(200).json({
-            ...comments
+            ...responses
         });
     } catch (error) {
         res.status(500).json({
@@ -84,7 +116,7 @@ commentController.get = async (req, res) => {
     }
 };
 
-commentController.delete = async (req, res) => {
+responseController.delete = async (req, res) => {
     const { id, storyId, parentId } = req.query;
     try {
         let promises = [
@@ -107,7 +139,7 @@ commentController.delete = async (req, res) => {
         })
     }
 };
-commentController.update = (req, res) => {
+responseController.update = (req, res) => {
     const { id, text } = req.body;
     if(id && text) {
         db.Response.findByIdAndUpdate(id,{text})
@@ -132,7 +164,7 @@ commentController.update = (req, res) => {
 
 };
 
-commentController.getUserResponses = async (req, res) => {
+responseController.getUserResponses = async (req, res) => {
     const { username } = req.params;
     const { page } = req.query;
     try {
@@ -163,7 +195,7 @@ commentController.getUserResponses = async (req, res) => {
 
 };
 
-commentController.getReponseById = async (req, res) => {
+responseController.getReponseById = async (req, res) => {
     try {
         const { responseId } = req.params;
         const response = await db.Response.findById(responseId).populate({
@@ -179,7 +211,7 @@ commentController.getReponseById = async (req, res) => {
         })
     }
 };
-commentController.getReplies = async (req, res) => {
+responseController.getReplies = async (req, res) => {
     try {
         const { responseId } = req.params;
         const { page } = req.query;
@@ -206,4 +238,4 @@ commentController.getReplies = async (req, res) => {
         })
     }
 }
-export default commentController;
+export default responseController;

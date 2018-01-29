@@ -156,7 +156,7 @@ class Story extends Component {
                         </ButtonGroup>}
                     </div>
                     <StoryCover link="/topic/popular/article-slug"
-                                imgSrc={`/media/${currentStory.cover}`}/>
+                                imgSrc={`/media/${currentStory.cover}`} />
                     <StoryTitle title={currentStory.title} />
                     <div className="story-content">
                         <Editor readOnly={true} ref={(node) => { this.storyContent = node; }}
@@ -165,12 +165,12 @@ class Story extends Component {
                                 spellCheck={false} />
                     </div>
 
-                    <TagList tags={currentStory.tags}/>
+                    <TagList tags={currentStory.tags} />
                     <LikeButton id={currentStory._id}
                                 isLiked={currentStory.isUserLiked}
                                 type="Story"
                                 count={currentStory.likesCount}/>
-                    <ResponseButton count={currentStory.commentsCount}/>
+                    <ResponseButton count={currentStory.commentsCount} />
                     <div className="comments">
                         <CommentEditer user={currentUser}
                                        onSubmit={this.onSubmitComment}
@@ -179,7 +179,7 @@ class Story extends Component {
 
                         { showResponsesBtn &&
                         <ShowComments loading= {responses.responseStatus === 'fetch'}
-                                      onClick={this.onShowResponses}/> }
+                                      onClick={this.onShowResponses} /> }
                         {currentStory._id &&
                         <Switch>
                             { renderRoutes(this.props.routes) }

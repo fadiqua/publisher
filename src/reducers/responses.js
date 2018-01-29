@@ -33,12 +33,13 @@ const responsesReducer = createReducer({
         docs: deleteItem(state.docs, payload)}),
     [actions.addResponse]: (state, payload) => ({ ...state, docs: addItem(state.docs, payload)}),
     [actions.clearResponseStatus]: (state) => ({ ...state, responseStatus: null, loadingReplies:null }),
-    [actions.likeComment]: (state, payload) => {
-        const { user, isLiked, id } = payload;
-        return {
-            ...state,
-            docs: responseLike(state.docs,id,user, isLiked)
+    [actions.likeResponse]: (state, payload) =>({...state, docs: responseLike(state.docs,payload.id)}),
+    [actions.likeResponseRes]: (state, payload) => {
+        const { error, id } = payload;
+        if(error) {
+            return {...state, docs: responseLike(state.docs, id)}
         }
+        return { ...state }
     },
     [actions.fetchReplies]: (state, payload) => ({
         ...state,
@@ -95,21 +96,29 @@ const responsesReducer = createReducer({
     [actions.initResponses]: (state) => initialState
 }, initialState);
 
-function responseLike(state, id, user, isLiked) {
+function responseLike(state, id) {
+
     const newMap = duplicate(state);
     const response = newMap.get(id);
-    if(response) {
-        if(!isLiked){
-            response._likes = response._likes.filter(id => id !== user);
-            --response.likesCount;
-        } else {
-            response._likes = [...response._likes, user];
-            ++response.likesCount
-        }
-        newMap.set(response._id, response);
-        return newMap;
-    }
-    return state;
+    if(!response) return state;
+    const isLiked = response.isLiked;
+    response.isLiked = !isLiked;
+    response.likesCount = isLiked ? --response.likesCount :  ++response.likesCount;
+    newMap.set(response._id, response);
+    return newMap;
+
+    // if(response) {
+    //     if(!isLiked){
+    //         response._likes = response._likes.filter(id => id !== user);
+    //         --response.likesCount;
+    //     } else {
+    //         response._likes = [...response._likes, user];
+    //         ++response.likesCount
+    //     }
+    //     newMap.set(response._id, response);
+    //     return newMap;
+    // }
+    // return state;
 }
 function repliesCount(state, id, v) {
     const newMap = duplicate(state);

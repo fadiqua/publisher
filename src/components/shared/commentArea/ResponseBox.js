@@ -12,9 +12,9 @@ import EditButtons from '../../shared/EditButtons';
 import { importHTMLToDraft } from '../../../utils/functions';
 import { updateResponse } from '../../../routes';
 import LikeButton from '../LikeButton';
-import './CommentBox.scss';
+import './ResponseBox.scss';
 
-class CommentBox extends Component{
+class ResponseBox extends Component{
     constructor(props){
         super(props);
         this.onShowMoreClick = this.onShowMoreClick.bind(this);
@@ -42,24 +42,24 @@ class CommentBox extends Component{
         });
     }
     componentWillMount(){
-        const { comment } = this.props;
+        const { response } = this.props;
         this.setState({
-            editorState: importHTMLToDraft(comment.text)
+            editorState: importHTMLToDraft(response.text)
         })
     }
     componentDidMount(){
-        if(this.commentContent){
-            const hight = this.commentContent.clientHeight;
+        if(this.responseContent){
+            const hight = this.responseContent.clientHeight;
             this.setState({
                 showMore: hight > 55
             });
         }
     }
-    renderCommentEditor = () => {
+    renderresponseEditor = () => {
         const { edit } = this.props;
         const { editorState } = this.state;
         return (
-            <Editor readOnly={!edit} ref={(node) => { this.commentContent = node; }}
+            <Editor readOnly={!edit} ref={(node) => { this.responseContent = node; }}
                     editorState={editorState}
                     onChange={this.editorStateChanged}
                     spellCheck={!edit} />
@@ -77,20 +77,20 @@ class CommentBox extends Component{
     };
 
     onCancelEdit = (e) =>{
-        const { comment } = this.props;
+        const { response } = this.props;
         this.setState({
-            editorState: importHTMLToDraft(comment.text)
+            editorState: importHTMLToDraft(response.text)
         });
         this.props.onEdit('cancel')
     };
 
     onSaveEdit = (e) =>{
-        const { comment } = this.props;
+        const { response } = this.props;
         const { editorState } = this.state;
         const editorHTML = draftToHtml(convertToRaw(editorState.getCurrentContent()));
-        if(comment.text !== editorHTML || editorHTML.length < 10){
+        if(response.text !== editorHTML || editorHTML.length < 10){
             this.setState({loadingSave: true});
-            updateResponse(comment._id, editorHTML, comment._creator._id)
+            updateResponse(response._id, editorHTML, response._creator._id)
                 .then(response => {
                     this.setState({loadingSave: false});
                     this.props.onEdit('updated')
@@ -118,43 +118,41 @@ class CommentBox extends Component{
     };
 
     render(){
-        const { comment, owner, story, edit, showLike, className } = this.props;
+        const { response, story, edit, showLike, className } = this.props;
         const { toggeled } = this.state;
-        const isLiked = comment._likes.indexOf(owner) !== -1;
-        const isOwner = comment._creator._id === owner;
         return (
-            <div className={`comment-box ${className}`} id={comment._id}>
-                {isOwner && <CtrlDropdown id={comment._id}
+            <div className={`response-box ${className}`} id={response._id}>
+                {response.isOwner && <CtrlDropdown id={response._id}
                               onItemClick={(e, id) => this.props.onDropDownClick(
-                                  e,id, story._id, comment._creator.id)} /> }
+                                  e,id, story._id, response._creator.id)} /> }
 
                 <StoryWriter width="35px" height="35px"
-                            createdAt={comment.createdAt}
-                            user={comment._creator}/>
+                            createdAt={response.createdAt}
+                            user={response._creator}/>
                 {this.props.children}
-                <div className={classNames('comment-content',{
+                <div className={classNames('response-content',{
                     'expanded': toggeled || edit,
                     'edit-mode': edit})}
-                     id={comment._id || ''}>
-                    {/*<Link to={`/topics/${story._topic.name}/story/${story.slug}/responses?responseid=${comment._id}`}>*/}
+                     id={response._id || ''}>
+                    {/*<Link to={`/topics/${story._topic.name}/story/${story.slug}/responses?responseid=${response._id}`}>*/}
 
                     {/*</Link>*/}
-                    <div ref={(node) => { this.commentContent = node; }}>
-                        {this.renderCommentEditor()}
+                    <div ref={(node) => { this.responseContent = node; }}>
+                        {this.renderresponseEditor()}
                     </div>
                 </div>
                 {this.renderReadMoreButton()}
                 {this.renderEditCtrlButtons()}
-                { showLike && <LikeButton type="Comment"
-                            id={comment._id}
-                            count={comment.likesCount}
-                            isLiked={isLiked}/>}
+                { showLike && <LikeButton type="Response"
+                            id={response._id}
+                            count={response.likesCount}
+                            isLiked={response.isLiked}/>}
             </div>
         )
     }
 }
-CommentBox.defaultProps = {
+ResponseBox.defaultProps = {
     showLike: true,
     className: ''
 }
-export default CommentBox;
+export default ResponseBox;

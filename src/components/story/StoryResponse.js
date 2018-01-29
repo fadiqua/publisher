@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Modal, Spin, Button, message } from 'antd';
 
-import CommentBox from '../shared/commentArea/CommentBox';
+import ResponseBox from '../shared/commentArea/ResponseBox';
 import CommentEditer from '../shared/commentArea/CommentEditer';
 import ErrorWidget from '../shared/error';
 import {
@@ -108,17 +108,17 @@ class StoryResponse extends Component {
         const { selectedReply } = this.state;
         const { currentUser, selectedResponse, story } = this.props;
         let repliesJSX = [];
-        selectedResponse.docs.forEach((comment, key) => {
-            const currentComment = <CommentBox key={key}
+        selectedResponse.docs.forEach((response, key) => {
+            const currentComment = <ResponseBox key={key}
                                                className="reply"
                                                owner={currentUser._id}
                                                story={story}
-                                               comment={comment}
-                                               edit={comment._id === selectedReply}
+                                               response={response}
+                                               edit={response._id === selectedReply}
                                                showLike={false}
                                                onEdit={this.onEditReply}
                                                onDropDownClick={this.onDropDownClick}>
-            </CommentBox>;
+            </ResponseBox>;
             repliesJSX.push(currentComment)
         });
         return repliesJSX;
@@ -152,9 +152,9 @@ class StoryResponse extends Component {
                    style={{top: '20px', minHeight: '100px'}}
                    onCancel={this.closeModal}>
                 <div className="story-response">
-                    { responsesList.get(responseId) && <CommentBox owner={currentUser._id}
+                    { responsesList.get(responseId) && <ResponseBox owner={currentUser._id}
                                 story={story}
-                                comment={mainResponse}
+                                response={mainResponse}
                                 edit={responseId === selectedReply}
                                 onEdit={this.onEditReply}
                                 onDropDownClick={(type, id, storyId, owner) =>

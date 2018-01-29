@@ -35,7 +35,7 @@ export const fetchStory = createAction('fetch story');
 export const fetchStorySuccess = createAction('fetch story success');
 export const clearCreatedStory = createAction('clear created story');
 export const likeStory = createAction('like_story');
-export const likeStoryResponse = createAction('likeStoryResponse');
+export const likeStoryRes = createAction('likeStoryResponse');
 
 // Responses
 export const createResponse = createAction('create response');
@@ -46,8 +46,8 @@ export const clearResponseStatus = createAction('clear responses status');
 export const deleteResponse = createAction('delete response');
 export const addResponse = createAction('add response');
 // export const likeStory = createAction('like story');
-export const likeComment = createAction('like comment');
-// export const likeResponse = createAction('like response');
+export const likeResponse = createAction('like response');
+export const likeResponseRes = createAction('like response back response');
 export const selectedResponseForReply = createAction('selected response for reply');
 export const fetchReplies = createAction('fetch replies');
 export const fetchRepliesSuccess = createAction('fetch replies success');

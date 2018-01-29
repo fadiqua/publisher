@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { Modal } from 'antd';
 import InfiniteScroll from 'react-infinite-scroll-component';
 // project files
-import CommentBox from '../shared/commentArea/CommentBox';
+import ResponseBox from '../shared/commentArea/ResponseBox';
 import  PaginateLoading from '../shared/paginate-loading'
 import StoryResponse from './StoryResponse';
 import PluralWord from '../shared/PluralWord';
@@ -74,10 +74,10 @@ class StoryResponses extends Component {
         let responsesJSX = [];
         responses.docs.forEach((response, key) => {
             console.log(response);
-            const currentResponse = <CommentBox key={key}
+            const currentResponse = <ResponseBox key={key}
                                                owner={currentUser._id}
                                                story={story.currentStory}
-                                               comment={response}
+                                               response={response}
                                                edit={response._id === id}
                                                onEdit={this.onEditResponse}
                                                onDropDownClick={this.onDropDownClick}>
@@ -85,7 +85,7 @@ class StoryResponses extends Component {
                       to={`/topics/${story.currentStory._topic.name}/story/${story.currentStory.slug}/responses?responseid=${response._id}`}>
                     <PluralWord word="Reply" count={response.repliesCount}/>
                 </Link>
-            </CommentBox>;
+            </ResponseBox>;
             responsesJSX.push(currentResponse)
         });
 

@@ -35,9 +35,9 @@ export function* likeStoryAsync (action) {
         // const { id, type, parent } = action.payload;
         const response = yield like(action.payload);
         console.log('response ', response);
-        yield put({ type: actions.likeStoryResponse, payload: response.data })
+        yield put({ type: actions.likeStoryRes, payload: response.data })
     } catch (err) {
-        yield put({ type: actions.likeStoryResponse, payload: { error: true} })
+        yield put({ type: actions.likeStoryRes, payload: { error: true} })
     }
 }
 

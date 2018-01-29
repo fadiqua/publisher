@@ -1,9 +1,10 @@
 // npm packages
+import { bindActionCreators } from 'redux';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 // project files
 import SVGIcon from '../SVGIcon';
-import { likeStory, likeComment } from '../../../actions/actionTypes';
+import { likeStory, likeResponse } from '../../../actions/actionTypes';
 import { like } from '../../../routes';
 import './index.scss';
 
@@ -14,21 +15,8 @@ class LikeButton extends Component {
         if(type === 'Story') {
             this.props.likeStory({ id,type, parent: type !== 'Story' ? parent: null });
             return;
-        }
-        try {
-            // this.setState({ loading: true });
-            // let res = await like({ id,type, parent: type !== 'Story' ? parent: null });
-            // let { user, isLiked } = res.data;
-            // if(type !== 'Story'){
-            //     this.props.likeComment({user, isLiked, id});
-            //     return;
-            // }
-            // this.props.likeStory({user, isLiked});
-            // this.setState({ loading: false });
-            // return;
-
-        }
-        catch (e) {
+        } else {
+            this.props.likeResponse({ id,type, parent: type !== 'Story' ? parent: null });
         }
     };
     _renderIcon() {
@@ -50,4 +38,9 @@ class LikeButton extends Component {
     }
 }
 
-export default connect(null, {likeStory, likeComment})(LikeButton);
+const mapDispatch = dispatch => bindActionCreators({
+    likeStory,
+    likeResponse
+}, dispatch);
+
+export default connect(null, mapDispatch)(LikeButton);
