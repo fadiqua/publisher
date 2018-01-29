@@ -3,7 +3,6 @@ import db from '../models/index';
 const likeController = {};
 likeController.post = async (req, res) => {
     const { id, type, parent } = req.body;
-    console.log('tyype ', type)
     const obj = await db.Like.findOne({
         _creator:req.user.id,
         _object: id, type

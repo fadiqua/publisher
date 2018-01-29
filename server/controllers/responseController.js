@@ -92,19 +92,6 @@ responseController.get = async (req, res) => {
             },
             ['_creator']
         );
-        // const comments = await db.Response
-        //     .paginate({
-        //         _story: storyId,
-        //         isDeleted: false,
-        //         _parent: null
-        //     },{
-        //         sort: {
-        //             createdAt: -1
-        //         },
-        //         populate: '_story',
-        //         page: page || 1,
-        //         limit: 2
-        //     });
         res.status(200).json({
             ...responses
         });
