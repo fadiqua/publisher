@@ -29,13 +29,13 @@ followSchema.plugin(mongoosePaginate);
 
 const autoPopulate = function (next) {
     this.where({isDeleted: false})
-        .populate({
-            path: '_user',
-            select: 'thumbnail username firstName lastName displayName _id createdAt'
-        }).populate({
-        path: '_followed',
-        select: 'thumbnail username firstName lastName displayName _id createdAt'
-    });
+    //     .populate({
+    //         path: '_user',
+    //         select: 'thumbnail username firstName lastName displayName _id createdAt'
+    //     }).populate({
+    //     path: '_followed',
+    //     select: 'thumbnail username firstName lastName displayName _id createdAt'
+    // });
     next()
 };
 followSchema.pre('find', autoPopulate);

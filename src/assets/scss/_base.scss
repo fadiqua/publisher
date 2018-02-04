@@ -88,6 +88,12 @@ body {
 .text-bold{
   font-weight: bold;
 }
+.in-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
 .inline-block{
   display: inline-block;
 }

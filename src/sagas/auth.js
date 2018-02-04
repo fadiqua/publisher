@@ -1,6 +1,5 @@
 // npm packages
-import { takeEvery } from 'redux-saga';
-import { fork, take, call, put, cancel, all } from 'redux-saga/effects';
+import { fork, take, call, put, cancel, all, takeLatest, takeEvery } from 'redux-saga/effects';
 import axios from 'axios';
 import openSocket from 'socket.io-client';
 // project files
@@ -53,7 +52,6 @@ export function* getUnreadNotificationsCount () {
 // -------------------------------------------------------------------
 export function* followUserAsync(action) {
     try {
-        yield call(axios.post, '/api/follow', { id: action.payload });
         yield call(followUser, action.payload);
         yield put({type: actions.followUserSuccess, payload: action.payload});
     } catch (e) {
@@ -61,7 +59,7 @@ export function* followUserAsync(action) {
 }
 
 export function* watchFollowUser() {
-    yield takeEvery(actions.followUser, followUserAsync)
+    yield takeLatest(actions.followUser, followUserAsync)
 }
 
 function* read(socket, id) {

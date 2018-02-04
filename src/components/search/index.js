@@ -28,12 +28,15 @@ class Search extends Component {
 
     componentDidMount(){
         window.scrollTo(0,0);
-        this.setState({ value: getUrlQuery(this.props.location.search).q || '' })
+        this.setSearchValue(this.props.location.search);
     }
-    componentWillReceiveProps(nextProps){
-        if(nextProps.location.search !== this.props.location.search){
-            this.setState({ value: getUrlQuery(nextProps.location.search).q || '' })
+    componentWillReceiveProps({location}){
+        if(location.search !== this.props.location.search){
+            this.setSearchValue(location.search);
         }
+    }
+    setSearchValue(search='') {
+        this.setState({ value: getUrlQuery(search).q })
     }
     render() {
         const { location } = this.props;

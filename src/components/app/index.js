@@ -2,6 +2,7 @@
 import { bindActionCreators } from 'redux';
 import React, {PureComponent} from 'react';
 import { Switch, withRouter } from 'react-router-dom';
+import  { Spin } from 'antd';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 // project files
@@ -43,7 +44,7 @@ class AppContent extends PureComponent {
 
     render() {
         const { loading, screenSize:{collapsed, mobile}} = this.props;
-        if (loading) return <div />;
+        if (loading) return <div className="in-center"><Spin/></div>;
         return (
             <div className="body-content">
                 <SiderMenu/>

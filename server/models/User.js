@@ -1,5 +1,8 @@
+// npm packages
 import mongoose, { Schema } from 'mongoose';
 import mongoosePaginate from 'mongoose-paginate';
+// project files
+import paginateRecords from '../plugins/paginateRecords';
 
 const userSchema = new Schema({
     username: {
@@ -31,6 +34,7 @@ const userSchema = new Schema({
 userSchema.index({ username: 'text', firstName: 'text', lastName: 'text', email: 'text'});
 
 userSchema.plugin(mongoosePaginate);
+userSchema.plugin(paginateRecords);
 
 userSchema.virtual('displayName').get(function () {
     return this.firstName + ' ' + this.lastName;

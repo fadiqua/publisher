@@ -117,7 +117,7 @@ userController.getUserByUsername = async (req, res) => {
 };
 
 
-userController.followUser = (req, res) => {
+userController.followUser = async (req, res) => {
     const user = req.user.id;
     const followedUser = req.body.id;
     console.log('user ', user);
@@ -126,13 +126,9 @@ userController.followUser = (req, res) => {
         _user: user,
         _followed: followedUser
     });
-
-    db.Follow.findOne({
-        _user: user,
-        _followed: followedUser
-    }).then(async result => {
-        if(result){
-            // result.isDeleted = true;
+    try {
+        const result = await db.Follow.findOne({ _user: user, _followed: followedUser })
+        if(result) {
             await Promise.all([
                 result.remove(),
                 db.Notifications.findOneAndRemove({
@@ -156,12 +152,12 @@ userController.followUser = (req, res) => {
         res.status(200).json({
             success: true,
         })
-    }).catch(error => {
+    } catch (error) {
         res.status(500).json({
             success: true,
-            error
+            error: error.message
         })
-    })
+    }
 };
 
 userController.getMe = async (req, res) => {

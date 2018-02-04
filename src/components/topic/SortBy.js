@@ -3,13 +3,13 @@ import { Select } from 'antd';
 
 const Option = Select.Option;
 
-const SortBy = ({ selectedValue }) => (
+const SortBy = ({ selectedValue, handleSortChange }) => (
     <div className="pull-right">
         <Select value={selectedValue}
                 className="text-link-color"
                 dropdownClassName="text-link-color"
                 style={{ width: 120 }}
-                onChange={(value) => this.props.handleSortChange(value)}>
+                onChange={handleSortChange}>
             <Option value="date">
                 <span>Sort by Date</span>
             </Option>
