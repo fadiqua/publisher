@@ -1,6 +1,8 @@
+// npm packages
 import React, { Component } from 'react';
 import { Button } from 'antd';
 import { connect } from 'react-redux';
+// project files
 import { followUser } from '../../actions/actionTypes';
 
 class FollowButton extends Component {

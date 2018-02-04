@@ -15,7 +15,14 @@ const fields = {
         "createdAt": 1
     },
     Story: {
-
+        "title": 1,
+        "slug": 1,
+        "description": 1,
+        "content": 1,
+        "cover": 1,
+        "createdAt": 1,
+        "_topic": 1,
+        "_creator": 1,
     }
 };
 
@@ -43,22 +50,22 @@ genericController.advancedSearch = async (req, res) => {
       const { q, page } = req.query;
       const Model = Object.keys(req.query).indexOf('users') !== -1? 'User':'Story';
       const params = {};
+      const populatedFields = Model !== 'User' ? ['_topic', '_creator'] : [];
       const aggregate = db[Model].aggregate();
-      const beingFollowedUsers = (await db.Follow.find({ _user: Types.ObjectId(req.user.id) })).map(user => user._followed);
-      console.log('beingFollowedUsers ', beingFollowedUsers)
-      params["beingFollowed"] = { $exists: true, $in: beingFollowedUsers }
+      const beingFollowedUsers = req.user ?
+          (await db.Follow.find({ _user: Types.ObjectId(req.user.id) }))
+              .map(user => user._followed) : [];
       if(Model === 'User') {
-
+          params["isOwner"] =  { $eq: ["$_id",  req.user ? Types.ObjectId(req.user.id) : '' ]};
+          params["beingFollowed"] = {$in: ["$_id", beingFollowedUsers]}
       }
-      const d = await db[Model].paginateRecords(aggregate,{
+      const data = await db[Model].paginateRecords(aggregate,{
               match: {
                   $text: {$search: q}
               },
               project: {
                   ...fields[Model],
-                  isOwner: { $eq: ["$_id",  req.user ? Types.ObjectId(req.user.id) : '' ] },
-                  beingFollowed: {$in: ["$_id", beingFollowedUsers]}
-                  // "likesCount": { "$size": "$_likes" }
+                  ...params
               },
               sort: {
                   createdAt: '1'
@@ -66,21 +73,10 @@ genericController.advancedSearch = async (req, res) => {
               page,
               pageSize: 10,
           },
-          []
+          populatedFields
       );
-      // const data = await db[Model]
-      //     .paginate({$text: {$search: q}},
-      //         {
-      //             select: '-tags',
-      //             sort: {
-      //                 createdAt: 1
-      //             },
-      //             page: page,
-      //             limit: 6
-      //         });
       res.status(200).json({
-          // ...data
-          ...d
+          ...data
       })  }
       catch (e) {
         res.status(500).json({

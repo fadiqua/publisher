@@ -9,7 +9,7 @@ import './UserWidget.scss';
 const UserWidget = ({ item, followCallback }) => (
     <div className="user-widget">
         <UserContentPopover user={item}>
-            <Link to={`/profile/${item._id}`}>
+            <Link to={`/profile/${item.username}`}>
                 <UserAvatar prefix="/media/thumbs/" type="circle"
                             width="35px" height="35px"
                             imgSrc={item.thumbnail}/>
