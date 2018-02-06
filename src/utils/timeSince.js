@@ -109,11 +109,9 @@ function timeSince(timeStamp, withMins = true) {
     } // with in a week
     else if (now.getFullYear() > timeStamp.getFullYear()) {
       timeString = formatDate(timeStamp, 'MMMM d, yyyy');
-    }
-    else if (now.getMonth() > timeStamp.getMonth()) {
+    } else if (now.getMonth() > timeStamp.getMonth()) {
       timeString = formatDate(timeStamp, 'MMMM d');
-    }
-    else {
+    } else {
       timeString = `${formatDate(timeStamp, 'MMMM d')}  ${withMins ? ` at ${formatDate(timeStamp, 'h:mmtt')}` : ''}`;
     }
     return timeString;

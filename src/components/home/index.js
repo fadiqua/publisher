@@ -1,11 +1,11 @@
 // npm packages
-import React, { Component } from "react";
-import DocumentTitle from "react-document-title";
+import React, { Component } from 'react';
+import DocumentTitle from 'react-document-title';
 // project files
-import TopicLoading from "../topic/TopicLoading";
-import TopicSection from "./TopicSection";
-import { fetchHomePageData } from "../../routes";
-import "./index.scss";
+import TopicLoading from '../topic/TopicLoading';
+import TopicSection from './TopicSection';
+import { fetchHomePageData } from '../../routes';
+import './index.scss';
 
 export class Home extends Component {
   state = {

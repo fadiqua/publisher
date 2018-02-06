@@ -47,9 +47,7 @@
     "brace-style": 1,
     "eqeqeq": [1, "smart"],
     "radix": [1, "as-needed"],
-    "rulers": [80, 100],
-    "translate_tabs_to_spaces": true,
-    "quotes": [0, "single", { "allowTemplateLiterals": true }]
+    "quotes": [1, "single", { "allowTemplateLiterals": true }]
   },
   "globals": {
     "document": 1
