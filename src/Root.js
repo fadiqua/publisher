@@ -6,7 +6,7 @@ import { LocaleProvider } from 'antd';
 import enUS from 'antd/lib/locale-provider/en_US';
 //  project files
 import App from './components/app';
-import store, { history }  from './store';
+import store, { history } from './store';
 import init from './init';
 import axiosConfig from './config/axios.config';
 

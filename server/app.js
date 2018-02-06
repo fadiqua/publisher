@@ -30,14 +30,14 @@ app.use('/media', express.static('files'));
 // api
 app.use('/api', routes);
 // process.env.NODE_ENV = 'production'
-if(process.env.NODE_ENV === 'production'){
-    app.use(express.static(path.resolve(__dirname, '..','build')));
-    app.use('/media', express.static('files'));
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.resolve(__dirname, '..', 'build')));
+  app.use('/media', express.static('files'));
 }
-if(process.env.NODE_ENV === 'production'){
-    app.get('*', (req, res) => {
-        res.sendFile(path.resolve(__dirname, '..','build','index.html'));
-    });
+if (process.env.NODE_ENV === 'production') {
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, '..', 'build', 'index.html'));
+  });
 }
 
 export default app;

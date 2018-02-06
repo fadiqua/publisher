@@ -1,19 +1,19 @@
 import React, { Component } from 'react';
-import {  Modal } from 'antd';
+import { Modal } from 'antd';
 
 class PreviewUploaded extends Component {
     state = {
-        previewVisible: false
+      previewVisible: false,
     };
     onPreview = () => {
-        this.setState({previewVisible: true})
+      this.setState({ previewVisible: true });
     };
     handleCancel = () => this.setState({ previewVisible: false });
 
-    render(){
-        const { image } = this.props;
-        const { previewVisible } = this.state;
-        return (
+    render() {
+      const { image } = this.props;
+      const { previewVisible } = this.state;
+      return (
             <div>
                 {image && <div className="preview-upload">
                     <div className="uploaded-cover">
@@ -35,7 +35,7 @@ class PreviewUploaded extends Component {
                          src={`/media/${image}`} />
                 </Modal>
             </div>
-        )
+      );
     }
 }
 

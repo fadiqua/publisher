@@ -1,10 +1,10 @@
-import createHistory from 'history/createBrowserHistory'
-import { createStore, applyMiddleware, compose } from 'redux'
-import { routerMiddleware } from 'react-router-redux'
-import createSagaMiddleware from 'redux-saga'
+import createHistory from 'history/createBrowserHistory';
+import { createStore, applyMiddleware, compose } from 'redux';
+import { routerMiddleware } from 'react-router-redux';
+import createSagaMiddleware from 'redux-saga';
 
 import rootReducer from '../reducers/rootReducer';
-import rootSaga from '../sagas'
+import rootSaga from '../sagas';
 import initialState from '../reducers/initialState';
 
 // Create a history of your choosing (we're using a browser history in this case)
@@ -16,18 +16,15 @@ const routerMid = routerMiddleware(history);
 
 // add support for Redux dev tools
 const composeEnhancers = process.env.NODE_ENV !== 'production' ?
-    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose: compose;
+  window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose : compose;
 
-function configureStore(initialState) {
-    const middlewares = [
-        routerMid,
-        sagaMiddleware,
-    ];
+function configureStore(init) {
+  const middlewares = [
+    routerMid,
+    sagaMiddleware,
+  ];
 
-    return createStore(rootReducer, initialState, composeEnhancers(
-        applyMiddleware(...middlewares)
-        )
-    );
+  return createStore(rootReducer, init, composeEnhancers(applyMiddleware(...middlewares)));
 }
 
 const store = configureStore(initialState);

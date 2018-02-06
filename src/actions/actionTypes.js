@@ -74,7 +74,7 @@ export const addNotifications = createAction('addNotifications');
 export const clearUnreadBadgeNotifications = createAction('clearUnreadBadgeNotifications');
 export const markNotificationAsRead = createAction('mark Notification As Read');
 export const markNotificationAsReadSuccess = createAction('mark Notification As Read success');
-export const getUnReadInitialNotificationsCount =  createAction(' get unRead initialNotifications count');
+export const getUnReadInitialNotificationsCount = createAction(' get unRead initialNotifications count');
 
 // user
 export const fetchUserFromSocial = createAction('fetch user');

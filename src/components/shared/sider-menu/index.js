@@ -1,7 +1,7 @@
 // npm packages
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 import { Scrollbars } from 'react-custom-scrollbars';
@@ -18,30 +18,29 @@ import './index.scss';
 const { Sider } = Layout;
 
 class SiderMenu extends Component {
-    constructor() {
-        super();
-        this.handelSiderClicked = this.handelSiderClicked.bind(this)
-    }
+  constructor() {
+    super();
+    this.handelSiderClicked = this.handelSiderClicked.bind(this);
+  }
 
-    /**
+  /**
      * render items inside ItemGroup
      * @param items: array
      */
-    handelSiderClicked(e){
-        this.props.selectedItem(e.key);
-        const {  screenSize:{collapsed, mobile } } = this.props;
-        if(collapsed && mobile) {
-
-        }
+  handelSiderClicked(e) {
+    this.props.selectedItem(e.key);
+    const { screenSize: { collapsed, mobile } } = this.props;
+    if (collapsed && mobile) {
 
     }
+  }
 
-    /**
+  /**
      * render items inside ItemGroup
      * @param items: array
      */
-    itemsView(items) {
-        return items.map(item => (
+  itemsView(items) {
+    return items.map(item => (
             <Menu.Item key={item.slug}>
             <Link to={item.url || `/topics/${item.slug}/?page=1&sortby=date`}>
                 <div>
@@ -49,55 +48,56 @@ class SiderMenu extends Component {
                     <span className="nav-text text-capitalize">{item.name}</span>
                 </div>
             </Link>
-        </Menu.Item>))
-    }
+        </Menu.Item>));
+  }
 
-    /**
+  /**
      * render ItemGroup
      * @param label: string
      * @param key: string
      * @param items: array
      * @returns {XML} - ItemGroup
      */
-    groupView(label, items) {
-        return (<Menu.ItemGroup className="text-capitalize" key={label} title={label}>
+  groupView(label, items) {
+    return (<Menu.ItemGroup className="text-capitalize" key={label} title={label}>
             {this.itemsView(items)}
-        </Menu.ItemGroup>)
+        </Menu.ItemGroup>);
+  }
 
+  renderMenuItems() {
+    const { topics } = this.props;
+    if (!topics.loading) {
+      return topics.menu.map(obj => this.groupView(obj.label, obj.items));
     }
+  }
 
-    renderMenuItems() {
-        const { topics } = this.props;
-        if(!topics.loading) {
-            return topics.menu.map(obj => this.groupView(obj.label, obj.items))
-        }
-    }
-
-    componentWillMount(){
-        // pathToRegexp(item.router).exec(location.pathname)
-        // this.props.selectedItem(this.props.router.location.pathname)
-        this.props.fetchTopics();
-    }
+  componentWillMount() {
+    // pathToRegexp(item.router).exec(location.pathname)
+    // this.props.selectedItem(this.props.router.location.pathname)
+    this.props.fetchTopics();
+  }
     onLogout = () => {
-        clearToken();
-        this.props.logout();
-        setTimeout(() => window.location = `/`, 150)
+      clearToken();
+      this.props.logout();
+      setTimeout(() => window.location = '/', 150);
     };
     render() {
-        const { auth, screenSize:{collapsed, mobile, siderSelected },topics } = this.props;
-        return (
-        <Sider className={classNames('sider-menu',
-            {'desktop-collapsed': !mobile && collapsed},
-            {'open-sider-mobile': collapsed && mobile},
-            {'close-sider-mobile': !collapsed && mobile})}
-               width={ collapsed&&!mobile ? 70:250 }>
-            <Scrollbars style={{ height: "100vh"}} autoHide autoHideDuration={200} >
+      const { auth, screenSize: { collapsed, mobile, selectedItem }, topics } = this.props;
+      return (
+        <Sider className={classNames(
+            'sider-menu',
+            { 'desktop-collapsed': !mobile && collapsed },
+            { 'open-sider-mobile': collapsed && mobile },
+            { 'close-sider-mobile': !collapsed && mobile },
+        )}
+               width={ collapsed && !mobile ? 70 : 250 }>
+            <Scrollbars style={{ height: '100vh' }} autoHide autoHideDuration={200} >
                 <Logo />
                 {!topics.loading ?
                     <Menu
-                        theme="dark"  mode="inline"
+                        theme="dark" mode="inline"
                         onClick={this.handelSiderClicked}
-                        selectedKeys={[siderSelected]} >
+                        selectedKeys={[selectedItem]} >
                         {this.renderMenuItems()}
                         { auth.isAuthenticated &&
                         <Menu.Item key="logout">
@@ -107,22 +107,23 @@ class SiderMenu extends Component {
                             </div>
                         </Menu.Item>
                     }
-                </Menu>: <SiderLoading />}
+                </Menu> : <SiderLoading />}
             </Scrollbars>
         </Sider>
-        )
+      );
     }
-
 }
 
-const mapState = ({auth, screenSize, topics, router}) => ({
-    auth, screenSize, topics, router
+const mapState = ({
+  auth, screenSize, topics, router,
+}) => ({
+  auth, screenSize, topics, router,
 });
 
 const mapDispatch = dispatch => bindActionCreators({
-    selectedItem: siderSelected,
-    logout,
-    fetchTopics
+  selectedItem: siderSelected,
+  logout,
+  fetchTopics,
 }, dispatch);
 
 export default connect(mapState, mapDispatch)(SiderMenu);

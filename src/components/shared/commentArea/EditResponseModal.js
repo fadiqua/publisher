@@ -1,58 +1,58 @@
-import React, { PureComponent } from 'react';
-import { Editor, EditorState, convertToRaw } from 'draft-js';
-import { Modal } from 'antd';
+// npm packages
 
+import React, { PureComponent } from 'react';
+import { Editor, EditorState } from 'draft-js';
+import { Modal } from 'antd';
+// project files
 import EditButtons from '../../shared/EditButtons';
-import { importHTML, charCounter } from '../../../utils/functions';
+import { importHTML } from '../../../utils/functions';
 
 class EditResponseModal extends PureComponent {
+  constructor() {
+    super();
 
-    constructor() {
-        super();
+    this.state = {
+      editorState: EditorState.createEmpty(),
+    };
+    this.onChange = this._onChange.bind(this);
+  }
 
-        this.state = {
-            editorState: EditorState.createEmpty()
-        };
-        this.onChange = this._onChange.bind(this)
-
+  componentDidMount() {
+    const { content } = this.props;
+    if (content) {
+      this.onChange(importHTML(content));
     }
+  }
 
-    componentDidMount() {
-        const { content } = this.props;
-        if(content) {
-            this.onChange(importHTML(content))
-        }
-    }
+  _onChange(editorState) {
+    this.setState({ editorState });
+  }
 
-    _onChange(editorState) {
-        this.setState({ editorState })
-    }
+  onCancelEdit() {
 
-    onCancelEdit() {
+  }
 
-    }
+  onSaveEdit() {
 
-    onSaveEdit() {
+  }
 
-    }
-
-    render() {
-        const { editorState } = this.state;
-        return (
-            <Modal visible={true} footer={null}>
+  render() {
+    const { editorState } = this.state;
+    return (
+            <Modal visible footer={null}>
                 <div>
                     <Editor ref={(node) => { this.responseEditor = node; }}
                             editorState={editorState}
                             onChange={this.onChange}
-                            spellCheck={true} />
-                    <EditButtons loading={true}
+                            spellCheck />
+                    <EditButtons loading
                                  onCancel={this.onCancelEdit}
                                  onSave={this.onSaveEdit}
                     />
                 </div>
             </Modal>
-        )
-    }
+    );
+  }
 }
 
 export default EditResponseModal;

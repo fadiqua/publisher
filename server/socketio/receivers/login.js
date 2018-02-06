@@ -1,6 +1,6 @@
 function usersLogin(client) {
 
 }
-export function login({username}) {
+export function login({ username }) {
 
 }

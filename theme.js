@@ -1,5 +1,5 @@
-module.exports =  {
-        '@primary-color': '#0288d1',
-        '@border-radius-base': '2px',
-        '@font-family': 'Roboto, Lato, sans-serif'
-    };
+module.exports = {
+  '@primary-color': '#0288d1',
+  '@border-radius-base': '2px',
+  '@font-family': 'Roboto, Lato, sans-serif',
+};

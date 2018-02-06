@@ -9,13 +9,13 @@ import Notifications from './Notifications';
 import Like from './Like';
 
 export default {
-    User,
-    LocalAuth,
-    SocialAuth,
-    Story,
-    Response,
-    Topic,
-    Follow,
-    Notifications,
-    Like
-}
+  User,
+  LocalAuth,
+  SocialAuth,
+  Story,
+  Response,
+  Topic,
+  Follow,
+  Notifications,
+  Like,
+};

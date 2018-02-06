@@ -1,8 +1,9 @@
+// npm packages
 import React from 'react';
 import { Menu } from 'antd';
 import { NavLink } from 'react-router-dom';
 
-const BrowsableTaps = ({ user, selectedTap  }) => (
+const BrowsableTaps = ({ user, selectedTap }) => (
     <Menu
         selectedKeys={[selectedTap]}
         mode="horizontal"

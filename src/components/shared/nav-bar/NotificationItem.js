@@ -1,5 +1,5 @@
 // npm packages
-import React, { PureComponent } from 'react'
+import React, { PureComponent } from 'react';
 import { Link } from 'react-router-dom';
 // project files
 import UserAvatar from '../UserAvatar';
@@ -8,39 +8,37 @@ import timeSince from '../../../utils/timeSince';
 import './NotificationItem.scss';
 
 class NotificationItem extends PureComponent {
+  constructor() {
+    super();
 
-    constructor() {
-        super();
+    this.onNotificationClick = this._onNotificationClick.bind(this);
+  }
 
-        this.onNotificationClick = this._onNotificationClick.bind(this);
+  _onNotificationClick() {
+    const { item, onNotificationClick } = this.props;
+    onNotificationClick(item._id);
+  }
+
+  _renderNotificationContent() {
+    const { item } = this.props;
+    if (item.type === 'comment') {
+      return <p><strong className="text-capitalize">{item._from.displayName}</strong> commented on <strong className="story-title">{item._parentTarget.title}</strong></p>;
+    } else if (item.type === 'like') {
+      return <p><strong className="text-capitalize">{item._from.displayName}</strong> likes your story <strong className="story-title">{item._parentTarget.title}</strong></p>;
+    } else if (item.type === 'follow') {
+      return <p><strong className="text-capitalize">{item._from.displayName}</strong> started following you.</p>;
     }
+  }
 
-    _onNotificationClick() {
-        const { item, onNotificationClick } = this.props;
-        onNotificationClick(item._id)
-    }
+  _renderIcons() {
+    const { item } = this.props;
+    return <SVGIcon name={item.type} />;
+  }
 
-    _renderNotificationContent() {
-        const { item } = this.props;
-        if(item.type === 'comment'){
-            return <p><strong className="text-capitalize">{item._from.displayName}</strong> commented on <strong className="story-title">{item._parentTarget.title}</strong></p>
-        } else if(item.type === 'like') {
-            return <p><strong className="text-capitalize">{item._from.displayName}</strong> likes your story <strong className="story-title">{item._parentTarget.title}</strong></p>
-
-        } else if(item.type === "follow") {
-            return <p><strong className="text-capitalize">{item._from.displayName}</strong> started following you.</p>
-        }
-    };
-
-    _renderIcons () {
-        const { item } = this.props;
-        return <SVGIcon name={item.type} />;
-    };
-
-    render(){
-        const { item } = this.props;
-        return (
-            <li className={`notification-item clearfix ${ !item.isClicked ? 'unread':''}`} >
+  render() {
+    const { item } = this.props;
+    return (
+            <li className={`notification-item clearfix ${!item.isClicked ? 'unread' : ''}`} >
                 <Link to={`/notifications/${item._id}`}
                       onClick={this.onNotificationClick} >
                     <UserAvatar type="circle"
@@ -58,8 +56,8 @@ class NotificationItem extends PureComponent {
                     </div>
                 </Link>
             </li>
-        )
-    }
+    );
+  }
 }
 
 export default NotificationItem;

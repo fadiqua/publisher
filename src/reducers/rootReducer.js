@@ -12,14 +12,14 @@ import notificationsReducer from './notifications';
 import responsesReducer from './responses';
 
 export default combineReducers({
-    screenSize: screenSizeReducer,
-    sign: signReducer,
-    auth: authReducer,
-    topics: topicsReducer,
-    profile: profileReducer,
-    story: storyReducer,
-    currentTopic: currentTopicReducer,
-    notifications: notificationsReducer,
-    responses: responsesReducer,
-    router: routerReducer
+  screenSize: screenSizeReducer,
+  sign: signReducer,
+  auth: authReducer,
+  topics: topicsReducer,
+  profile: profileReducer,
+  story: storyReducer,
+  currentTopic: currentTopicReducer,
+  notifications: notificationsReducer,
+  responses: responsesReducer,
+  router: routerReducer,
 });

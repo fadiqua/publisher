@@ -1,49 +1,46 @@
 // npm packages
 import React, { Component } from 'react';
 import draftToHtml from 'draftjs-to-html';
-import { convertToRaw,  EditorState } from 'draft-js';
+import { convertToRaw, EditorState } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 // project files
 import uploadImageCallBack from '../../utils/uploadImageCallBack';
 import { importHTML, charCounter } from '../../utils/functions';
-import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import './WysiwygEditor.scss';
 
-class WysiwygEditor extends Component{
-    constructor(props){
-        super(props);
-        this.state = {
-            editorContent: EditorState.createEmpty(),
-        };
-        this.onEditorStateChange = this.onEditorStateChange.bind(this);
-    }
-
-    componentDidMount(){
-        const { editorValue } = this.props;
-        if(editorValue){
-            this.setState({
-                editorContent: importHTML(editorValue),
-            });
-        }
-    }
-
-    getEditorHTML(cont){
-        return draftToHtml(convertToRaw(cont.getCurrentContent()))
-    }
-
-    onEditorStateChange (editorContent) {
-        this.setState({
-            editorContent,
-        });
-        this.props.onChange(this.getEditorHTML(editorContent), charCounter(editorContent))
+class WysiwygEditor extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      editorContent: EditorState.createEmpty(),
     };
+    this.onEditorStateChange = this._onEditorStateChange.bind(this);
+  }
 
+  componentDidMount() {
+    const { editorValue } = this.props;
+    if (editorValue) {
+      this.setState({
+        editorContent: importHTML(editorValue),
+      });
+    }
+  }
 
+  _onEditorStateChange(editorContent) {
+    this.setState({
+      editorContent,
+    });
+    this.props.onChange(this.getEditorHTML(editorContent), charCounter(editorContent));
+  }
 
+  getEditorHTML(cont) {
+    return draftToHtml(convertToRaw(cont.getCurrentContent()));
+  }
 
-    render(){
-        const { editorContent } = this.state;
-        return (
+  render() {
+    const { editorContent } = this.state;
+    return (
             <div>
                 <div className="demo-editorSection">
                     <Editor
@@ -56,7 +53,7 @@ class WysiwygEditor extends Component{
                         toolbarClassName="wy-toolbar"
                         wrapperClassName="editor-wrapper"
                         editorClassName="wy-editor"
-                        onEditorStateChange={this.onEditorStateChange.bind(this)}
+                        onEditorStateChange={this.onEditorStateChange}
                         toolbar={{
                             image: { uploadCallback: uploadImageCallBack },
                             blockType: {
@@ -66,8 +63,8 @@ class WysiwygEditor extends Component{
                     />
                 </div>
             </div>
-        )
-    }
+    );
+  }
 }
 
 export default WysiwygEditor;

@@ -5,10 +5,9 @@ import fb from '../../assets/svg/fb.svg';
 import tw from '../../assets/svg/tw.svg';
 
 
-class ShareButtons extends Component{
-
-    render(){
-        return (
+class ShareButtons extends Component {
+  render() {
+    return (
             <div className="share-btns">
                 <p className="share-no">
                     25
@@ -30,8 +29,8 @@ class ShareButtons extends Component{
                 </div>
 
             </div>
-        )
-    }
+    );
+  }
 }
 
 export default ShareButtons;

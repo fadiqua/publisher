@@ -3,71 +3,69 @@ import hello from 'hellojs';
 import { bindActionCreators } from 'redux';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Modal, Form, Button, Icon, Input  } from 'antd';
+import { Modal, Form, Button, Icon, Input } from 'antd';
 // project files
 import SocialButton from './SocialButton';
 import Or from '../shared/Or';
 import {
-    toggleSignin, toggleSignup,
-    signinRequest, fetchUser, autoLogin
+  toggleSignin, toggleSignup,
+  signinRequest, fetchUser, autoLogin,
 } from '../../actions/actionTypes';
 import { localLogin } from '../../routes';
 
 const FormItem = Form.Item;
 
 class SigninModal extends Component {
-
-    constructor(){
-        super();
-        this.state = {
-            loading: false,
-            error: ''
-        };
-        this.handleOk = this.handleOk.bind(this);
-        this.handleCancel = this.handleCancel.bind(this);
-    }
+  constructor() {
+    super();
+    this.state = {
+      loading: false,
+      error: '',
+    };
+    this.handleOk = this.handleOk.bind(this);
+    this.handleCancel = this.handleCancel.bind(this);
+  }
 
     handleSubmit = (e) => {
-        e.preventDefault();
-        this.props.form.validateFields( async (err, values) => {
-            if (!err) {
-                try {
-                    this.setState({ loading: true, error: null });
-                    const { data } = await localLogin(values);
-                    this.setState({ loading: false, error: null });
-                    this.props.autoLogin({ ...data.me, token: data.token });
-                    console.log('result ', data)
-
-                } catch (error) {
-                    const { data: { message } } = error.response;
-                    this.setState({ loading: false, error: message });
-                }
-            }
-        });
+      e.preventDefault();
+      this.props.form.validateFields(async (err, values) => {
+        if (!err) {
+          try {
+            this.setState({ loading: true, error: null });
+            const { data } = await localLogin(values);
+            this.setState({ loading: false, error: null });
+            this.props.autoLogin({ ...data.me, token: data.token });
+            console.log('result ', data);
+          } catch (error) {
+            const { data: { message } } = error.response;
+            this.setState({ loading: false, error: message });
+          }
+        }
+      });
     };
 
-    handleOk(){
-        this.props.handleSignin();
+    handleOk() {
+      this.props.handleSignin();
     }
 
-    handleCancel(){
+    handleCancel() {
 
     }
 
     socialLogin(network) {
-        hello.login(network);
+      hello.login(network);
     }
-    render(){
-        const { loading, error } = this.state;
-        const {
-            sign, auth,
-            toggleSigninModal,
-            toggleSignupModal,
-            form: { getFieldDecorator }
-        } = this.props;
-        let validate  = {};
-        if(!!error) validate['validateStatus'] = 'error';
-        return (
+    render() {
+      const { loading, error } = this.state;
+      const {
+        sign, auth,
+        toggleSigninModal,
+        toggleSignupModal,
+        form: { getFieldDecorator },
+      } = this.props;
+      const validate = {};
+      if (error) validate.validateStatus = 'error';
+      return (
             <Modal
                 width={400}
                 visible={sign.siginVisible}
@@ -76,8 +74,8 @@ class SigninModal extends Component {
                 onCancel={toggleSigninModal}
                 footer={[
                     <div className="text-center" key="signup">
-                        Don't have an account? <a onClick={toggleSignupModal}>Sign up</a>
-                    </div>
+                        Don not have an account? <a onClick={toggleSignupModal}>Sign up</a>
+                    </div>,
                 ]}>
                 <SocialButton
                     type="facebook"
@@ -94,24 +92,20 @@ class SigninModal extends Component {
                     <FormItem { ...validate }>
                         {getFieldDecorator('email', {
                             rules: [{ required: true, message: 'Please input your email!' }],
-                        })(
-                            <Input
+                        })(<Input
                                 disabled={loading}
                                 size="large"
                                 prefix={<Icon type="user" style={{ fontSize: 13 }} />}
-                                placeholder="Email Address" />
-                        )}
+                                placeholder="Email Address" />)}
                     </FormItem>
                     <FormItem>
                         {getFieldDecorator('password', {
                             rules: [{ required: true, message: 'Please input your Password!' }],
-                        })(
-                            <Input
+                        })(<Input
                                 disabled={loading}
                                 size="large"
                                 prefix={<Icon type="lock" style={{ fontSize: 13 }} />}
-                                type="password" placeholder="Password" />
-                        )}
+                                type="password" placeholder="Password" />)}
                     </FormItem>
                     {!!error && <FormItem validateStatus="error">
                          <div className="ant-form-explain">
@@ -132,7 +126,7 @@ class SigninModal extends Component {
                     </FormItem>
                 </Form>
             </Modal>
-        )
+      );
     }
 }
 
@@ -141,11 +135,11 @@ const SiginModalWithForm = Form.create()(SigninModal);
 const mapStateToProps = ({ sign, auth }) => ({ sign, auth });
 
 const mapDispatch = dispatch => bindActionCreators({
-    toggleSignupModal: toggleSignup,
-    toggleSigninModal: toggleSignin,
-    handleSignin: signinRequest,
-    login: fetchUser,
-    autoLogin
+  toggleSignupModal: toggleSignup,
+  toggleSigninModal: toggleSignin,
+  handleSignin: signinRequest,
+  login: fetchUser,
+  autoLogin,
 }, dispatch);
 
 export default connect(mapStateToProps, mapDispatch)(SiginModalWithForm);

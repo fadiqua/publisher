@@ -1,6 +1,7 @@
+// npm pacakges
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
+// project files
 import NotFound from '../NotFound';
 import UserHeaderLoading from './UserHeaderLoading';
 import UserInfo from './UserInfo';
@@ -15,44 +16,44 @@ import blurred from './blurred.jpg';
 import { formatNumber } from '../../utils/functions';
 
 class UserHeader extends Component {
-    constructor(props){
-        super(props);
-        this.openUpdateModal = this.openUpdateModal.bind(this);
-        this.state = { editMode: false,  isProfileOwner: false }
-    }
-
-    openUpdateModal = (e) => {
-        e.preventDefault();
-        this.setState({editMode: true})
-    };
-
-    closeUpdateModal = () => {
-        this.setState({editMode: false})
-    };
+  constructor(props) {
+    super(props);
+    this.openUpdateModal = this.openUpdateModal.bind(this);
+    this.state = { editMode: false, isProfileOwner: false };
+  }
 
     // submit changes
     onProfileUpdate = (data) => {
-        this.props.updateProfile(data);
-        this.closeUpdateModal()
+      this.props.updateProfile(data);
+      this.closeUpdateModal();
     };
 
     // after following user from users modal
     onFollowCallback = (id, type) => {
-        const { currentUser} = this.props;
-        let isOwner = currentUser._id === this.props.id;
-        if(!isOwner && type==='_following'){
-            return;
-        }
-        this.props.followProfile({id, type});
+      const { currentUser } = this.props;
+      const isOwner = currentUser._id === this.props.id;
+      if (!isOwner && type === '_following') {
+        return;
+      }
+      this.props.followProfile({ id, type });
+    };
+
+    closeUpdateModal = () => {
+        this.setState({ editMode: false });
+    };
+
+    openUpdateModal = (e) => {
+        e.preventDefault();
+        this.setState({ editMode: true });
     };
 
     renderContent = () => {
-        const { profile } = this.props;
-        if(profile.loading ) {
-            // === 'fetchProfile'
-            return <UserHeaderLoading/>
-        }
-        return (
+      const { profile } = this.props;
+      if (profile.loading) {
+        // === 'fetchProfile'
+        return <UserHeaderLoading/>;
+      }
+      return (
             <div className="text-center">
                 <UserAvatar width="100px"
                             height="100px" type="circle"
@@ -61,10 +62,10 @@ class UserHeader extends Component {
                 <UserInfo user={profile.user} />
                 <div className="follow-info">
                     <UsersModal title="Following users"
-                                followCallback={(id) => this.onFollowCallback(id,'_following')}
+                                followCallback={id => this.onFollowCallback(id, '_following')}
                                 data={{
                                     id: profile.user._id,
-                                    count: profile.user._following.length
+                                    count: profile.user._following.length,
                                 }}
                                 api={getFollowings}>
                         <button className="icon-btn">
@@ -75,10 +76,10 @@ class UserHeader extends Component {
                         </button>
                     </UsersModal>
                     <UsersModal title="Follower users"
-                                followCallback={(id) => this.onFollowCallback(id,'_following')}
+                                followCallback={id => this.onFollowCallback(id, '_following')}
                                 data={{
                                     id: profile.user._id,
-                                    count: profile.user._followers.length
+                                    count: profile.user._followers.length,
                                 }}
                                 api={getFollowers}>
                         <button className="icon-btn">
@@ -91,19 +92,19 @@ class UserHeader extends Component {
                 </div>
                 <div>
                     <FollowButton user={profile.user}
-                                  followCallback={id => this.props.followProfile({id, type:'_followers'})}/>
+                                  followCallback={id => this.props.followProfile({ id, type: '_followers' })}/>
                 </div>
             </div>
-        )
+      );
     };
-    render(){
-        const { currentUser, profile, id } = this.props;
-        const { editMode } = this.state;
-        let isOwner = currentUser._id === id;
-        if(profile.error){ return <NotFound/> }
-        return (
+    render() {
+      const { currentUser, profile, id } = this.props;
+      const { editMode } = this.state;
+      const isOwner = currentUser._id === id;
+      if (profile.error) { return <NotFound/>; }
+      return (
             <div className="user-header"
-                 style={{backgroundImage: `linear-gradient(rgba(255,255,255,0.6) 100%,rgba(0,0,0,0.6) 100%), url(${blurred})`}}>
+                 style={{ backgroundImage: `linear-gradient(rgba(255,255,255,0.6) 100%,rgba(0,0,0,0.6) 100%), url(${blurred})` }}>
                 {isOwner && <div className="icon-btn edit-profile" >
                     <a onClick={this.openUpdateModal}>Edit</a>
                 </div>}
@@ -115,9 +116,9 @@ class UserHeader extends Component {
                                   closeModal={this.closeUpdateModal} />
                 }
             </div>
-        )
+      );
     }
 }
-const mapStateToProps = ({auth: { currentUser }, profile }) => ({ currentUser, profile });
+const mapStateToProps = ({ auth: { currentUser }, profile }) => ({ currentUser, profile });
 
 export default connect(mapStateToProps, { updateProfile, followProfile })(UserHeader);

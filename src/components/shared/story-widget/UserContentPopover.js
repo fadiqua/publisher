@@ -8,41 +8,41 @@ import timeSince from '../../../utils/timeSince';
 import { formatNumber } from '../../../utils/functions';
 
 class UserContentPopover extends Component {
-
     state = {
-        visible: false,
-        fetching: true,
-        following: true,
-        userProfile: {},
-        topStories: [],
-        isFollowing: null
+      visible: false,
+      fetching: true,
+      following: true,
+      userProfile: {},
+      topStories: [],
+      isFollowing: null,
     };
 
     handleVisibleChange = (visible) => {
-        this.setState({ visible });
+      this.setState({ visible });
     };
 
     fetchUserData = async () => {
-        if(this.state.fetching ) {
-            const { user} = this.props;
-            try {
-                const { data } = await  getUserByUsername(user.username);
+      if (this.state.fetching) {
+        const { user } = this.props;
+        try {
+          const { data } = await getUserByUsername(user.username);
 
-                this.setState({
-                    fetching: false, visible: true,
-                    userProfile: data.user,
-                    topStories: data.topStories,
-                });
-            } catch (err) {
-                this.setState({ fetching: false, visible: false })
-            }
+          this.setState({
+            fetching: false,
+            visible: true,
+            userProfile: data.user,
+            topStories: data.topStories,
+          });
+        } catch (err) {
+          this.setState({ fetching: false, visible: false });
         }
+      }
     };
 
     _renderTopStories = () => {
-        const { topStories } = this.state;
-        if(topStories.length > 0){
-            return (
+      const { topStories } = this.state;
+      if (topStories.length > 0) {
+        return (
                 <div className="user-top-stories">
                     <small className="text-upper text-bold">top stories:</small>
                     <ol className="topic-stories">
@@ -51,18 +51,18 @@ class UserContentPopover extends Component {
                         </li>)}
                     </ol>
                 </div>
-            )
-        }
+        );
+      }
     };
 
-    render(){
-        const { user } = this.props;
-        const { visible, userProfile, topStories } = this.state;
-        const followingCount = userProfile._followers ? userProfile._followers.length:0;
-        const userDesc = userProfile.bio?
-            <span>{userProfile.bio}</span>:<span>Member since { timeSince(new Date(userProfile.createdAt))}</span>
+    render() {
+      const { user } = this.props;
+      const { visible, userProfile, topStories } = this.state;
+      const followingCount = userProfile._followers ? userProfile._followers.length : 0;
+      const userDesc = userProfile.bio ?
+            <span>{userProfile.bio}</span> : <span>Member since { timeSince(new Date(userProfile.createdAt))}</span>;
 
-        const contentPopover = (
+      const contentPopover = (
             <div className="-content">
                 <div className="clearfix">
                     <Link to={`/profile/${userProfile.username}`} className="pull-right">
@@ -72,7 +72,7 @@ class UserContentPopover extends Component {
                                     prefix="/media/"
                                     imgSrc={userProfile.picture}/>
                     </Link>
-                    <div className="pull-left user-data" style={{marginRight: "15px"}}>
+                    <div className="pull-left user-data" style={{ marginRight: '15px' }}>
                         <h2 className="text-capitalize">
                             <Link to={`/profile/${userProfile.username}`}>
                                 {userProfile.displayName}
@@ -87,8 +87,8 @@ class UserContentPopover extends Component {
                     <FollowButton className="pull-right" user={user}/>
                 </div>
             </div>
-        );
-        return (
+      );
+      return (
             <Popover visible={visible}
                      overlayClassName="user-content-popover"
                      onVisibleChange={this.handleVisibleChange}
@@ -97,7 +97,7 @@ class UserContentPopover extends Component {
                     {this.props.children}
                 </span>
             </Popover>
-        )
+      );
     }
 }
 

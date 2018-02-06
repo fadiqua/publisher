@@ -1,0 +1,61 @@
+{
+  "parser": "babel-eslint",
+  "extends": [
+    "airbnb",
+    "prettier/react"
+  ],
+  "plugins": [
+    "react",
+    "jsx-a11y",
+    "import",
+    "prettier"
+  ],
+  "rules": {
+    "indent": [0, "tab"],
+    "no-tabs": 0,
+    "react/jsx-filename-extension": 0,
+    "react/prop-types": 0,
+    "react/no-did-mount-set-state": 0,
+    "react/no-array-index-key": 0,
+    "react/no-unused-state": 0,
+    "react/sort-comp": 0,
+    "jsx-ally/anchor-is-valid": 0,
+    "jsx-a11y/no-static-element-interactions": 0,
+    "jsx-a11y/click-events-have-key-events": 0,
+    "jsx-a11y/href-no-hash": 0,
+    "jsx-a11y/anchor-is-valid": 0,
+    "no-underscore-dangle": 0,
+    "consistent-return": 0,
+    "prefer-destructuring": 0,
+    "import/no-extraneous-dependencies": 0,
+    "import/prefer-default-export": 0,
+    "import/no-named-as-default": 0,
+    "no-unused-vars": 0,
+    "prefer-rest-params": 0,
+    "max-len": 0,
+    "no-empty": 0,
+    "no-param-reassign": 0,
+    "no-return-assign": 0,
+    "no-trailing-spaces": 0,
+    "no-unused-expressions": 0,
+    "class-methods-use-this": 0,
+    "no-extend-native": 1,
+    "guard-for-in": 1,
+    "no-restricted-syntax": 1,
+    "no-nested-ternary": 1,
+    "no-shadow": 1,
+    "brace-style": 1,
+    "eqeqeq": [1, "smart"],
+    "radix": [1, "as-needed"],
+    "rulers": [80, 100],
+    "translate_tabs_to_spaces": true,
+    "quotes": [0, "single", { "allowTemplateLiterals": true }]
+  },
+  "globals": {
+    "document": 1
+  },
+  "env": {
+    "browser": true,
+    "jasmine": true
+  }
+}

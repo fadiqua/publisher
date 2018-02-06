@@ -9,13 +9,13 @@ import { initialState as currentTopic } from '../reducers/currentTopic';
 import { initialState as notifications } from '../reducers/notifications';
 
 export default {
-    screenSize,
-    sign,
-    auth,
-    topics,
-    profile,
-    story,
-    responses,
-    currentTopic,
-    notifications
-}
+  screenSize,
+  sign,
+  auth,
+  topics,
+  profile,
+  story,
+  responses,
+  currentTopic,
+  notifications,
+};

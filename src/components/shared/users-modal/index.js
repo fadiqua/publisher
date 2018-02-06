@@ -1,4 +1,4 @@
-import React, {Component} from "react"
+import React, { Component } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { Modal, Button } from 'antd';
 import PaginateLoading from '../../shared/paginate-loading';
@@ -7,46 +7,47 @@ import './index.scss';
 
 class UsersModal extends Component {
     state = {
-        visible: false, loading: false,
-        data:{
-            page: "1",
-            docs: [],
-            pages: 1
-        }
+      visible: false,
+      loading: false,
+      data: {
+        page: '1',
+        docs: [],
+        pages: 1,
+      },
     };
     openModal = async () => {
-        this.setState({visible: true, loading: true,data:{ page: "1",  docs: [], pages:1 }});
-        const result = await this.props.api(this.props.data.id);
-        this.setState({
-            loading: false,
-            data: result.data
-        });
+      this.setState({ visible: true, loading: true, data: { page: '1', docs: [], pages: 1 } });
+      const result = await this.props.api(this.props.data.id);
+      this.setState({
+        loading: false,
+        data: result.data,
+      });
     };
     closeModal = () => {
-        this.setState({ visible: false})
+      this.setState({ visible: false });
     };
     loadMore = async () => {
-        const { id } = this.props.data;
-        const nextPage = parseInt(this.state.data.page) + 1;
-        this.setState({loading: true});
-        const result = (await this.props.api(id,nextPage )).data;
-        this.setState({
-            loading: false,
-            data: {...result.data, docs: [...this.state.data.docs, ...result.docs]}
-        });
+      const { id } = this.props.data;
+      const nextPage = parseInt(this.state.data.page, 10) + 1;
+      this.setState({ loading: true });
+      const result = (await this.props.api(id, nextPage)).data;
+      this.setState({
+        loading: false,
+        data: { ...result.data, docs: [...this.state.data.docs, ...result.docs] },
+      });
     };
     renderUsers = () => {
-        const { data } = this.state;
-        return data.docs.map(obj => <li key={obj._id} >
-            <UserWidget item={obj._followed} followCallback={this.props.followCallback} /></li>)
+      const { data } = this.state;
+      return data.docs.map(obj => <li key={obj._id} >
+            <UserWidget item={obj._followed} followCallback={this.props.followCallback} /></li>);
     };
 
     renderLoadMoreButton = () => {
-        const { loading, data } = this.state;
-        if(data.page== data.pages) {
-            return;
-        }
-        return (
+      const { loading, data } = this.state;
+      if (parseInt(data.page, 10) === parseInt(data.pages, 10)) {
+        return;
+      }
+      return (
             <li>
                 <Button
                     onClick={this.loadMore}
@@ -55,13 +56,13 @@ class UsersModal extends Component {
                     load more
                 </Button>
             </li>
-        )
+      );
     };
 
     render() {
-        const { visible, loading, data } = this.state;
-        const { title } = this.props;
-        return (
+      const { visible, loading, data } = this.state;
+      const { title } = this.props;
+      return (
             <div className="users-modal-box">
                 <span
                     className={`${!data.count ? 'disabled' : ''}`}
@@ -88,7 +89,7 @@ class UsersModal extends Component {
                 </Modal>}
 
             </div>
-        )
+      );
     }
 }
 

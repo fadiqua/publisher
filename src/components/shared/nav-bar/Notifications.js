@@ -1,140 +1,136 @@
 // npm packages
 import { bindActionCreators } from 'redux';
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Scrollbars } from 'react-custom-scrollbars';
-import { Popover, Badge  } from 'antd';
+import { Popover, Badge } from 'antd';
 // project files
 import NotificationItem from './NotificationItem';
 import PaginateLoading from '../paginate-loading';
 import { clearUnreadBadgeCountAPI } from '../../../routes';
 import {
-    clearUnreadBadgeNotifications,
-    markNotificationAsRead,
-    fetchNotifications
+  clearUnreadBadgeNotifications,
+  markNotificationAsRead,
+  fetchNotifications,
 } from '../../../actions/actionTypes';
 import './Notifications.scss';
 
 class Notifications extends Component {
-    constructor() {
-        super();
-
-
-    }
-    state = {
+  constructor() {
+    super();
+    this.state = {
         visible: false,
         initialNotificationsIsLoaded: false,
     };
+  }
 
     onVisibleChange = (visible) => {
-        this.setState({
-            visible
-        });
+      this.setState({
+        visible,
+      });
     };
 
     hidePopover = () => {
-        this.setState({
-            visible: false
-        })
+      this.setState({
+        visible: false,
+      });
     };
 
     onNotificationClick(id) {
-        const { notifications } = this.props;
-        if(!notifications.items.get(id).isClicked){
-            this.props.markNotificationAsRead(id)
-        }
-        this.hidePopover()
-    };
+      const { notifications } = this.props;
+      if (!notifications.items.get(id).isClicked) {
+        this.props.markNotificationAsRead(id);
+      }
+      this.hidePopover();
+    }
 
     markAllAsReadClick = () => {
-        this.props.markNotificationAsRead(null)
+      this.props.markNotificationAsRead(null);
     };
     spinnerBottomLodaingNotifications = () => {
-        const { notifications: { fetching, page, pages } } = this.props;
-        return (
+      const { notifications: { fetching, page, pages } } = this.props;
+      return (
             <li key="noti-item-loading">
                 <PaginateLoading loading={fetching === 'paginate'}
                                  canPaginate={page != pages}/>
             </li>
-        )
+      );
     };
     _renderNotificationsItems = () => {
-        const { notifications: { fetching, items} } = this.props;
-        const loadingItem = this.spinnerBottomLodaingNotifications();
-        let notificationsJSX = [];
-        items.forEach((notification, key) => {
-            const currentNotification = <NotificationItem onNotificationClick={this.onNotificationClick} key={key} item={notification}/>
-            notificationsJSX.push(currentNotification)
-        });
-        if(fetching === 'initial') {
-            return (
+      const { notifications: { fetching, items } } = this.props;
+      const loadingItem = this.spinnerBottomLodaingNotifications();
+      const notificationsJSX = [];
+      items.forEach((notification, key) => {
+        const currentNotification = <NotificationItem onNotificationClick={this.onNotificationClick} key={key} item={notification}/>;
+        notificationsJSX.push(currentNotification);
+      });
+      if (fetching === 'initial') {
+        return (
                 <li className="text-center loading-notifications" >
                     <svg width="35" viewBox="0 0 24 24">
                         <path fill="#595959" d="M16,17H7V10.5C7,8 9,6 11.5,6C14,6 16,8 16,10.5M18,16V10.5C18,7.43 15.86,4.86 13,4.18V3.5A1.5,1.5 0 0,0 11.5,2A1.5,1.5 0 0,0 10,3.5V4.18C7.13,4.86 5,7.43 5,10.5V16L3,18V19H20V18M11.5,22A2,2 0 0,0 13.5,20H9.5A2,2 0 0,0 11.5,22Z" />
                     </svg>
                 </li>
-            )
-        }
-        else if(fetching === null && items.size === 0) {
-            return (
+        );
+      } else if (fetching === null && items.size === 0) {
+        return (
                 <li className="text-center " >
                     <br/>
                     <svg width="24" viewBox="0 0 24 24">
                         <path fill="#595959" d="M16,17H7V10.5C7,8 9,6 11.5,6C14,6 16,8 16,10.5M18,16V10.5C18,7.43 15.86,4.86 13,4.18V3.5A1.5,1.5 0 0,0 11.5,2A1.5,1.5 0 0,0 10,3.5V4.18C7.13,4.86 5,7.43 5,10.5V16L3,18V19H20V18M11.5,22A2,2 0 0,0 13.5,20H9.5A2,2 0 0,0 11.5,22Z" />
                     </svg>
-                    <p>You don't have notifications.</p>
+                    <p>You don not have notifications.</p>
                 </li>
-            )
-        }
-        notificationsJSX.push(loadingItem);
-        return notificationsJSX;
-
+        );
+      }
+      notificationsJSX.push(loadingItem);
+      return notificationsJSX;
     };
     onNotificationIconClick= () => {
-        const { notifications: { unreadCount } } = this.props;
-        const { initialNotificationsIsLoaded } = this.state;
-        if(!initialNotificationsIsLoaded){
-            this.props.fetchNotifications({type: 'initial', page: 1});
-            this.setState({initialNotificationsIsLoaded: true})
-        }
-        if(unreadCount > 0) {
-            clearUnreadBadgeCountAPI()
-                .then((result) => {
-                    this.props.clearUnreadBadgeNotifications();
-                })
-        }
+      const { notifications: { unreadCount } } = this.props;
+      const { initialNotificationsIsLoaded } = this.state;
+      if (!initialNotificationsIsLoaded) {
+        this.props.fetchNotifications({ type: 'initial', page: 1 });
+        this.setState({ initialNotificationsIsLoaded: true });
+      }
+      if (unreadCount > 0) {
+        clearUnreadBadgeCountAPI()
+          .then((result) => {
+            this.props.clearUnreadBadgeNotifications();
+          });
+      }
     };
 
     onScrollFrame = (values) => {
-        const { notifications: { page, pages, fetching } } = this.props;
-        if(values.top === 1 && fetching !== 'paginate' && page != pages) {
-            this.props.fetchNotifications({ type: 'paginate', page: parseInt(page) + 1 });
-        }
+      const { notifications: { page, pages, fetching } } = this.props;
+      if (values.top === 1 && fetching !== 'paginate' && page != pages) {
+        this.props.fetchNotifications({ type: 'paginate', page: parseInt(page) + 1 });
+      }
     };
 
-    render(){
-        const { notifications, mobile } = this.props;
-        const popoverPosition = mobile ? "bottomRight" : "bottomLeft";
-        const notificationTitle = (
+    render() {
+      const { notifications, mobile } = this.props;
+      const popoverPosition = mobile ? 'bottomRight' : 'bottomLeft';
+      const notificationTitle = (
             <div className="-title clearfix">
                 <h3 className="pull-left">Notifications</h3>
                 <p className="pull-right">
                     <button onClick={this.markAllAsReadClick} className="icon-btn text-capitalize">mark all as read</button>
                 </p>
             </div>
-        );
-        const notificationsMenu = (
+      );
+      const notificationsMenu = (
             <div className="notifications">
                 {notificationTitle}
-                <Scrollbars style={{ width: '350px'}} autoHeight
+                <Scrollbars style={{ width: '350px' }} autoHeight
                             autoHeightMin={100}
                             autoHeightMax={400}
                             autoHide autoHideTimeout={500}
                             autoHideDuration={200}
-                            onScrollFrame={(values) => setTimeout(()=>{this.onScrollFrame(values)}, 300)}
+                            onScrollFrame={values => setTimeout(() => { this.onScrollFrame(values); }, 300)}
                             ref={ node => this.scrollbars = node }>
-                    <ul className="notifications-list"  >
+                    <ul className="notifications-list" >
                         { this._renderNotificationsItems() }
                     </ul>
                 </Scrollbars>
@@ -146,8 +142,8 @@ class Notifications extends Component {
                     </Link>
                 </div>
             </div>
-        );
-        return (
+      );
+      return (
             <Popover visible={this.state.visible }
                      overlayClassName="notifications-popover"
                      placement={popoverPosition}
@@ -162,16 +158,16 @@ class Notifications extends Component {
                     </span>
                 </Badge>
             </Popover>
-        )
+      );
     }
 }
 
 const mapState = ({ notifications }) => ({ notifications });
 
 const mapDispatch = dispatch => bindActionCreators({
-    clearUnreadBadgeNotifications,
-    markNotificationAsRead,
-    fetchNotifications
+  clearUnreadBadgeNotifications,
+  markNotificationAsRead,
+  fetchNotifications,
 }, dispatch);
 
 export default connect(mapState, mapDispatch)(Notifications);
