@@ -18,31 +18,30 @@ responseController.post = async (req, res) => {
   const {
     text, storyId, userId, parentId,
   } = req.body;
-  const comment = new db.Response({
+  const response = new db.Response({
     text,
     _story: storyId,
     _creator: userId,
     _parent: parentId || null,
   });
   try {
-    const newComment = await comment.save();
+    const newResponse = await response.save();
     if (parentId == undefined) {
       const result = await Promise.all([
         db.Story.findByIdAndUpdate(
           storyId,
-          { $push: { _comments: newComment._id } },
+          { $push: { _comments: newResponse._id } },
         ),
-        db.Response.populate(newComment, {
+        db.Response.populate(newResponse, {
           path: '_creator',
           select: '-password -createdAt -facebook',
         }),
       ]);
-      { /* <a class="primary-color" href="/profile/${result[1]._creator._id}"> */ }
       if (userId !== result[0]._creator.toString()) {
         await new db.Notifications({
           _from: userId,
           _to: result[0]._creator,
-          type: 'comment',
+          type: 'response',
           _parentTarget: result[0]._id,
           _target: result[1]._id,
         }).save();
@@ -51,18 +50,18 @@ responseController.post = async (req, res) => {
       console.log('parentId ', parentId);
       await db.Response.findByIdAndUpdate(parentId, { $inc: { repliesCount: 1 } });
     }
-    const c = await db.Response.populate(newComment, {
+    const c = await db.Response.populate(newResponse, {
       path: '_creator',
       select: '-_following -_followers -facebook -google',
     });
     res.status(200).json({
       success: true,
-      comment: c,
+      response: c,
     });
   } catch (e) {
     res.status(500).json({
       success: false,
-      error: e.message,
+      message: e.message,
     });
   }
 };

@@ -4,12 +4,12 @@ import store from '../store';
 import { toggleSignin } from '../actions/actionTypes';
 
 export function setAccessToken(token) {
-    axios.defaults.headers.common.Authorization = token;
+  axios.defaults.headers.common.Authorization = token;
 }
 
 export const clearToken = () => {
-    localStorage.removeItem('token');
-    setAccessToken(null);
+  localStorage.removeItem('token');
+  setAccessToken(null);
 };
 
 const axiosInterceptor = () => {

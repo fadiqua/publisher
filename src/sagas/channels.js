@@ -17,14 +17,14 @@ export function subscribe(socket, id) {
     });
 
     socket.on(`notification.new_${id}`, ({ notification: noti }) => {
-      console.log(notification);
-      notification.config({
-        placement: 'bottomLeft',
-      });
-      notification.open({
-        // description: htmlToReactParser.parse(noti.content),
-        description: 'a',
-      });
+      console.log(`noti `, noti);
+      // notification.config({
+      //   placement: 'bottomLeft',
+      // });
+      // notification.open({
+      //   // description: htmlToReactParser.parse(noti.content),
+      //   description: 'a',
+      // });
       emit(actions.newNotification({ notification: noti }));
     });
     socket.on(`notification.remove_${id}`, (data) => {

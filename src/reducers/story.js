@@ -16,15 +16,15 @@ export const initialState = {
 };
 
 function storyLike(state, payload) {
-    const isLiked = !state.isUserLiked;
-    const _likes = !isLiked ?
-        state._likes.filter(id => id !== payload) : [...state._likes, payload];
-    return {
-        ...state,
-        likesCount: !isLiked ? state.likesCount - 1 : state.likesCount + 1,
-        _likes,
-        isUserLiked: isLiked,
-    };
+  const isLiked = !state.isUserLiked;
+  const _likes = !isLiked ?
+    state._likes.filter(id => id !== payload) : [...state._likes, payload];
+  return {
+    ...state,
+    likesCount: !isLiked ? state.likesCount - 1 : state.likesCount + 1,
+    _likes,
+    isUserLiked: isLiked,
+  };
 }
 
 const storyReducer = createReducer({

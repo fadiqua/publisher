@@ -79,8 +79,8 @@ function* write(socket) {
 }
 
 function* handleIO(socket, id) {
-    yield fork(read, socket, id);
-    yield fork(write, socket);
+  yield fork(read, socket, id);
+  yield fork(write, socket);
 }
 
 export function* autoLoginFlow() {

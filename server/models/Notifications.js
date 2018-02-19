@@ -1,6 +1,7 @@
 import mongoose, { Schema } from 'mongoose';
 import mongoosePaginate from 'mongoose-paginate';
 
+import paginateRecords from '../plugins/paginateRecords';
 import server from '../index';
 import { socket } from '../socketio/socketServer';
 
@@ -47,6 +48,7 @@ const autoPopulate = function (next) {
   next();
 };
 
+notificationsSchema.plugin(paginateRecords);
 notificationsSchema.plugin(mongoosePaginate);
 
 notificationsSchema.pre('find', autoPopulate);
@@ -70,7 +72,6 @@ notificationsSchema.post('save', (model, next) => {
 });
 
 notificationsSchema.post('findOneAndRemove', (model, next) => {
-  console.log('remove noti ', model._to);
   // server.io.emit(`notification.remove_${model._to}`, {
   //     notification: model._id
   // });

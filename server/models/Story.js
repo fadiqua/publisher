@@ -111,7 +111,7 @@ storySchema.pre('save', async function (next) {
 
 storySchema.pre('findOneAndUpdate', function (next) {
   const story = this;
-  console.log('sstoryyy ', story.count);
+  // console.log('sstoryyy ', story.count);
   story.readTime = avgWordsPerMin(story.count);
   next();
 });

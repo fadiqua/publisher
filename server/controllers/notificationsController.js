@@ -1,6 +1,21 @@
+import { Types } from 'mongoose';
+
 import db from '../models/index';
 
 const notificationsController = {};
+
+const notificationFields = {
+  _from: 1,
+  _to: 1,
+  type: 1,
+  content: 1,
+  _parentTarget: 1,
+  _target: 1,
+  isClicked: 1,
+  isDeleted: 1,
+  createdAt: 1,
+
+};
 
 notificationsController.markNotificationAsRead = async (req, res) => {
   const { id } = req.body;
@@ -60,16 +75,54 @@ notificationsController.getUnreadCount = async (req, res) => {
 notificationsController.getNotifications = async (req, res) => {
   const { page } = req.query;
   try {
-    const notifications = await db.Notifications.paginate(
-      { _to: req.user.id },
-      { sort: { createdAt: -1 }, page: page || 1, limit: 12 },
+    const aggregate = db.Response.aggregate();
+
+    const notifications = await db.Notifications.paginateRecords(
+
+      aggregate, {
+        match: { _to: Types.ObjectId(req.user.id), isDeleted: false },
+        project: {
+          ...notificationFields,
+        },
+        sort: {
+          createdAt: -1,
+        },
+        // group: {
+        //   _id: '$_parentTarget',
+        //   count: { $sum: 1 },
+        //   createdAt: { $last: "$createdAt" },
+        //   id: { $last: "$_id" },
+        //   _to: { $last: "$_to" },
+        //   _from: { $last: "$_from" },
+        //   _parentTarget: { $last: "$_parentTarget" },
+        //   type: { $last: "$type" },
+        //   isClicked: { $last: "$isClicked" },
+        //   isDeleted: { $last: "$isDeleted" },
+        //   notifications: { $push: "$$ROOT" },
+        //   notification: { $last: "$$ROOT" },
+        // },
+        // project2: {
+        //   "_id": 1,
+        //   "id": 1,
+        //   ...notificationFields,
+        //   count: 1,
+        // },
+        page: page || 1,
+        pageSize: 12,
+      },
+      ['_to', '_from', '_target', '_parentTarget'],
     );
+    // const notifications = await db.Notifications.paginate(
+    //   { _to: req.user.id },
+    //   { sort: { createdAt: -1 }, page: page || 1, limit: 12 },
+    // );
     res.status(200).json({
       ...notifications,
     });
   } catch (e) {
     res.status(500).json({
       success: false,
+      message: e.message,
     });
   }
 };

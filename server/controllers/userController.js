@@ -121,8 +121,8 @@ userController.getUserByUsername = async (req, res) => {
 userController.followUser = async (req, res) => {
   const user = req.user.id;
   const followedUser = req.body.id;
-  console.log('user ', user);
-  console.log('followedUser ', followedUser);
+  // console.log('user ', user);
+  // console.log('followedUser ', followedUser);
   const followObj = new db.Follow({
     _user: user,
     _followed: followedUser,

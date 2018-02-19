@@ -6,19 +6,24 @@ import { connect } from 'react-redux';
 import { followUser } from '../../actions/actionTypes';
 
 class FollowButton extends Component {
-  renderButtonContent() {
+  constructor() {
+    super();
+    this.onFollowClick = this._onFollowClick.bind(this);
+  }
+
+  _renderButtonContent() {
     const { currentUser, user } = this.props;
     const isFollowing = currentUser._following ? currentUser._following.indexOf(user._id) !== -1 : null;
     if (!isFollowing) {
       return (
-                <span>Follow</span>
+        <span>Follow</span>
       );
     }
     return (
-            <span>Unfollow</span>
+      <span>Unfollow</span>
     );
   }
-  onFollowClick() {
+  _onFollowClick() {
     const { user, currentUser } = this.props;
     this.props.followUser(user._id);
     try {
@@ -32,9 +37,12 @@ class FollowButton extends Component {
       return null;
     }
     return (
-            <Button type={`${!isFollowing ? 'default' : 'danger dashed'}`}
-                    onClick={this.onFollowClick}
-                    className={`follow-btn ${className} ${isFollowing ? 'following' : ''}`}>{this.renderButtonContent()}</Button>
+      <Button type={`${!isFollowing ? 'default' : 'danger dashed'}`}
+              onClick={this.onFollowClick}
+              className={`follow-btn ${className} ${isFollowing ? 'following' : ''}`}
+      >
+        {this._renderButtonContent()}
+      </Button>
     );
   }
 }

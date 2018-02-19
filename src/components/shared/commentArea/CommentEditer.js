@@ -1,7 +1,7 @@
 // npm packages
-import React, { Component } from 'react';
-import { Button } from 'antd';
-import { Editor, EditorState, convertToRaw } from 'draft-js';
+import React, {Component} from 'react';
+import {Button} from 'antd';
+import {Editor, EditorState, convertToRaw} from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 // project files
 import UserAvatar from '../UserAvatar';
@@ -31,8 +31,8 @@ class CommentEditer extends Component {
     // console.log('cccc',this.commentContent )
   }
 
-    _commentClick() {
-    this.setState({ clicked: true }, () => this.commentContent.focus());
+  _commentClick() {
+    this.setState({clicked: true}, () => this.commentContent.focus());
   }
 
   editorStateChanged(newEditorState) {
@@ -48,70 +48,75 @@ class CommentEditer extends Component {
     this.props.onSubmit(this.state.html);
   }
 
-    clearEditor = () => {
-      this.setState({
-        editorState: EditorState.createEmpty(),
-      });
-    };
+  clearEditor = () => {
+    this.setState({
+      editorState: EditorState.createEmpty(),
+    });
+  };
 
-    _renderCommentEditor = () => {
-      const { clicked, editorState } = this.state;
-      const { canExpand } = this.props;
-      if (!canExpand) {
-        return <Editor ref={(node) => { this.commentContent = node; }}
-                           editorState={editorState}
-                           placeholder="Write a reply..."
-                           onChange={this.editorStateChanged}/>;
-      }
-      return (
-            <div className="text-center" style={{ fontSize: '1.2em', minHeight: '50px' }}>
-                {!clicked && <span>Write a response...</span>}
-                <span className={`${!clicked ? 'hide' : ''}`}>
-                   <Editor ref={(node) => { this.commentContent = node; }}
+  _renderCommentEditor = () => {
+    const {clicked, editorState} = this.state;
+    const {canExpand} = this.props;
+    if (!canExpand) {
+      return <Editor ref={(node) => {
+        this.commentContent = node;
+      }}
+                     editorState={editorState}
+                     placeholder="Write a reply..."
+                     onChange={this.editorStateChanged}/>;
+    }
+    return (
+      <div className="text-center" style={{fontSize: '1.2em', minHeight: '50px'}}>
+        {!clicked && <span>Write a response...</span>}
+        <span className={`${!clicked ? 'hide' : ''}`}>
+                   <Editor ref={(node) => {
+                     this.commentContent = node;
+                   }}
                            editorState={editorState}
                            onChange={this.editorStateChanged}/>
                 </span>
-            </div>
-      );
-    };
-    render() {
-      const { clicked } = this.state;
-      const {
-        user, loading, clearEditor, className,
-      } = this.props;
-      if (!user._id) {
-        return (
-                <div className="not-signin">
-                    You must sigin before submitting a response
-                </div>
-        );
-      }
+      </div>
+    );
+  };
+
+  render() {
+    const {clicked} = this.state;
+    const {
+      user, loading, clearEditor, className,
+    } = this.props;
+    if (!user._id) {
       return (
-            <div className={`comment-editor-container ${className}`}>
-                <div className="-user">
-                    <UserAvatar type="circle"
-                                width="30px"
-                                height="30px"
-                                prefix="/media/thumbs/"
-                                imgSrc={user.thumbnail}/>
-                    <strong style={{
-                        top: clicked ? '0' : '30px',
-                    }}>
-                        {user.displayName}
-                    </strong>
-                </div>
-                <div onClick={this.commentClick}
-                     className="comment-editor">
-                    {this._renderCommentEditor()}
-                    { clicked && <div className="text-right" >
-                        <Button type="primary"
-                                loading={loading}
-                                onClick={this.submitComment}>Submit</Button>
-                    </div>}
-                </div>
-            </div>
+        <div className="not-signin">
+          You must sigin before submitting a response
+        </div>
       );
     }
+    return (
+      <div className={`comment-editor-container ${className}`}>
+        <div className="-user">
+          <UserAvatar type="circle"
+                      width="30px"
+                      height="30px"
+                      prefix="/media/thumbs/"
+                      imgSrc={user.thumbnail}/>
+          <strong style={{
+            top: clicked ? '0' : '30px',
+          }}>
+            {user.displayName}
+          </strong>
+        </div>
+        <div onClick={this.commentClick}
+             className="comment-editor">
+          {this._renderCommentEditor()}
+          { clicked && <div className="text-right">
+            <Button type="primary"
+                    loading={loading}
+                    onClick={this.submitComment}>Submit</Button>
+          </div>}
+        </div>
+      </div>
+    );
+  }
 }
 CommentEditer.defaultProps = {
   className: '',

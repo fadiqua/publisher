@@ -1,14 +1,13 @@
-
 function timeSince(timeStamp, withMins = true) {
   const now = new Date();
   const secondsPast = (now.getTime() - timeStamp.getTime()) / 1000;
   const formatDate = function (date, format, utc) {
     // let MMMM = ["\x00", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     const MMMM = ['\x00',
-        'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul',
-        'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul',
+      'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     const MMM = ['\x01', 'Jan', 'Feb', 'Mar', 'Apr', 'May',
-        'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     const dddd = ['\x02', 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     const ddd = ['\x03', 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 

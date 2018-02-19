@@ -67,7 +67,6 @@ class StoryResponses extends Component {
       const { responses, currentUser, story } = this.props;
       const responsesJSX = [];
       responses.docs.forEach((response, key) => {
-        console.log(response);
         const currentResponse = <ResponseBox key={key}
                                                owner={currentUser._id}
                                                story={story.currentStory}

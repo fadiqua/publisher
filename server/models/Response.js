@@ -1,5 +1,6 @@
 import mongoose, { Schema } from 'mongoose';
 import mongoosePaginate from 'mongoose-paginate';
+
 import paginateRecords from '../plugins/paginateRecords';
 
 const responseSchema = new Schema({

@@ -36,7 +36,7 @@ class AppContent extends PureComponent {
     if (this.mql) {
       this.mql.removeListener(this.responsiveHandler);
     }
-    this.removeListener();
+    this.removeListener && this.removeListener();
   }
 
   /**
@@ -54,12 +54,12 @@ class AppContent extends PureComponent {
   render() {
     const { loading, screenSize: { collapsed, mobile } } = this.props;
     if (loading) {
-return (
+      return (
         <div className="in-center">
           <Spin />
         </div>
       );
-}
+    }
     return (
       <div className="body-content">
         <SiderMenu />

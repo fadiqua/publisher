@@ -16,7 +16,7 @@ import * as actions from '../actions/actionTypes';
 export function* createResponseAsync(action) {
   try {
     const response = yield call(createResponse, action.payload);
-    yield put({ type: actions.createResponseSuccess, payload: response.data.comment });
+    yield put({ type: actions.createResponseSuccess, payload: response.data.response });
     yield put({ type: actions.clearResponseStatus });
   } catch (e) {
 

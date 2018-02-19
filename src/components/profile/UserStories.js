@@ -9,21 +9,21 @@ import Story from '../shared/story-widget';
 import { fetchProfileStories } from '../../actions/actionTypes';
 
 class UserStories extends Component {
-    componentDidMount() {
-        const { params: { username } } = this.props.match;
-        this.props.fetchProfileStories({ username, page: 1 });
-    }
+  componentDidMount() {
+    const { params: { username } } = this.props.match;
+    this.props.fetchProfileStories({ username, page: 1 });
+  }
     // load more stories with infinite scroll
     loadMoreStories = (e) => {
-        const { params: { username } } = this.props.match;
-        const { loading, stories } = this.props.profile;
-        if (stories.page !== stories.pages) {
-            this.props.fetchProfileStories({
-                username,
-                page: parseInt(stories.page, 10) + 1,
-                type: 'paginate',
-            });
-        }
+      const { params: { username } } = this.props.match;
+      const { loading, stories } = this.props.profile;
+      if (stories.page !== stories.pages) {
+        this.props.fetchProfileStories({
+          username,
+          page: parseInt(stories.page, 10) + 1,
+          type: 'paginate',
+        });
+      }
     };
     renderStories = () => {
       const { stories } = this.props.profile;

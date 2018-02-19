@@ -21,7 +21,7 @@ class NotificationItem extends PureComponent {
 
   _renderNotificationContent() {
     const { item } = this.props;
-    if (item.type === 'comment') {
+    if (item.type === 'response') {
       return <p><strong className="text-capitalize">{item._from.displayName}</strong> commented on <strong className="story-title">{item._parentTarget.title}</strong></p>;
     } else if (item.type === 'like') {
       return <p><strong className="text-capitalize">{item._from.displayName}</strong> likes your story <strong className="story-title">{item._parentTarget.title}</strong></p>;
