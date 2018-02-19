@@ -9,7 +9,10 @@ import passport from 'passport';
 import routes from './routes/index';
 import { localLogin, jwtLogin, decodeSub } from './services';
 
-require('dotenv').config();
+
+// Load environment variables from a .env file if one exists
+require('dotenv').load();
+// require('dotenv').config();
 
 const app = express();
 

@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import config from '../config/config';
 import db from '../models/index';
+import { verificationEmail } from '../services/sendEmail';
 // import request from 'request';
 // import io from '../index';
 
@@ -31,6 +32,7 @@ userController.localSignup = async (req, res) => {
       password,
     });
     const token = tokenForUser(user);
+    verificationEmail(`${req.protocol}://${req.headers.host}/verify?${token}`)
     res.status(200).json({
       success: true,
       me: user,
@@ -81,7 +83,6 @@ userController.socialLogin = async (req, res) => {
   const { network, socialToken, data } = req.body;
   try {
     const user = await db.SocialAuth.findOrCreate(network, data);
-    console.log('userr ', user);
     const token = tokenForUser(user);
     res.status(200).send({
       success: true,
@@ -294,6 +295,14 @@ userController.getFollowings = async (req, res) => {
       success: false,
       error: e.message,
     });
+  }
+};
+
+userController.forgetPassword = async (req, res) => {
+  try {
+
+  } catch (err) {
+
   }
 };
 
